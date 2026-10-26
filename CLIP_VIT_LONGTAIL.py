@@ -297,6 +297,19 @@ def main_worker(gpu, ngpus_per_node, args):
                                        train_txt=args.train_txt, val_txt=args.val_txt,
                                        num_classes=args.num_classes, mean=mean, std=std)
     set_shot_splits(data.cls_num_list_sorted, args)
+    # Saved with every checkpoint so the head can be rebuilt and its outputs named without the
+    # training data. Outputs are ordered rarest class first: class_map[split-file label] = output index.
+    model_meta = {
+        'num_classes': args.num_classes,
+        'gamma': args.gamma,
+        'dataset_norm': args.dataset_norm,
+        'mean': [float(m) for m in (mean or data.mean)],
+        'std': [float(s) for s in (std or data.std)],
+        'class_map': [int(i) for i in data.trainset.class_map],
+        'few_end': args.few_end,
+        'many_start': args.many_start,
+        'reslt_split': args.reslt_split,
+    }
     if args.cache_features:
         train_loader, val_loader = feature_cache.build_cached_loaders(encoder, data, args)
     else:
@@ -331,6 +344,7 @@ def main_worker(gpu, ngpus_per_node, args):
                 'state_dict': head_state_dict(model),
                 'best_acc1': best_acc1,
                 'optimizer' : optimizer.state_dict(),
+                **model_meta,
             }, is_best)
 
 
