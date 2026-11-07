@@ -1,104 +1,69 @@
+"""LTIC on a frozen encoder: train / evaluate the head on images, a feature cache, or chunked features.
+
+C0 changes (plan v9.1 §3.1):
+  * 3 branches by default: H (all classes), M (medium + tail), T (tail); prediction H + M + T.
+    --branches 2 reproduces the IJCNN code (H + M; M on labels < --reslt_split).
+  * the shared classifier has no bias (networks/ltic.py), so train and test logits match at gamma = 0.
+  * --beta renamed --alpha (the paper's alpha; the gate's beta is something else).
+  * shot groups from --few_thr / --many_thr (required) with R1 asserts on the sorted counts;
+    explicit --few_end / --many_start only to reproduce the IJCNN configuration.
+  * epoch selection by macro-F1 on the --val_txt file (pass V-tune, never V-select).
+  * resume checks the class_map; --evaluate refuses to run without a trained checkpoint.
+  * full seeding; no per-epoch confusion matrix; weighted P/R use zero_division=0 (appendix only).
+  * the distributed path is removed (it was broken and unused).
+For tuning many configurations use tools/run_baselines.py (GPU-resident, much faster).
+"""
 import argparse
+import math
 import os
 import random
 import shutil
 import time
 import warnings
-import math
-import numpy as np
-from sklearn.metrics import precision_score, recall_score, f1_score, confusion_matrix
 
+import numpy as np
 import torch
-import torch.nn as nn
-import torch.nn.parallel
 import torch.backends.cudnn as cudnn
-import torch.distributed as dist
+import torch.nn as nn
 import torch.optim
-import torch.multiprocessing as mp
-import torch.utils.data
-import torch.utils.data.distributed
-import torchvision.transforms as transforms
-import torchvision.datasets as datasets
-import torchvision.models as models
-import torch.nn.functional as F
 
 from datasets import dataset
-from networks import nets
+from lt import losses as L
+from lt.classes import ShotGroups
+from lt.metrics import evaluate_predictions
 from networks.backbones import BACKBONES
 from networks.ltic import LTICNet
 from utils import feature_cache
 
-
-
-model_names = sorted(name for name in models.__dict__
-    if name.islower() and not name.startswith("__")
-    and callable(models.__dict__[name]))
-
-model_names += ['clip_VIT']
-
-parser = argparse.ArgumentParser(description='PyTorch ImageNet Training')
-parser.add_argument('-dataset', type=str,
-                    help='path to dataset')
-parser.add_argument('-a', '--arch', metavar='ARCH', default='ResNeXt152',
-                    choices=model_names,
-                    help='model architecture: ' +
-                        ' | '.join(model_names) +
-                        ' (default: resnet18)')
-parser.add_argument('-j', '--workers', default=32, type=int, metavar='N',
-                    help='number of data loading workers (default: 4)')
-parser.add_argument('--epochs', default=90, type=int, metavar='N',
-                    help='number of total epochs to run')
-parser.add_argument('--start-epoch', default=0, type=int, metavar='N',
-                    help='manual epoch number (useful on restarts)')
-parser.add_argument('-b', '--batch-size', default=None, type=int,
-                    metavar='N',
-                    help='mini-batch size (default: 256), this is the total '
-                         'batch size of all GPUs on the current node when '
-                         'using Data Parallel or Distributed Data Parallel')
-parser.add_argument('--lr', '--learning-rate', default=0.2, type=float,
-                    metavar='LR', help='initial learning rate', dest='lr')
-parser.add_argument('--momentum', default=0.9, type=float, metavar='M',
-                    help='momentum')
-parser.add_argument('--wd', '--weight-decay', default=1e-4, type=float,
-                    metavar='W', help='weight decay (default: 1e-4)',
-                    dest='weight_decay')
-parser.add_argument('-p', '--print-freq', default=10, type=int,
-                    metavar='N', help='print frequency (default: 10)')
+parser = argparse.ArgumentParser(description='LTIC head on a frozen encoder')
+parser.add_argument('-dataset', required=True, type=str, help='dataset class in datasets/dataset.py')
+parser.add_argument('-a', '--arch', default='clip_VIT', help='ignored; kept so old scripts still parse')
+parser.add_argument('--epochs', default=90, type=int, metavar='N')
+parser.add_argument('--start-epoch', default=0, type=int, metavar='N')
+parser.add_argument('-b', '--batch-size', default=256, type=int, metavar='N')
+parser.add_argument('--lr', '--learning-rate', default=0.1, type=float, metavar='LR', dest='lr')
+parser.add_argument('--momentum', default=0.9, type=float, metavar='M')
+parser.add_argument('--wd', '--weight-decay', default=1e-4, type=float, metavar='W', dest='weight_decay')
+parser.add_argument('-p', '--print-freq', default=10, type=int, metavar='N')
 parser.add_argument('--resume', default='', type=str, metavar='PATH',
-                    help='path to latest checkpoint (default: none)')
-parser.add_argument('-e', '--evaluate', dest='evaluate', action='store_true',
-                    help='evaluate model on validation set')
-parser.add_argument('--pretrained', dest='pretrained', action='store_true',
-                    help='use pre-trained model')
-parser.add_argument('--world-size', default=-1, type=int,
-                    help='number of nodes for distributed training')
-parser.add_argument('--rank', default=-1, type=int,
-                    help='node rank for distributed training')
-parser.add_argument('--dist-url', default='tcp://224.66.41.62:23456', type=str,
-                    help='url used to set up distributed training')
-parser.add_argument('--dist-backend', default='nccl', type=str,
-                    help='distributed backend')
-parser.add_argument('--seed', default=None, type=int,
-                    help='seed for initializing training. ')
-parser.add_argument('--gpu', default=None, type=int,
-                    help='GPU id to use.')
-parser.add_argument('--multiprocessing-distributed', action='store_true',
-                    help='Use multi-processing distributed training to launch '
-                         'N processes per node, which has N GPUs. This is the '
-                         'fastest way to use PyTorch for either single node or '
-                         'multi node data parallel training')
+                    help='checkpoint to resume from (default: <root_path>/<dataset>/<mark>/checkpoint.pth.tar '
+                         'when training, model_best.pth.tar with --evaluate)')
+parser.add_argument('-e', '--evaluate', dest='evaluate', action='store_true')
+parser.add_argument('--seed', default=0, type=int)
+parser.add_argument('--gpu', default=None, type=int, help='GPU id to use')
 
-
-# ResLT
+# LTIC
 parser.add_argument('--data_path', default=None, type=str)
 parser.add_argument('--root_path', default="./data", type=str)
-parser.add_argument('--mark', default=None, type=str)
-parser.add_argument('--num_works', default=32, type=int)
-parser.add_argument('--beta', default=None, type=float)
+parser.add_argument('--mark', required=True, type=str, help='run name (folder under root_path/dataset)')
+parser.add_argument('--num_works', default=8, type=int)
+parser.add_argument('--alpha', default=0.85, type=float, help='weight of the branch loss (paper alpha)')
+parser.add_argument('--branches', default=3, type=int, choices=[2, 3],
+                    help='3 = C0 (H + M + T); 2 = the IJCNN code (H + M)')
 parser.add_argument('--num_classes', default=None, type=int,
                     help='default: the dataset class count (herbarium 15505, plantnet 1081)')
-parser.add_argument('--after_1x1conv', action='store_true')
-parser.add_argument('--gamma', default=0.3, type=float)
+parser.add_argument('--gamma', default=0.0, type=float, help='test-time weight normalization (0 = off)')
+parser.add_argument('--select_metric', default='macro_f1', choices=['macro_f1', 'top1'])
 
 # Feature extractor
 parser.add_argument('--backbone', default='bioclip2', choices=sorted(BACKBONES),
@@ -106,13 +71,14 @@ parser.add_argument('--backbone', default='bioclip2', choices=sorted(BACKBONES),
 parser.add_argument('--dataset_norm', action='store_true',
                     help='normalize with the dataset mean/std instead of the encoder one (original setup)')
 parser.add_argument('--train_txt', default=None, type=str, help='default: <data_path>/<dataset train file>')
-parser.add_argument('--val_txt', default=None, type=str, help='default: <data_path>/<dataset val file>')
+parser.add_argument('--val_txt', default=None, type=str,
+                    help='default: <data_path>/<dataset val file>; pass V-tune while training')
 
-# Many/medium/few-shot class cuts; labels are sorted by train count, rarest first
-parser.add_argument('--many_thr', default=100, type=int, help='many-shot: more train images than this')
-parser.add_argument('--few_thr', default=20, type=int, help='few-shot: fewer train images than this')
-parser.add_argument('--few_end', default=None, type=int, help='override: first label that is not few-shot')
-parser.add_argument('--many_start', default=None, type=int, help='override: first many-shot label')
+# Shot groups (labels are sorted by train count, rarest first)
+parser.add_argument('--many_thr', default=None, type=int, help='many-shot: more train images than this')
+parser.add_argument('--few_thr', default=None, type=int, help='few-shot: fewer train images than this')
+parser.add_argument('--few_end', default=None, type=int, help='IJCNN reproduction only: first non-few label')
+parser.add_argument('--many_start', default=None, type=int, help='IJCNN reproduction only: first many-shot label')
 parser.add_argument('--reslt_split', default=None, type=int,
                     help='labels below this train the M branch (default: many_start)')
 
@@ -120,374 +86,210 @@ parser.add_argument('--reslt_split', default=None, type=int,
 parser.add_argument('--cache_features', action='store_true',
                     help='extract frozen encoder features once, then train the head on them')
 parser.add_argument('--cache_dir', default='./feat_cache', type=str)
-parser.add_argument('--cache_views', default=5, type=int, help='augmented views cached per train image')
+parser.add_argument('--cache_views', default=1, type=int, help='augmented views per train image (1 except A12)')
+parser.add_argument('--feature_dir', default=None, type=str,
+                    help='chunked features from tools/extract_features.py (uses --train_split/--val_split)')
+parser.add_argument('--train_split', default='train', type=str)
+parser.add_argument('--val_split', default='vtune', type=str)
 
-best_acc1 = 0
+best_score = -math.inf
 args = parser.parse_args()
 args.num_classes = args.num_classes or getattr(dataset, args.dataset).num_classes
 args.root_model = f'{args.root_path}/{args.dataset}/{args.mark}'
 os.makedirs(args.root_model, exist_ok=True)
 
-def crossEntropy(softmax, logit, label, weight, num_classes):
-    target = F.one_hot(label, num_classes=num_classes)
-    loss = - (weight * (target * torch.log(softmax(logit)+1e-7)).sum(dim=1)).sum()
-    return loss
 
-def set_shot_splits(cls_num_list_sorted, args):
-    counts = np.asarray(cls_num_list_sorted)
-    if args.few_end is None:
-        args.few_end = int((counts < args.few_thr).sum())
-    if args.many_start is None:
-        args.many_start = int((counts <= args.many_thr).sum())
-    if args.reslt_split is None:
-        args.reslt_split = args.many_start
-    message = ('=> backbone {} | classes {} | few [0, {}) medium [{}, {}) many [{}, {}) | ResLT M branch [0, {})'
-               .format(args.backbone, len(counts), args.few_end, args.few_end, args.many_start,
-                       args.many_start, len(counts), args.reslt_split))
-    empty = int((counts == 0).sum())
-    if empty:
-        message += '\n=> warning: {} of {} classes have no train images (check --num_classes)'.format(empty, len(counts))
+def log(message):
     print(message)
     with open(args.root_model + "/train.log", "a+") as f:
         f.write(message + "\n")
 
+
+def set_shot_splits(cls_num_list_sorted, args):
+    counts = np.asarray(cls_num_list_sorted)
+    if args.few_end is not None or args.many_start is not None:
+        if args.few_end is None or args.many_start is None:
+            raise SystemExit('pass both --few_end and --many_start, or neither')
+        warnings.warn('explicit --few_end/--many_start: IJCNN reproduction only, no R1 checks')
+        groups = ShotGroups.from_bounds(len(counts), args.few_end, args.many_start)
+    else:
+        if args.few_thr is None or args.many_thr is None:
+            raise SystemExit('pass --few_thr and --many_thr explicitly (plan 3.1; H22: 20 / 50, '
+                             'Pl@ntNet and iNat: 20 / 100)')
+        groups = ShotGroups(counts, args.few_thr, args.many_thr)     # R1 asserts
+        args.few_end, args.many_start = groups.few_end, groups.many_start
+    if args.reslt_split is None:
+        args.reslt_split = args.many_start
+    log('=> backbone {} | {} classes | {} | {} branches, M branch on labels < {}'.format(
+        args.backbone, len(counts), groups.describe() if groups.few_thr is not None else
+        'few [0, {}) medium [{}, {}) many [{}, {})'.format(args.few_end, args.few_end, args.many_start,
+                                                         args.many_start, len(counts)),
+        args.branches, args.reslt_split))
+    empty = int((counts == 0).sum())
+    if empty:
+        log('=> warning: {} of {} classes have no train images; they sit at labels 0..{} inside the tail '
+            'branch (renumber the labels, plan §3.1)'.format(empty, len(counts), empty - 1))
+    return groups
+
+
 def head_state_dict(model):
     # The frozen encoder is rebuilt from its pretrained weights, so only the head is saved.
-    # Keys carry no 'module.' prefix, so single-GPU and DataParallel runs share checkpoints.
-    return {k: v for k, v in getattr(model, 'module', model).state_dict().items()
-            if not k.startswith('encoder.')}
+    return {k: v for k, v in model.state_dict().items() if not k.startswith('encoder.')}
+
+
+def seed_everything(seed):
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
+
 
 def main():
+    global best_score
+    seed_everything(args.seed)
+    args.device = torch.device('cuda', args.gpu) if args.gpu is not None else \
+        torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-    if args.seed is not None:
-        random.seed(args.seed)
-        torch.manual_seed(args.seed)
-        cudnn.deterministic = True
-        warnings.warn('You have chosen to seed training. '
-                      'This will turn on the CUDNN deterministic setting, '
-                      'which can slow down your training considerably! '
-                      'You may see unexpected behavior when restarting '
-                      'from checkpoints.')
-
-    if args.gpu is not None:
-        warnings.warn('You have chosen a specific GPU. This will completely '
-                      'disable data parallelism.')
-
-    if args.dist_url == "env://" and args.world_size == -1:
-        args.world_size = int(os.environ["WORLD_SIZE"])
-
-    args.distributed = args.world_size > 1 or args.multiprocessing_distributed
-
-    ngpus_per_node = torch.cuda.device_count()
-    if args.multiprocessing_distributed:
-        # Since we have ngpus_per_node processes per node, the total world_size
-        # needs to be adjusted accordingly
-        args.world_size = ngpus_per_node * args.world_size
-        # Use torch.multiprocessing.spawn to launch distributed processes: the
-        # main_worker process function
-        mp.spawn(main_worker, nprocs=ngpus_per_node, args=(ngpus_per_node, args))
-    else:
-        # Simply call main_worker function
-        main_worker(args.gpu, ngpus_per_node, args)
-
-
-def main_worker(gpu, ngpus_per_node, args):
-    global best_acc1
-    args.gpu = gpu
-
-    if args.gpu is not None:
-        print("Use GPU: {} for training".format(args.gpu))
-
-    if args.distributed:
-        if args.dist_url == "env://" and args.rank == -1:
-            args.rank = int(os.environ["RANK"])
-        if args.multiprocessing_distributed:
-            # For multiprocessing distributed training, rank needs to be the
-            # global rank among all the processes
-            args.rank = args.rank * ngpus_per_node + gpu
-        dist.init_process_group(backend=args.dist_backend, init_method=args.dist_url,
-                                world_size=args.world_size, rank=args.rank)
-    # create model
-    if args.pretrained:
-        print("=> using pre-trained model '{}'".format(args.arch))
-        model = models.__dict__[args.arch](pretrained=True)
-    else:
-        print("=> creating model '{}' with backbone '{}'".format(args.arch, args.backbone))
-        model = LTICNet(num_classes=args.num_classes, backbone=args.backbone, gamma=args.gamma)
+    log("=> creating LTIC head on backbone '{}'".format(args.backbone))
+    model = LTICNet(num_classes=args.num_classes, backbone=args.backbone, gamma=args.gamma)
     encoder = model.encoder
-    if args.gpu is not None:
-        args.device = torch.device('cuda', args.gpu)
-    else:
-        args.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    if args.distributed:
-        # For multiprocessing distributed, DistributedDataParallel constructor
-        # should always set the single device scope, otherwise,
-        # DistributedDataParallel will use all available devices.
-        if args.gpu is not None:
-            torch.cuda.set_device(args.gpu)
-            model.cuda(args.gpu)
-            # When using a single GPU per process and per
-            # DistributedDataParallel, we need to divide the batch size
-            # ourselves based on the total number of GPUs we have
-            args.batch_size = int(args.batch_size / ngpus_per_node)
-            args.workers = int((args.workers + ngpus_per_node - 1) / ngpus_per_node)
-            model = torch.nn.parallel.DistributedDataParallel(model, device_ids=[args.gpu])
-        else:
-            model.cuda()
-            # DistributedDataParallel will divide and allocate batch_size to all
-            # available GPUs if device_ids are not set
-            model = torch.nn.parallel.DistributedDataParallel(model)
-    elif args.gpu is not None:
-        torch.cuda.set_device(args.gpu)
-        model = model.cuda(args.gpu)
-    else:
-        # DataParallel will divide and allocate batch_size to all available GPUs
-        if args.arch.startswith('alexnet') or args.arch.startswith('vgg'):
-            model.features = torch.nn.DataParallel(model.features)
-            model.cuda()
-        elif args.cache_features:
-            # Only the small head trains on cached features: DataParallel would copy the whole
-            # frozen encoder to every GPU at every step. Feature extraction still uses all GPUs.
-            model = model.to(args.device)
-        else:
-            model = torch.nn.DataParallel(model).to(args.device)
-            filename = args.mark+'_checkpoint.pth.tar'
-            if os.path.exists(filename):
-                args.resume = filename
+    if not (args.cache_features or args.feature_dir) and torch.cuda.device_count() > 1 and args.gpu is None:
+        # Online training only: DataParallel copies the frozen encoder to every GPU
+        model.encoder = nn.DataParallel(model.encoder)
+    model = model.to(args.device)
 
-    # define loss function (criterion) and optimizer
-    criterion = nn.CrossEntropyLoss().to(args.device)
+    optimizer = torch.optim.SGD(model.parameters(), args.lr, momentum=args.momentum, weight_decay=args.weight_decay)
 
-    optimizer = torch.optim.SGD(model.parameters(), args.lr,
-                                momentum=args.momentum,
-                                weight_decay=args.weight_decay)
+    # Data first: the class order is needed to check a checkpoint
+    mean, std = (None, None) if args.dataset_norm else (encoder.mean, encoder.std)
+    data = getattr(dataset, args.dataset)(root=args.data_path, batch_size=args.batch_size, num_works=args.num_works,
+                                          train_txt=args.train_txt, val_txt=args.val_txt,
+                                          num_classes=args.num_classes, mean=mean, std=std)
+    groups = set_shot_splits(data.cls_num_list_sorted, args)
+    class_map = [int(i) for i in data.trainset.class_map]
+    # Saved with every checkpoint: class_map[split-file label] = output index (rarest first)
+    model_meta = {'num_classes': args.num_classes, 'gamma': args.gamma, 'dataset_norm': args.dataset_norm,
+                  'mean': [float(m) for m in (mean or data.mean)], 'std': [float(s) for s in (std or data.std)],
+                  'class_map': class_map, 'few_end': args.few_end, 'many_start': args.many_start,
+                  'reslt_split': args.reslt_split, 'branches': args.branches, 'alpha': args.alpha,
+                  'backbone': args.backbone}
 
-    # optionally resume from a checkpoint
-    if args.resume:
-        if os.path.isfile(args.resume):
-            print("=> loading checkpoint '{}'".format(args.resume))
-            # Map model to be loaded to the current device (a specific gpu, or cpu).
-            checkpoint = torch.load(args.resume, map_location=args.device)
+    resume = args.resume or os.path.join(args.root_model, 'model_best.pth.tar' if args.evaluate else 'checkpoint.pth.tar')
+    if os.path.isfile(resume):
+        log("=> loading checkpoint '{}'".format(resume))
+        checkpoint = torch.load(resume, map_location=args.device)
+        if checkpoint.get('class_map') is not None and checkpoint['class_map'] != class_map:
+            raise SystemExit('=> the checkpoint was trained with a different class order (class_map differs)')
+        if checkpoint.get('backbone', args.backbone) != args.backbone:
+            raise SystemExit('=> the checkpoint used backbone {}'.format(checkpoint['backbone']))
+        missing, unexpected = model.load_state_dict(checkpoint['state_dict'], strict=False)
+        missing = [k for k in missing if not k.startswith('encoder.')]
+        if missing or unexpected:
+            raise SystemExit("=> checkpoint does not match the model: missing {} unexpected {}".format(missing, unexpected))
+        if not args.evaluate:
             args.start_epoch = checkpoint['epoch']
-            best_acc1 = checkpoint['best_acc1']
-            if args.gpu is not None:
-                # best_acc1 may be from a checkpoint from a different GPU
-                best_acc1 = best_acc1.to(args.gpu)
-            # Checkpoints hold the head only; the frozen encoder keeps its pretrained weights
-            state_dict = {k[len('module.'):] if k.startswith('module.') else k: v
-                          for k, v in checkpoint['state_dict'].items()}
-            missing, unexpected = getattr(model, 'module', model).load_state_dict(state_dict, strict=False)
-            missing = [k for k in missing if not k.startswith('encoder.')]
-            if missing or unexpected:
-                raise RuntimeError("checkpoint does not match the model: missing {} unexpected {}".format(
-                    missing, unexpected))
+            best_score = checkpoint.get('best_score', -math.inf)
             optimizer.load_state_dict(checkpoint['optimizer'])
-            print("=> loaded checkpoint '{}' (epoch {})"
-                  .format(args.resume, checkpoint['epoch']))
-        else:
-            print("=> no checkpoint found at '{}'".format(args.resume))
-            if args.evaluate:
-                raise SystemExit("=> nothing to evaluate: train first or fix --resume")
+        log("=> loaded checkpoint '{}' (epoch {})".format(resume, checkpoint['epoch']))
+    elif args.evaluate:
+        raise SystemExit("=> nothing to evaluate: no checkpoint at '{}' (train first or pass --resume)".format(resume))
+    elif args.resume:
+        raise SystemExit("=> no checkpoint found at '{}'".format(args.resume))
 
     cudnn.benchmark = True
 
-    # Data loading code
-    mean, std = (None, None) if args.dataset_norm else (encoder.mean, encoder.std)
-    data=getattr(dataset,args.dataset)(root=args.data_path, batch_size=args.batch_size, num_works=args.num_works,
-                                       train_txt=args.train_txt, val_txt=args.val_txt,
-                                       num_classes=args.num_classes, mean=mean, std=std)
-    set_shot_splits(data.cls_num_list_sorted, args)
-    # Saved with every checkpoint so the head can be rebuilt and its outputs named without the
-    # training data. Outputs are ordered rarest class first: class_map[split-file label] = output index.
-    model_meta = {
-        'num_classes': args.num_classes,
-        'gamma': args.gamma,
-        'dataset_norm': args.dataset_norm,
-        'mean': [float(m) for m in (mean or data.mean)],
-        'std': [float(s) for s in (std or data.std)],
-        'class_map': [int(i) for i in data.trainset.class_map],
-        'few_end': args.few_end,
-        'many_start': args.many_start,
-        'reslt_split': args.reslt_split,
-    }
-    if args.cache_features:
+    if args.feature_dir:
+        train_loader, val_loader = feature_cache.build_chunked_loaders(data, args)
+    elif args.cache_features:
         train_loader, val_loader = feature_cache.build_cached_loaders(encoder, data, args)
     else:
-        train_loader=data.train
-        val_loader=data.test
+        train_loader, val_loader = data.train, data.test
+
+    masks = L.branch_masks_for(args.num_classes, args.few_end, args.reslt_split, args.branches, args.device)
 
     if args.evaluate:
-        validate(val_loader, model, criterion, args)
+        validate(val_loader, model, groups, args)
         return
 
     for epoch in range(args.start_epoch, args.epochs):
-        if args.distributed:
-            train_sampler.set_epoch(epoch)
         adjust_learning_rate(optimizer, epoch, args)
-
-        # train for one epoch
-        train(train_loader, model, criterion, optimizer, epoch, args)
-
-        # evaluate on validation set
-        acc1 = validate(val_loader, model, criterion, args)
-
-        # remember best acc@1 and save checkpoint
-        is_best = acc1 > best_acc1
-        best_acc1 = max(acc1, best_acc1)
-
-        if not args.multiprocessing_distributed or (args.multiprocessing_distributed
-                and args.rank % ngpus_per_node == 0):
-            save_checkpoint({
-                'epoch': epoch + 1,
-                'arch': args.arch,
-                'backbone': args.backbone,
-                'state_dict': head_state_dict(model),
-                'best_acc1': best_acc1,
-                'optimizer' : optimizer.state_dict(),
-                **model_meta,
-            }, is_best)
+        train(train_loader, model, masks, optimizer, epoch, args)
+        metrics = validate(val_loader, model, groups, args)
+        score = metrics[args.select_metric]
+        is_best = score > best_score
+        best_score = max(score, best_score)
+        save_checkpoint({'epoch': epoch + 1, 'state_dict': head_state_dict(model), 'best_score': best_score,
+                         'select_metric': args.select_metric, 'optimizer': optimizer.state_dict(), **model_meta},
+                        is_best)
 
 
-def train(train_loader, model, criterion, optimizer, epoch, args):
+def fuse(branch_logits, args):
+    return sum(branch_logits[:args.branches])
+
+
+def train(train_loader, model, masks, optimizer, epoch, args):
     batch_time = AverageMeter('Time', ':6.3f')
     data_time = AverageMeter('Data', ':6.3f')
     F_losses = AverageMeter('F_Loss', ':.4e')
     I_losses = AverageMeter('I_Loss', ':.4e')
-
     top1 = AverageMeter('Acc@1', ':6.2f')
-    top5 = AverageMeter('Acc@5', ':6.2f')
-    progress = ProgressMeter(
-        len(train_loader),
-        [batch_time, data_time, F_losses, I_losses, top1, top5],
-        prefix="Epoch: [{}]".format(epoch))
-
-    
-    # switch to train mode
+    progress = ProgressMeter(len(train_loader), [batch_time, data_time, F_losses, I_losses, top1],
+                             prefix="Epoch: [{}]".format(epoch))
     model.train()
-    softmax = nn.Softmax(dim=1)
     end = time.time()
     for i, (images, target) in enumerate(train_loader):
-        # measure data loading time
         data_time.update(time.time() - end)
-
         images = images.to(args.device, non_blocking=True)
-
         target = target.to(args.device, non_blocking=True)
 
-        # compute output
-        bt = images.size(0)
-        logitH, logitM, _ = model(images)
+        branches = list(model(images))[:args.branches]
+        loss, F_loss, I_loss = L.ltic_loss(branches, target, masks, args.alpha)
+        logit = sum(branches)
 
-        ######## ResLT
-        labelH=F.one_hot(target, num_classes=args.num_classes).sum(dim=1)
-        labelM=F.one_hot(target, num_classes=args.num_classes)[:,:args.reslt_split].sum(dim=1)
-        I_loss=(crossEntropy(softmax, logitH, target, labelH, args.num_classes) + crossEntropy(softmax, logitM, target, labelM, args.num_classes)) / (labelH.sum() + labelM.sum()) 
-    
-        logit = logitH + logitM
-        F_loss = criterion(logit, target)
-       
-        loss= (1-args.beta) * F_loss + args.beta * I_loss
-        # measure accuracy and record loss
-        acc1, acc5 = accuracy(logit, target, topk=(1, 5))
-        F_losses.update(F_loss.detach().item(), images.size(0))
-        I_losses.update(I_loss.detach().item(), images.size(0))
-        top1.update(acc1[0], images.size(0))
-        top5.update(acc5[0], images.size(0))
+        n = images.size(0)
+        F_losses.update(F_loss.item(), n)
+        I_losses.update(I_loss.item(), n)
+        top1.update((logit.argmax(1) == target).float().mean().item() * 100, n)
 
-        # compute gradient and do SGD step
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
 
-        # measure elapsed time
         batch_time.update(time.time() - end)
         end = time.time()
-
         if i % args.print_freq == 0:
             progress.display(i)
 
 
-def validate(val_loader, model, criterion, args):
-    batch_time = AverageMeter('Time', ':6.3f')
-    losses = AverageMeter('Loss', ':.4e')
-    top1 = AverageMeter('All_Acc@1', ':6.2f')
-    top5 = AverageMeter('All_Acc@5', ':6.2f')
-
-    progress = ProgressMeter(
-        len(val_loader),
-        [batch_time, losses, top1, top5],
-        prefix='Test: ')
-
-    # switch to evaluate mode
+def validate(val_loader, model, groups, args):
     model.eval()
-    class_num = torch.zeros(args.num_classes).to(args.device)
-    correct = torch.zeros(args.num_classes).to(args.device)
-
-    all_targets = []
-    all_predictions = []
-
+    targets, preds, top5_hits = [], [], []
     with torch.no_grad():
-        end = time.time()
-        for i, (images, target) in enumerate(val_loader):
+        for images, target in val_loader:
             images = images.to(args.device, non_blocking=True)
             target = target.to(args.device, non_blocking=True)
-
-            # compute output
-            logitH, logitM, _ = model(images)
-            output = logitH + logitM
-            loss = criterion(output, target)
-
-            # store targets and predictions for metrics calculation
-            all_targets.extend(target.cpu().numpy())
-            _, predicted = output.max(1)
-            all_predictions.extend(predicted.cpu().numpy())
-
-            # measure accuracy and record loss
-            acc1, acc5 = accuracy(output, target, topk=(1, 5))
-            losses.update(loss.item(), images.size(0))
-            top1.update(acc1[0], images.size(0))
-            top5.update(acc5[0], images.size(0))
-
-            # measure elapsed time
-            batch_time.update(time.time() - end)
-            end = time.time()
-
-            target_one_hot = F.one_hot(target, args.num_classes)
-            predict_one_hot = F.one_hot(predicted, args.num_classes)
-            class_num = class_num + target_one_hot.sum(dim=0).to(torch.float)
-            correct = correct + (target_one_hot + predict_one_hot == 2).sum(dim=0).to(torch.float)
-
-            if i % args.print_freq == 0:
-                progress.display(i)
-
-        # Calculate additional metrics
-        precision = precision_score(all_targets, all_predictions, average='weighted', zero_division=1)
-        recall = recall_score(all_targets, all_predictions, average='weighted', zero_division=1)
-        f1 = f1_score(all_targets, all_predictions, average='weighted')
-        cm = confusion_matrix(all_targets, all_predictions)
-
-        print(f'Precision: {precision:.4f}, Recall: {recall:.4f}, F1 Score: {f1:.4f}')
-        print(f'Confusion Matrix:\n{cm}')
-        with open(args.root_model + "/train.log", "a+") as f:
-            f.write(f'Precision: {precision:.4f}, Recall: {recall:.4f}, F1 Score: {f1:.4f}\n')
-            f.write(f'Confusion Matrix:\n{cm}\n')
-        # NaN for classes without validation images; nanmean skips them
-        acc_classes = correct / class_num
-        head_acc = acc_classes[args.many_start:].nanmean()
-        medium_acc = acc_classes[args.few_end:args.many_start].nanmean()
-        tail_acc = acc_classes[:args.few_end].nanmean()
-        macro_acc = acc_classes.nanmean()
-        summary = (' * Acc@1 {top1.avg:.3f} Acc@5 {top5.avg:.3f} HAcc {head_acc:.3f} MAcc {medium_acc:.3f} TAcc {tail_acc:.3f} MacroAcc {macro_acc:.3f} \n').format(
-                top1=top1, top5=top5, head_acc=head_acc, medium_acc=medium_acc, tail_acc=tail_acc, macro_acc=macro_acc)
-        print(summary, end='')
-        open(args.root_model + "/train.log", "a+").write(summary)
-    return top1.avg
+            output = fuse(model(images), args)
+            k = min(5, output.size(1))
+            top5 = output.topk(k, 1).indices
+            targets.append(target.cpu())
+            preds.append(top5[:, 0].cpu())
+            top5_hits.append((top5 == target.view(-1, 1)).any(1).cpu())
+    y = torch.cat(targets).numpy()
+    pred = torch.cat(preds).numpy()
+    top5 = torch.cat(top5_hits).float().mean().item()
+    m = evaluate_predictions(y, pred, args.num_classes, groups, top5)
+    log((' * Acc@1 {top1:.4f} Acc@5 {top5:.4f} MacroF1 {macro_f1:.4f} MacroAcc {macro_acc:.4f} '
+         'WorstClass {worst_class_acc:.4f} | HAcc {many_acc:.4f} MAcc {medium_acc:.4f} TAcc {few_acc:.4f} '
+         '(pooled TAcc {few_acc_pooled:.4f}) | appendix: weighted P {weighted_precision_appendix:.4f} '
+         'R {weighted_recall_appendix:.4f}').format(**m))
+    return m
 
 
-def save_checkpoint(state, is_best, filename=args.root_model+'/checkpoint.pth.tar'):
+def save_checkpoint(state, is_best):
+    filename = args.root_model + '/checkpoint.pth.tar'
     torch.save(state, filename)
     if is_best:
-        shutil.copyfile(filename, args.root_model+'/model_best.pth.tar')
+        shutil.copyfile(filename, args.root_model + '/model_best.pth.tar')
 
 
 class AverageMeter(object):
@@ -523,10 +325,7 @@ class ProgressMeter(object):
     def display(self, batch):
         entries = [self.prefix + self.batch_fmtstr.format(batch)]
         entries += [str(meter) for meter in self.meters]
-        message = '\t'.join(entries)
-        print(message)  # Print to console
-        with open(args.root_model+"/train.log", "a+") as f:
-            f.write(message + "\n")  # Write to log file
+        log('\t'.join(entries))
 
     def _get_batch_fmtstr(self, num_batches):
         num_digits = len(str(num_batches // 1))
@@ -535,30 +334,10 @@ class ProgressMeter(object):
 
 
 def adjust_learning_rate(optimizer, epoch, args):
-    """Sets the learning rate to the initial LR decayed by 10 every 30 epochs"""
-    lr_min = 0
-    lr_max = args.lr
-    lr= lr_min + 0.5 * (lr_max - lr_min) * (1 + math.cos( epoch / args.epochs * 3.1415926))
-
+    """Cosine schedule over epochs."""
+    lr = 0.5 * args.lr * (1 + math.cos(epoch / args.epochs * math.pi))
     for param_group in optimizer.param_groups:
         param_group['lr'] = lr
-
-
-def accuracy(output, target, topk=(1,)):
-    """Computes the accuracy over the k top predictions for the specified values of k"""
-    with torch.no_grad():
-        maxk = max(topk)
-        batch_size = target.size(0)
-
-        _, pred = output.topk(maxk, 1, True, True)
-        pred = pred.t()
-        correct = pred.eq(target.view(1, -1).expand_as(pred)).contiguous()
-
-        res = []
-        for k in topk:
-            correct_k = correct[:k].view(-1).float().sum(0, keepdim=True)
-            res.append(correct_k.mul_(100.0 / batch_size))
-        return res
 
 
 if __name__ == '__main__':

@@ -7,10 +7,10 @@ SPLITS=${SPLITS:-$DATA}
 BACKBONE=${BACKBONE:-bioclip2}
 WORKERS=${WORKERS:-16}
 BATCH=${BATCH:-256}
+GAMMA=${GAMMA:-0.0}
 RUNS=${RUNS:-./data}
 
 python CLIP_VIT_LONGTAIL.py \
-  --arch clip_VIT \
   --backbone $BACKBONE \
   --mark plantnet_${BACKBONE}_bt${BATCH}_test \
   -dataset plantnetDataset \
@@ -22,7 +22,8 @@ python CLIP_VIT_LONGTAIL.py \
   -b $BATCH \
   --num_works $WORKERS \
   -p 100 \
-  --beta 0.85 \
-  --gamma 0.3 \
+  --gamma $GAMMA \
+  --few_thr 20 \
+  --many_thr 100 \
   --num_classes 1081 \
   --evaluate

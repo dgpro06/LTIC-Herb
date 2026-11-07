@@ -1,0 +1,9 @@
+{
+ "_note": "Plan v9.1 §8.1 defaults. Agree and commit these BEFORE computing any diagnostic; the git log is the record.",
+ "donor_median_ratio_min": 3.0,
+ "cross_genus_share_min": 0.30,
+ "genus_correct_share_min": 0.50,
+ "c2_p_value_max": 0.05,
+ "a9_max_gain_retained": 0.50,
+ "vselect_min_tail_images": 500
+}

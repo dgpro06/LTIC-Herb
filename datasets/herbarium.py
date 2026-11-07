@@ -25,7 +25,9 @@ class LT_Dataset(Dataset):
             self.class_data[y].append(i)
 
         self.cls_num_list=[len(self.class_data[i]) for i in range(self.num_classes)]
-        sorted_classes=np.argsort(self.cls_num_list)
+        # Labels sorted ascending by count (rarest = 0); LTIC's masks rely on it (plan §3.1, R1).
+        # kind='stable' so tied classes get the same index on every machine.
+        sorted_classes=np.argsort(self.cls_num_list, kind='stable')
         self.class_map=[0 for i in range(self.num_classes)]
         for i in range(self.num_classes):
             self.class_map[sorted_classes[i]] = i 
@@ -78,8 +80,10 @@ class herbariumDataset(object):
     mean = [0.466, 0.471, 0.380]
     std = [0.195, 0.194, 0.192]
 
-    def __init__(self, batch_size=32, root="/media/intisar/dataset1/visual_categorization/herbarium-2022-fgvc9/", class_balance=False, num_works=12,
+    def __init__(self, batch_size=32, root=None, class_balance=False, num_works=12,
                  train_txt=None, val_txt=None, num_classes=None, mean=None, std=None):
+        if root is None:
+            raise ValueError('pass --data_path (the image root that split-file paths are relative to)')
         # mean/std default to the dataset statistics; pass the encoder's to match its pretraining
         normalize = transforms.Normalize(mean=mean or self.mean, std=std or self.std)
         self.num_classes = num_classes or self.num_classes

@@ -1,3 +1,6 @@
 __pycache__/
 data/
 feat_cache/
+feats/
+results/preds/
+*.pt.tmp

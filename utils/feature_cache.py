@@ -1,10 +1,19 @@
-"""Precompute frozen-encoder features once and train the LTIC head on them (--cache_features)."""
+"""Train the LTIC head on frozen-encoder features instead of images.
+
+Two sources:
+  * build_chunked_loaders  (--feature_dir): chunked fp16 features from tools/extract_features.py.
+    Preferred: resumable, original labels stored, renumbered here with the run's class_map.
+  * build_cached_loaders   (--cache_features): the older single-file cache, extracted in this process
+    and kept in RAM. Fine for Pl@ntNet at --cache_views 1 (plan §16 fallback).
+"""
 import os
 import random
 
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader, Dataset, TensorDataset
+
+from lt.features import load_cached_views
 
 
 class CachedViews(Dataset):
@@ -39,20 +48,35 @@ def _cache_path(args, txt, suffix=''):
     return os.path.join(args.cache_dir, '{}_{}{}_{}{}.pt'.format(args.dataset, args.backbone, norm, split, suffix))
 
 
-def _load_or_extract(path, make):
+def _load_or_extract(path, make, class_map):
     if os.path.isfile(path):
         print("=> loading cached features '{}'".format(path))
-        return torch.load(path)
+        cache = torch.load(path)
+        # Labels in this cache are already remapped; refuse a cache built with another class order
+        if 'class_map' not in cache or list(cache['class_map']) != list(class_map):
+            raise SystemExit("=> '{}' was built with a different (or unrecorded) class order; delete it "
+                             "or use --feature_dir".format(path))
+        return cache
     cache = make()
+    cache['class_map'] = list(class_map)
     torch.save(cache, path)
     print("=> saved cached features '{}'".format(path))
     return cache
+
+
+def _loaders(train, val, batch_size):
+    train_loader = DataLoader(CachedViews(train['feats'], train['labels']), batch_size=batch_size,
+                              shuffle=True, num_workers=0, drop_last=True)
+    val_loader = DataLoader(TensorDataset(val['feats'], val['labels']), batch_size=batch_size,
+                            shuffle=False, num_workers=0)
+    return train_loader, val_loader
 
 
 def build_cached_loaders(encoder, data, args):
     """Return (train_loader, val_loader) yielding (features, target) instead of (images, target)."""
     os.makedirs(args.cache_dir, exist_ok=True)
     device = next(encoder.parameters()).device
+    class_map = [int(i) for i in data.trainset.class_map]
 
     def make_train():
         # Same augmentations as online training, one full pass per view
@@ -66,11 +90,15 @@ def build_cached_loaders(encoder, data, args):
         feats, labels = extract(encoder, data.test, device, 'val')
         return {'feats': feats, 'labels': labels}
 
-    train = _load_or_extract(_cache_path(args, data.train_txt, '_x{}'.format(args.cache_views)), make_train)
-    val = _load_or_extract(_cache_path(args, data.val_txt), make_val)
+    train = _load_or_extract(_cache_path(args, data.train_txt, '_x{}'.format(args.cache_views)), make_train, class_map)
+    val = _load_or_extract(_cache_path(args, data.val_txt), make_val, class_map)
+    return _loaders(train, val, data.batch_size)
 
-    train_loader = DataLoader(CachedViews(train['feats'], train['labels']), batch_size=data.batch_size,
-                              shuffle=True, num_workers=0, drop_last=True)
-    val_loader = DataLoader(TensorDataset(val['feats'], val['labels']), batch_size=data.batch_size,
-                            shuffle=False, num_workers=0)
-    return train_loader, val_loader
+
+def build_chunked_loaders(data, args):
+    """Loaders over tools/extract_features.py output; labels remapped with this run's class_map."""
+    class_map = data.trainset.class_map
+    train = load_cached_views(args.feature_dir, args.train_split, args.backbone, class_map, views=args.cache_views)
+    val = load_cached_views(args.feature_dir, args.val_split, args.backbone, class_map, views=1)
+    val = {'feats': val['feats'][0], 'labels': val['labels']}
+    return _loaders(train, val, data.batch_size)

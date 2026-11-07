@@ -3,9 +3,9 @@
 # Step-by-step guide: KAGGLE.md.   Usage (in a notebook cell):  !bash kaggle/run_kaggle.sh
 set -eo pipefail
 
-BACKBONE=${BACKBONE:-bioclip2}          # bioclip2 | dinov2_l14 | clip_b32
-EPOCHS=${EPOCHS:-200}
-CACHE_VIEWS=${CACHE_VIEWS:-5}
+BACKBONE=${BACKBONE:-bioclip2}          # bioclip2 | dinov2_b14 | clip_b32 | clip_b16
+EPOCHS=${EPOCHS:-50}
+CACHE_VIEWS=${CACHE_VIEWS:-1}           # 1 except A12 (plan §11.2)
 WORKERS=${WORKERS:-4}                   # Kaggle GPU notebooks have 4 CPU cores
 INPUT=${INPUT:-/kaggle/input}           # attached datasets are mounted here (read-only)
 WORK=${WORK:-/kaggle/working}           # writable, saved as the notebook output
@@ -25,6 +25,8 @@ python -c "import torch, open_clip; print('torch', torch.__version__, '| open_cl
 
 echo "=== STEP 3/5  Writing the Pl@ntNet-300K split files"
 python tools/make_plantnet_splits.py --root "$INPUT" --out "$WORK/splits"
+python tools/make_val_parts.py --train "$WORK/splits/plantnet_train.txt" --val "$WORK/splits/plantnet_val.txt" \
+  --out "$WORK/splits" --prefix plantnet --few_thr 20 --auto_ratios
 
 export DATA="$INPUT" SPLITS="$WORK/splits" RUNS="$WORK/runs" CACHE_DIR="$WORK/feat_cache"
 export BACKBONE EPOCHS CACHE_VIEWS WORKERS
