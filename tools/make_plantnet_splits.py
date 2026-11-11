@@ -38,6 +38,24 @@ def find_dataset(root, max_depth=5):
     return None
 
 
+NAMES_FILE = 'plantnet300K_species_id_2_name.json'
+
+
+def find_names_file(root, dataset_dir, max_depth=4):
+    """The species-name file next to the images, or anywhere below root (image folders are skipped)."""
+    for d in (dataset_dir, os.path.dirname(dataset_dir)):
+        if os.path.isfile(os.path.join(d, NAMES_FILE)):
+            return os.path.join(d, NAMES_FILE)
+    level = [root]
+    for _ in range(max_depth + 1):
+        for d in level:
+            if os.path.isfile(os.path.join(d, NAMES_FILE)):
+                return os.path.join(d, NAMES_FILE)
+        level = [os.path.join(d, c) for d in level for c in sorted(os.listdir(d))
+                 if not c.startswith(('images', '.')) and os.path.isdir(os.path.join(d, c))]
+    return None
+
+
 def list_split(path):
     """{species_id: [image file names]} for <path>/<species_id>/*."""
     files = {}
@@ -52,6 +70,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument('--root', required=True, help='plantnet_300K folder, or a folder above it')
     parser.add_argument('--out', default=None, help='where to write the split files (default: --root)')
+    parser.add_argument('--names', default=None, help='plantnet300K_species_id_2_name.json (default: searched below --root)')
     parser.add_argument('--many_thr', default=100, type=int, help='many-shot: more train images than this')
     parser.add_argument('--few_thr', default=20, type=int, help='few-shot: fewer train images than this')
     args = parser.parse_args()
@@ -86,8 +105,10 @@ def main():
                     n += 1
         print('{}: {} images -> {}'.format(split, n, out))
 
-    names_file = os.path.join(dataset_dir, 'plantnet300K_species_id_2_name.json')
-    names = json.load(open(names_file)) if os.path.isfile(names_file) else {}
+    names_file = args.names or find_names_file(args.root, dataset_dir)
+    names = json.load(open(names_file)) if names_file and os.path.isfile(names_file) else {}
+    print('species names: {}'.format(names_file if names else 'NOT FOUND (taxonomy/plantnet.csv needs them; '
+                                                            'pass --names path/to/' + NAMES_FILE + ')'))
     label_map = {label: {'species_id': s, 'name': names.get(s)} for label, s in enumerate(species)}
     with open(os.path.join(out_dir, 'plantnet_label_map.json'), 'w') as f:
         json.dump(label_map, f, indent=1)

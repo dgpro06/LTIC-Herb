@@ -1,5 +1,7 @@
 # Running LTIC on Pl@ntNet-300K with a Kaggle GPU
 
+> **For the week-1 plan (splits, features, LA probe, gate), use [KAGGLE_WEEK1.md](KAGGLE_WEEK1.md) instead.** This page describes the older single LTIC run.
+
 This guide goes from "code on my PC" to "test results on Kaggle", one click at a time.
 
 **What runs:** LTIC with the BioCLIP 2 encoder on Pl@ntNet-300K (1,081 species). The run:
