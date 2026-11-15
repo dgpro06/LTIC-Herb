@@ -305,3 +305,21 @@ def test_legacy_training_script_smoke(tmp_path):
     bad = subprocess.run(common + ['--evaluate', '--mark', 'never_trained'], cwd=ROOT,
                          capture_output=True, text=True)
     assert bad.returncode != 0 and 'nothing to evaluate' in (bad.stdout + bad.stderr)
+
+
+def test_gbif_failure_does_not_stop_the_run(monkeypatch):
+    """A GBIF outage leaves the family empty (and uncached) instead of crashing; known gaps are filled."""
+    import urllib.request
+    from tools import make_taxonomy_plantnet as M
+    calls = []
+
+    def boom(*a, **k):
+        calls.append(1)
+        raise OSError('network down')
+    monkeypatch.setattr(urllib.request, 'urlopen', boom)
+    cache = {}
+    assert M.gbif_family('Acer', cache, sleep=0, retries=3, backoff=0) is None
+    assert len(calls) == 3 and 'Acer' not in cache                # retried, not cached
+    assert M.family_of('Hepatica', {}) == ('Ranunculaceae', 'manual')
+    assert M.family_of('Acer', {'Acer': {'family': 'Sapindaceae'}}) == ('Sapindaceae', 'gbif')
+    assert M.family_of('Unknownia', {}) == ('', 'none')

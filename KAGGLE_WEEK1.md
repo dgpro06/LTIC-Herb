@@ -24,8 +24,10 @@ per account, and one session can run for up to 12 hours.
 2. **Set the right-hand panel:**
    - **Session options → Accelerator:** `GPU T4 x2`. Pick T4, not P100.
    - **Session options → Internet:** On. Encoder weights, DINOv2 and GBIF are downloaded.
-   - **Input → + Add Input:** search `plantnet 300k images` and add the dataset by **Noahbadoa**
-     (`noahbadoa/plantnet-300k-images`, 31.98 GB).
+   - **Input → + Add Input:** set the filter to **Datasets**, search `plantnet`, and add **PlantNet300k** by
+     **Gabriel Neto** (`gabrielneto583/plantnet300k`, 306,149 files: the images plus the JSON files with species
+     names). It contains `plantnet_300K/images/{train,val,test}/<species_id>/`. Results marked with a `< >` icon
+     are notebooks, not datasets. (The Noahbadoa copy used by the older guide is no longer listed.)
 3. **Check the Settings cell.** The defaults are already right for session 1:
    `GITHUB_USER = "dgpro06"`, `BRANCH = "Dgpro"`, `ENCODERS = "clip_b32"`, `RUN_GATE = True`, `BASELINES = ""`.
 4. **Quick check (~5 min).** Click **Run All** and watch step 3. It should print:
@@ -73,9 +75,10 @@ separate sessions with `BASELINE_ENCODERS` set to that encoder.
 | `No GPU` | Accelerator → **GPU T4 x2** |
 | `Could not resolve host` / pip or download fails | Internet is off, or the phone isn't verified |
 | `Remote branch Dgpro not found` | The code isn't pushed; run `git push` |
-| `no images/train or images_train folder found` | The Pl@ntNet dataset isn't attached |
+| `no images/train or images_train folder found` | The Pl@ntNet dataset isn't attached (Input panel), or a notebook was added instead of the dataset |
 | `species names: NOT FOUND` | The dataset copy lacks `plantnet300K_species_id_2_name.json`. Upload that file (from the official Zenodo zip) as a small private Kaggle dataset, attach it and run again; the file is found anywhere under `/kaggle/input` |
-| `genera without a family: [...]` | GBIF didn't match these genera. Fill the family by hand in `taxonomy/plantnet.csv`; only the C-F family breakdown uses it, not the gate's cross-genus share |
+| `genera without a family ...` | GBIF didn't match these genera. Add them to `MANUAL_FAMILIES` in `tools/make_taxonomy_plantnet.py`; only the C-F family breakdown uses families, not the gate's cross-genus share |
+| Interactive session died / "kernel died" | The PC slept or lost internet. Use **Save Version → Save & Run All (Commit)**, which runs on Kaggle's servers |
 | `CUDA out of memory` during extraction | Run fewer encoders per session, e.g. `ENCODERS = "bioclip2"` alone |
 | A baseline run takes > 2 min | Set `TRIALS = 10`, for **every** method (plan §11.2) |
 | `existing features were made from a different split file` | `PREV` points at an output with other splits; use the matching version |
