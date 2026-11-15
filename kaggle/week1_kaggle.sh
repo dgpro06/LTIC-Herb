@@ -60,9 +60,13 @@ cat splits/plantnet_vparts.json | python -c "import json,sys; r=json.load(sys.st
 DATA_ROOT="$INPUT"
 
 stamp "STEP 3  Taxonomy (genus from the species name, family from GBIF)"
-if [ ! -f taxonomy/plantnet.csv ]; then
+TAX_REBUILT=0
+# rebuild if missing, or if made by older code (no family_source column: unmatched genera had no family);
+# the GBIF answers are cached in taxonomy/gbif_cache.json, so a rebuild makes no new requests
+if [ ! -f taxonomy/plantnet.csv ] || ! head -1 taxonomy/plantnet.csv | grep -q family_source; then
   OFF=""; [ "$GBIF_OFFLINE" = 1 ] && OFF="--offline"
   python "$CODE/tools/make_taxonomy_plantnet.py" --label_map splits/plantnet_label_map.json $OFF
+  TAX_REBUILT=1
 else
   echo "taxonomy already there"
 fi
@@ -85,6 +89,15 @@ json.dump(c, open(sys.argv[2], 'w'), indent=1)
 EOF
 done
 EP=""; [ -n "$EPOCHS" ] && EP="--epochs $EPOCHS"
+
+if [ "$TAX_REBUILT" = 1 ] && [ "$RUN_GATE" != 1 ]; then
+  # families changed: redo the C-F reports of earlier LA probes (the gate checks do not use families)
+  for f in results/preds/plantnet_*_la_test_seed0.npz; do
+    [ -e "$f" ] || continue
+    stamp "C-F report redone with the updated taxonomy: $f"
+    python "$CODE/tools/cf_report.py" --preds "$f" --taxonomy taxonomy/plantnet.csv --out results/cf
+  done
+fi
 
 if [ "$RUN_GATE" = 1 ]; then
   stamp "STEP 5  LA probe on $GATE_ENCODER ($TRIALS trials, seeds $SEEDS)"
