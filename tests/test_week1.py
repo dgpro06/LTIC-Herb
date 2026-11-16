@@ -323,3 +323,17 @@ def test_gbif_failure_does_not_stop_the_run(monkeypatch):
     assert M.family_of('Hepatica', {}) == ('Ranunculaceae', 'manual')
     assert M.family_of('Acer', {'Acer': {'family': 'Sapindaceae'}}) == ('Sapindaceae', 'gbif')
     assert M.family_of('Unknownia', {}) == ('', 'none')
+
+
+def test_genus_rescue_detail():
+    genus_of = np.array([0, 1, 2, 2, 3])          # tail = classes 0, 1 (few_end 2), many from 4
+    y = np.array([2, 3, 4, 4, 0])
+    pred = np.array([0, 0, 1, 1, 0])               # four cross-genus tail FPs, one correct
+    genus_pred = np.array([2, 0, 1, 0, 0])         # right, same wrong genus, same wrong, third genus
+    d = diagnostics.genus_rescue_detail(y, pred, genus_pred, few_end=2, many_start=4, genus_of=genus_of)
+    assert d['n'] == 4 and d['genus_correct'] == 1
+    assert d['same_wrong_genus_share'] == 0.5 and d['third_genus_share'] == 0.25
+    assert d['by_true_group']['medium']['n'] == 2 and d['by_true_group']['many']['n'] == 2
+    lo, hi = d['genus_correct_wilson95']
+    assert 0 < lo < 0.25 < hi < 1
+    assert diagnostics.genus_rescue(y, pred, genus_pred, 2, genus_of)['genus_correct_share'] == 0.25

@@ -22,8 +22,12 @@ from lt import trainer as T  # noqa: E402
 from lt.metrics import macro_f1  # noqa: E402
 
 
-def train_genus_classifier(data, trials, seed=0, epochs=30, log=print):
-    """Linear genus probe with the logit-adjusted (balanced softmax) loss, epoch and lr chosen on V-tune."""
+def train_genus_classifier(data, trials, seed=0, epochs=30, log=print, method='balanced_softmax'):
+    """Linear genus probe, epoch and lr chosen on V-tune by genus macro-F1.
+
+    method='balanced_softmax' (logit-adjusted loss) is the recorded check (b), fixed before the first run.
+    method='ce' (plain CE, no prior correction) is a secondary analysis only.
+    """
     tax = data.taxonomy
     g_counts = np.bincount(tax.genus_of, weights=data.index.counts, minlength=tax.num_genera)
     tr, tu = data.fs['train'], data.fs['vtune']
@@ -32,7 +36,7 @@ def train_genus_classifier(data, trials, seed=0, epochs=30, log=print):
     rng = np.random.default_rng(seed)
     best = None
     for t in range(trials):
-        cfg = {'method': 'balanced_softmax', 'epochs': epochs, 'lr': float(np.exp(rng.uniform(np.log(1e-3), 0))),
+        cfg = {'method': method, 'epochs': epochs, 'lr': float(np.exp(rng.uniform(np.log(1e-3), 0))),
                'weight_decay': float(np.exp(rng.uniform(np.log(1e-6), np.log(1e-3))))}
         model, info = T.train(cfg, gtr, gtu, g_counts, 0, 0, seed=seed, log=lambda *_: None)
         log('   genus probe trial {}/{}: V-tune genus macro-F1 {:.4f}'.format(t + 1, trials, info['vtune_score']))
@@ -48,6 +52,8 @@ def main():
     p.add_argument('--thresholds', default='gates/week1_thresholds.json')
     p.add_argument('--out', default=None, help='default: results/week1_gate_<dataset>_<encoder>.json')
     p.add_argument('--genus_trials', type=int, default=5)
+    p.add_argument('--no_secondary', dest='secondary', action='store_false',
+                   help='skip the plain-CE genus probe (secondary analysis of check (b))')
     p.add_argument('--cov_k', type=int, default=10)
     p.add_argument('--n_perm', type=int, default=1000)
     p.add_argument('--n_boot', type=int, default=2000)
@@ -84,6 +90,19 @@ def main():
     glogits, _ = T.predict(gmodel, data.fs[split], gcfg, glog_pi)
     db = diagnostics.genus_rescue(y, pred, glogits.argmax(1).numpy(), few_end, tax.genus_of)
     db['genus_probe_split_macro_f1'] = macro_f1(tax.genus_of[y], glogits.argmax(1).numpy(), tax.num_genera)
+
+    # Secondary analyses of (b): NOT gate criteria; the recorded check above is unchanged.
+    many_start = data.groups.many_start
+    secondary = {'_note': 'sensitivity analyses of check (b); not gate criteria',
+                 'balanced_probe': diagnostics.genus_rescue_detail(y, pred, glogits.argmax(1).numpy(), few_end,
+                                                                   many_start, tax.genus_of)}
+    if args.secondary:
+        print('=> secondary: plain-CE genus probe')
+        cmodel, ccfg, clog_pi = train_genus_classifier(data, args.genus_trials, method='ce')
+        clogits, _ = T.predict(cmodel, data.fs[split], ccfg, clog_pi)
+        secondary['ce_probe'] = diagnostics.genus_rescue_detail(y, pred, clogits.argmax(1).numpy(), few_end,
+                                                                many_start, tax.genus_of)
+        secondary['ce_probe']['split_macro_f1'] = macro_f1(tax.genus_of[y], clogits.argmax(1).numpy(), tax.num_genera)
     print('=> C2 check: covariance subspace similarity within genera')
     tr = data.fs['train']
     dc2 = diagnostics.covariance_check(tr.x[0].cpu(), tr.y.cpu(), counts, tax.genus_of, k=args.cov_k,
@@ -103,7 +122,7 @@ def main():
     d1_summary = {k: v for k, v in d1.items() if k != 'ratios'}
     result = {'dataset': conf['dataset'], 'encoder': conf['encoder'], 'split': split, 'thresholds': thr,
               'groups': data.groups.sizes(), 'donor_pooling': d1_summary, 'cross_genus': da, 'genus_rescue': db,
-              'c2_covariance': dc2, 'checks': {k: {'value': v, 'pass': bool(ok)} for k, (v, ok) in checks.items()},
+              'genus_rescue_secondary': secondary, 'c2_covariance': dc2, 'checks': {k: {'value': v, 'pass': bool(ok)} for k, (v, ok) in checks.items()},
               'verdict': verdict}
     out = args.out or 'results/week1_gate_{}_{}.json'.format(conf['dataset'], conf['encoder'])
     os.makedirs(os.path.dirname(out) or '.', exist_ok=True)
@@ -114,7 +133,18 @@ def main():
         print('  {:28s} {:8.4f}  {}'.format(k, v, 'PASS' if ok else 'FAIL'))
     print('  tail FPs: {}  cross-genus CI95: [{:.1%}, {:.1%}]'.format(
         da['n_tail_fp'], *da['ci95']['cross_genus']))
-    print('=> verdict: {}\n=> {}'.format(verdict, out))
+    print('=> verdict: {}'.format(verdict))
+    print('\n  secondary analyses of (b), not gate criteria:')
+    for name, s in secondary.items():
+        if name.startswith('_'):
+            continue
+        g = s['by_true_group']
+        print('  {:15s} genus right {}/{} = {:.1%} [{:.1%}, {:.1%}] | same wrong genus {:.1%} | third genus {:.1%} | '
+              'genus acc (all images) {:.1%} | true group few/med/many n = {}/{}/{}'.format(
+                  name, s['genus_correct'], s['n'], s['genus_correct_share'], *s['genus_correct_wilson95'],
+                  s['same_wrong_genus_share'], s['third_genus_share'], s['genus_acc_all_images'],
+                  g['few']['n'], g['medium']['n'], g['many']['n']))
+    print('=> {}'.format(out))
 
 
 if __name__ == '__main__':

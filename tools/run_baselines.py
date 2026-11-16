@@ -30,6 +30,9 @@ def main():
     p.add_argument('--results', default='results/all_runs.csv')
     p.add_argument('--preds', default='results/preds')
     p.add_argument('--epochs', type=int, default=None, help='override config epochs')
+    p.add_argument('--skip_done', action='store_true',
+                   help='skip a method whose chosen config and test predictions for every seed already exist '
+                        '(lets a session that hit the time limit be resumed)')
     args = p.parse_args()
 
     with open(args.config) as f:
@@ -46,8 +49,13 @@ def main():
     os.makedirs(cfg_dir, exist_ok=True)
 
     for name in args.methods.split(','):
-        cfg_path = os.path.join(cfg_dir, '{}_{}_{}.json'.format(conf['dataset'], conf['encoder'],
-                                                                 name.replace('@', '-').replace('=', '').replace(',', '-')))
+        tag = name.replace('@', '-').replace('=', '').replace(',', '-')
+        cfg_path = os.path.join(cfg_dir, '{}_{}_{}.json'.format(conf['dataset'], conf['encoder'], tag))
+        done = [os.path.join(args.preds, '{}_{}_{}_test_seed{}.npz'.format(conf['dataset'], conf['encoder'], tag, s))
+                for s in seeds]
+        if args.skip_done and os.path.isfile(cfg_path) and all(os.path.isfile(d) for d in done):
+            print('=> {} already done (config and test predictions for seeds {}); skipped'.format(name, seeds))
+            continue
         if 'search' in stages:
             print('=> search {} ({} trials)'.format(name, trials), flush=True)
             cfg = harness.search(name, data, trials, args.results, seed=0, base=base)

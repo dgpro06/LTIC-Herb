@@ -10,8 +10,8 @@
 set -eo pipefail
 
 ENCODERS=${ENCODERS:-clip_b32}              # comma-separated: clip_b32,clip_b16,bioclip2,dinov2_b14
-GATE_ENCODER=${GATE_ENCODER:-${ENCODERS%%,*}}
-RUN_GATE=${RUN_GATE:-1}                     # LA probe + C-F + week-1 diagnostics + conformal
+RUN_GATE=${RUN_GATE:-1}                     # LA probe + C-F + week-1 diagnostics + conformal, per encoder
+GATE_ENCODERS=${GATE_ENCODERS:-${GATE_ENCODER:-$ENCODERS}}   # default: every encoder in ENCODERS
 BASELINES=${BASELINES:-}                    # e.g. ce,balanced_softmax,crt,tau_norm,ldam_drw,reslt,ltic2,ltic3,ltic3@gamma=0,flat_genus
 BASELINE_ENCODERS=${BASELINE_ENCODERS:-$ENCODERS}
 TRIALS=${TRIALS:-20}                        # random-search trials per method (cut to 10 for ALL methods if runs are slow)
@@ -40,7 +40,17 @@ git -C "$CODE" log --oneline -1 || true
 if [ "$SKIP_INSTALL" != 1 ]; then pip install -q --upgrade open_clip_torch; fi
 python -c "import torch; print('torch', torch.__version__, '| GPUs', torch.cuda.device_count())"
 
+if [ "$PREV" = auto ]; then
+  # an earlier version's Output attached as an input: the folder that holds feats/plantnet
+  HIT=$(find "$INPUT" -maxdepth 7 -name images -prune -o -type d -path "*/feats/plantnet" -print 2>/dev/null | head -1)
+  if [ -z "$HIT" ]; then
+    echo "PREV=auto: no earlier output with feats/plantnet under $INPUT. Attach the earlier version's Output"
+    echo "(Input > + Add Input > Your Work) or set PREV to its folder."; exit 1
+  fi
+  PREV="${HIT%/feats/plantnet}"
+fi
 if [ -n "$PREV" ]; then
+  [ -d "$PREV" ] || { echo "PREV folder not found: $PREV"; exit 1; }
   stamp "Resuming from $PREV"
   for d in splits taxonomy feats results; do
     if [ -d "$PREV/$d" ]; then mkdir -p "$WORK/$d"; cp -rn "$PREV/$d/." "$WORK/$d/"; echo "copied $d"; fi
@@ -100,33 +110,49 @@ if [ "$TAX_REBUILT" = 1 ] && [ "$RUN_GATE" != 1 ]; then
 fi
 
 if [ "$RUN_GATE" = 1 ]; then
-  stamp "STEP 5  LA probe on $GATE_ENCODER ($TRIALS trials, seeds $SEEDS)"
-  python "$CODE/tools/run_baselines.py" --config "configs/plantnet_${GATE_ENCODER}.json" --methods la \
-    --trials "$TRIALS" --seeds "$SEEDS" $EP
-  P="results/preds/plantnet_${GATE_ENCODER}_la"
+  for genc in $(echo "$GATE_ENCODERS" | tr ',' ' '); do
+    stamp "STEP 5  LA probe on $genc ($TRIALS trials, seeds $SEEDS; skipped if already done)"
+    python "$CODE/tools/run_baselines.py" --config "configs/plantnet_${genc}.json" --methods la \
+      --trials "$TRIALS" --seeds "$SEEDS" $EP --skip_done
+    P="results/preds/plantnet_${genc}_la"
 
-  stamp "STEP 6  Finding C-F (test split)"
-  python "$CODE/tools/cf_report.py" --preds "${P}_test_seed0.npz" --taxonomy taxonomy/plantnet.csv --out results/cf
+    stamp "STEP 6  Finding C-F on $genc (test split)"
+    python "$CODE/tools/cf_report.py" --preds "${P}_test_seed0.npz" --taxonomy taxonomy/plantnet.csv --out results/cf
 
-  stamp "STEP 7  Week-1 gate diagnostics (V-select)"
-  python "$CODE/tools/week1_diagnostics.py" --config "configs/plantnet_${GATE_ENCODER}.json" \
-    --la_preds "${P}_vselect_seed0.npz" --thresholds "$CODE/gates/week1_thresholds.json"
+    stamp "STEP 7  Week-1 gate diagnostics on $genc (V-select)"
+    # never overwrite a recorded gate result: a re-run (e.g. for the secondary analyses) gets its own file
+    GATE_OUT="results/week1_gate_plantnet_${genc}.json"
+    [ -e "$GATE_OUT" ] && GATE_OUT="results/week1_gate_plantnet_${genc}_rerun.json"
+    python "$CODE/tools/week1_diagnostics.py" --config "configs/plantnet_${genc}.json" \
+      --la_preds "${P}_vselect_seed0.npz" --thresholds "$CODE/gates/week1_thresholds.json" --out "$GATE_OUT"
 
-  stamp "STEP 8  Conformal CP-1..CP-4 (calibrate on V-cal, report on test)"
-  python "$CODE/tools/conformal_eval.py" --cal "${P}_vcal_seed0.npz" --test "${P}_test_seed0.npz" \
-    --taxonomy taxonomy/plantnet.csv --out "results/conformal/plantnet_${GATE_ENCODER}_la_cp.csv"
+    stamp "STEP 8  Conformal CP-1..CP-4 on $genc (calibrate on V-cal, report on test)"
+    python "$CODE/tools/conformal_eval.py" --cal "${P}_vcal_seed0.npz" --test "${P}_test_seed0.npz" \
+      --taxonomy taxonomy/plantnet.csv --out "results/conformal/plantnet_${genc}_la_cp.csv"
+  done
 fi
 
 if [ -n "$BASELINES" ]; then
   for enc in $(echo "$BASELINE_ENCODERS" | tr ',' ' '); do
-    stamp "STEP 9  Baselines on $enc: $BASELINES"
+    stamp "STEP 9  Baselines on $enc: $BASELINES (finished methods are skipped)"
     python "$CODE/tools/run_baselines.py" --config "configs/plantnet_${enc}.json" --methods "$BASELINES" \
-      --trials "$TRIALS" --seeds "$SEEDS" $EP
+      --trials "$TRIALS" --seeds "$SEEDS" $EP --skip_done
   done
 fi
 
 stamp "DONE. Saved in $WORK:"
-for f in splits/plantnet_vparts.json taxonomy/plantnet.csv results/all_runs.csv results/week1_gate_plantnet_${GATE_ENCODER}.json; do
+for f in splits/plantnet_vparts.json taxonomy/plantnet.csv results/all_runs.csv results/week1_gate_plantnet_*.json; do
   [ -e "$f" ] && echo "  $f"
 done
+if ls results/week1_gate_plantnet_*.json >/dev/null 2>&1; then
+  stamp "Gate summary"
+  python - <<'EOF'
+import glob, json
+for path in sorted(glob.glob('results/week1_gate_plantnet_*.json')):
+    g = json.load(open(path))
+    checks = ' | '.join('{} {:.3f} {}'.format(k.split('_')[0], v['value'], 'PASS' if v['pass'] else 'FAIL')
+                        for k, v in g['checks'].items())
+    print('{:45s} {}  -> {}'.format(path.split('/')[-1], checks, g['verdict']))
+EOF
+fi
 du -sh feats results 2>/dev/null || true

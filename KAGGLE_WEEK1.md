@@ -7,7 +7,7 @@ notebook [kaggle/LTIC_Week1_Kaggle.ipynb](kaggle/LTIC_Week1_Kaggle.ipynb) and th
 It is split into two sessions:
 - **Session 1, the gate (~2–4 h on a T4):** splits and the §8.0 count, taxonomy, CLIP B/32 features, LA probe,
   C-F, the week-1 gate diagnostics and conformal sets.
-- **Session 2, overnight:** the other three encoders and baselines 1–9. It continues from session 1's output.
+- **Session 2:** the gate on the other three encoders and baselines 1–9 on CLIP B/32. It continues from session 1's output.
 
 Times are estimates; a T4 is roughly 2–3× slower than the 4070. Kaggle gives about 30 GPU hours per week
 per account, and one session can run for up to 12 hours.
@@ -29,7 +29,7 @@ per account, and one session can run for up to 12 hours.
      names). It contains `plantnet_300K/images/{train,val,test}/<species_id>/`. Results marked with a `< >` icon
      are notebooks, not datasets. (The Noahbadoa copy used by the older guide is no longer listed.)
 3. **Check the Settings cell.** The defaults are already right for session 1:
-   `GITHUB_USER = "dgpro06"`, `BRANCH = "Dgpro"`, `ENCODERS = "clip_b32"`, `RUN_GATE = True`, `BASELINES = ""`.
+   `GITHUB_USER = "dgpro06"`, `BRANCH = "Dgpro"`, `ENCODERS = "clip_b32,clip_b16,bioclip2,dinov2_b14"` (one decode pass extracts all four; decoding is the slow part), `RUN_GATE = True`, `BASELINES = ""`.
 4. **Quick check (~5 min).** Click **Run All** and watch step 3. It should print:
    - `train: 243916 images`, `val: 31118`, `test: 31112`, `classes: 1081`;
    - `species names: .../plantnet300K_species_id_2_name.json`. If it says `NOT FOUND`, see Troubleshooting;
@@ -49,24 +49,30 @@ per account, and one session can run for up to 12 hours.
    - `splits/` and `taxonomy/`: download these and commit them to the repo (plan deliverables);
    - `feats/plantnet/`: the features, reused by session 2.
 
-## Session 2: more encoders and baselines (continues from session 1)
-1. Open the notebook and click **Edit**.
-2. **Input → + Add Input → Your Work** (notebook outputs): add this notebook's session-1 version.
-3. Run Step 1 once and note the folder it lists under `/kaggle/input` for that output, for example
-   `/kaggle/input/ltic-week-1`.
-4. Set the Settings cell:
+## Session 2: gate on the other encoders + baselines (continues from session 1)
+Session 1 already extracted all four encoders, so session 2 only trains small heads on cached features.
+1. Open the notebook (**Code → Your Work → first_test**) and click **Edit**.
+2. **Input → + Add Input → Your Work**: add **first_test** (the session-1 version's Output). Keep the
+   PlantNet300k dataset attached too.
+3. Set the Settings cell:
    ```python
-   ENCODERS          = "clip_b32,clip_b16,bioclip2,dinov2_b14"   # clip_b32 is already done and is skipped
-   RUN_GATE          = False
-   BASELINES         = "la,ce,balanced_softmax,crt,tau_norm,ldam_drw,reslt,ltic2,ltic3,ltic3@gamma=0,flat_genus"
+   ENCODERS          = "clip_b32,clip_b16,bioclip2,dinov2_b14"
+   RUN_GATE          = True       # gate on every encoder; CLIP B/32's LA probe is reused, not redone
+   BASELINES         = "ce,balanced_softmax,crt,tau_norm,ldam_drw,reslt,ltic2,ltic3,ltic3@gamma=0,flat_genus"
    BASELINE_ENCODERS = "clip_b32"
-   PREV              = "/kaggle/input/ltic-week-1"            # the folder from step 3
+   TRIALS            = 20
+   PREV              = "auto"     # finds the attached session-1 output by itself
    ```
-5. **Save Version → Save & Run All**.
+4. **Save Version → Save & Run All (Commit) → Save**, then stop the draft session with ⏻.
 
-If a session hits the 12-hour limit, start another the same way. Set `PREV` to the newest version's output;
-finished feature chunks and splits are copied back and skipped. Baseline runs for the other encoders are
-separate sessions with `BASELINE_ENCODERS` set to that encoder.
+What it does: copies session 1's splits, taxonomy, features and results; skips everything already finished;
+runs the gate (LA probe, C-F, diagnostics, conformal) on CLIP B/16, BioCLIP 2 and DINOv2 B/14; re-runs the
+CLIP B/32 diagnostics for the secondary analyses into `week1_gate_plantnet_clip_b32_rerun.json` (the recorded
+`week1_gate_plantnet_clip_b32.json` is never overwritten); then baselines 1–9 on CLIP B/32. The last lines
+of the log are a one-line gate summary per encoder.
+
+If a session hits the 12-hour limit, start another one the same way, attaching the newest version's Output:
+finished LA probes and baselines are skipped (`--skip_done`), so it continues where it stopped.
 
 ## Troubleshooting
 
@@ -82,3 +88,4 @@ separate sessions with `BASELINE_ENCODERS` set to that encoder.
 | `CUDA out of memory` during extraction | Run fewer encoders per session, e.g. `ENCODERS = "bioclip2"` alone |
 | A baseline run takes > 2 min | Set `TRIALS = 10`, for **every** method (plan §11.2) |
 | `existing features were made from a different split file` | `PREV` points at an output with other splits; use the matching version |
+| `PREV=auto: no earlier output with feats/plantnet` | Session 1's output isn't attached: **Input → + Add Input → Your Work → first_test** |

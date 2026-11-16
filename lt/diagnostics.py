@@ -34,6 +34,42 @@ def genus_rescue(y, pred_species, genus_pred, few_end, genus_of):
     return {'n_cross_genus_tail_fp': n, 'genus_correct_share': float(hit.mean()) if n else float('nan')}
 
 
+def wilson_ci(k, n, z=1.96):
+    if n == 0:
+        return float('nan'), float('nan')
+    p = k / n
+    d = 1 + z * z / n
+    c = (p + z * z / (2 * n)) / d
+    h = z * np.sqrt(p * (1 - p) / n + z * z / (4 * n * n)) / d
+    return float(c - h), float(c + h)
+
+
+def genus_rescue_detail(y, pred_species, genus_pred, few_end, many_start, genus_of):
+    """Secondary analysis of check (b) (not a gate criterion).
+
+    On the cross-genus tail false positives: Wilson CI of the genus-correct share; how often the genus
+    classifier picks the SAME wrong genus as the species prediction (correlated error) or a third genus;
+    and the split by the TRUE class's shot group. Also the genus classifier's accuracy on all images.
+    """
+    y, pred_species, genus_pred = map(np.asarray, (y, pred_species, genus_pred))
+    fp = (pred_species < few_end) & (pred_species != y) & (genus_of[pred_species] != genus_of[y])
+    n = int(fp.sum())
+    true_g, wrong_g, gp = genus_of[y[fp]], genus_of[pred_species[fp]], genus_pred[fp]
+    k = int((gp == true_g).sum())
+    out = {'n': n, 'genus_correct': k, 'genus_correct_share': k / n if n else float('nan'),
+           'genus_correct_wilson95': wilson_ci(k, n),
+           'same_wrong_genus_share': float((gp == wrong_g).mean()) if n else float('nan'),
+           'third_genus_share': float(((gp != wrong_g) & (gp != true_g)).mean()) if n else float('nan'),
+           'genus_acc_all_images': float((genus_pred == genus_of[y]).mean()),
+           'by_true_group': {}}
+    group = (y[fp] >= few_end).astype(int) + (y[fp] >= many_start).astype(int)
+    for gid, name in enumerate(('few', 'medium', 'many')):
+        sel = group == gid
+        out['by_true_group'][name] = {'n': int(sel.sum()),
+                                      'genus_correct_share': float((gp[sel] == true_g[sel]).mean()) if sel.any() else float('nan')}
+    return out
+
+
 def _subspaces(feats, labels, species, k, device):
     U = []
     for c in species:
