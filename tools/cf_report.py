@@ -34,7 +34,7 @@ def load_preds(path):
 
 
 def write_csv(rows, path):
-    with open(path, 'w', newline='') as f:
+    with open(path, 'w', newline='', encoding='utf-8') as f:
         w = csv.DictWriter(f, fieldnames=list(rows[0]))
         w.writeheader()
         w.writerows(rows)
@@ -57,7 +57,7 @@ def report(pred_path, taxonomy_csv, out_dir, tau=None, tau_max=None, n_boot=2000
 
     os.makedirs(out_dir, exist_ok=True)
     name = os.path.splitext(os.path.basename(pred_path))[0]
-    with open(os.path.join(out_dir, name + '_cf.json'), 'w') as f:
+    with open(os.path.join(out_dir, name + '_cf.json'), 'w', encoding='utf-8') as f:
         json.dump(res, f, indent=1)
     write_csv(tau_rows, os.path.join(out_dir, name + '_cf_tau.csv'))
     write_csv(count_rows, os.path.join(out_dir, name + '_cf_count.csv'))

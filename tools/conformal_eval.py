@@ -57,7 +57,7 @@ def main():
                             m['avg_set_size_leaves'], m['fallback_rate']))
     out = args.out or os.path.join('results', 'conformal', os.path.basename(args.test).replace('.npz', '_cp.csv'))
     os.makedirs(os.path.dirname(out), exist_ok=True)
-    with open(out, 'w', newline='') as f:
+    with open(out, 'w', newline='', encoding='utf-8') as f:
         w = csv.DictWriter(f, fieldnames=list(rows[0]))
         w.writeheader()
         w.writerows(rows)

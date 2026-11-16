@@ -93,9 +93,9 @@ mkdir -p configs
 for enc in $(echo "$ENCODERS,$BASELINE_ENCODERS" | tr ',' ' ' | xargs -n1 | sort -u); do
   python - "$CODE/configs/plantnet_clip_b32.json" "configs/plantnet_${enc}.json" "$enc" <<'EOF'
 import json, sys
-c = json.load(open(sys.argv[1])); c['encoder'] = sys.argv[3]
-c['num_classes'] = len(json.load(open('splits/plantnet_label_map.json')))   # 1081 on Pl@ntNet-300K
-json.dump(c, open(sys.argv[2], 'w'), indent=1)
+c = json.load(open(sys.argv[1], encoding='utf-8')); c['encoder'] = sys.argv[3]
+c['num_classes'] = len(json.load(open('splits/plantnet_label_map.json', encoding='utf-8')))   # 1081 on Pl@ntNet-300K
+json.dump(c, open(sys.argv[2], 'w', encoding='utf-8'), indent=1)
 EOF
 done
 EP=""; [ -n "$EPOCHS" ] && EP="--epochs $EPOCHS"
@@ -149,7 +149,7 @@ if ls results/week1_gate_plantnet_*.json >/dev/null 2>&1; then
   python - <<'EOF'
 import glob, json
 for path in sorted(glob.glob('results/week1_gate_plantnet_*.json')):
-    g = json.load(open(path))
+    g = json.load(open(path, encoding='utf-8'))
     checks = ' | '.join('{} {:.3f} {}'.format(k.split('_')[0], v['value'], 'PASS' if v['pass'] else 'FAIL')
                         for k, v in g['checks'].items())
     print('{:45s} {}  -> {}'.format(path.split('/')[-1], checks, g['verdict']))

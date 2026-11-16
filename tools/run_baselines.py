@@ -35,7 +35,7 @@ def main():
                         '(lets a session that hit the time limit be resumed)')
     args = p.parse_args()
 
-    with open(args.config) as f:
+    with open(args.config, encoding='utf-8') as f:
         conf = json.load(f)
     trials = args.trials or conf.get('trials', 20)
     base = {'epochs': args.epochs or conf.get('epochs', 30), 'eval_every': conf.get('eval_every', 2)}
@@ -59,10 +59,10 @@ def main():
         if 'search' in stages:
             print('=> search {} ({} trials)'.format(name, trials), flush=True)
             cfg = harness.search(name, data, trials, args.results, seed=0, base=base)
-            with open(cfg_path, 'w') as f:
+            with open(cfg_path, 'w', encoding='utf-8') as f:
                 json.dump(cfg, f, indent=1)
             print('   chosen: {}'.format(json.dumps(cfg)))
-        with open(cfg_path) as f:
+        with open(cfg_path, encoding='utf-8') as f:
             cfg = json.load(f)
         if 'vselect' in stages:
             m = harness.score_vselect(name, cfg, data, args.results, seed=0, save_dir=args.preds)

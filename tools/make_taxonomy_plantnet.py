@@ -74,7 +74,7 @@ def main():
     p.add_argument('--offline', action='store_true')
     args = p.parse_args()
 
-    with open(args.label_map) as f:
+    with open(args.label_map, encoding='utf-8') as f:
         label_map = {int(k): v for k, v in json.load(f).items()}
     missing_names = [k for k, v in label_map.items() if not v.get('name')]
     if missing_names:
@@ -84,20 +84,20 @@ def main():
     os.makedirs(os.path.dirname(args.out) or '.', exist_ok=True)
     cache = {}
     if os.path.isfile(args.cache):
-        with open(args.cache) as f:
+        with open(args.cache, encoding='utf-8') as f:
             cache = json.load(f)
     genera = sorted({genus_from_name(v['name']) for v in label_map.values()})
     if not args.offline:
         for i, g in enumerate(genera):
             gbif_family(g, cache)
             if i % 50 == 0:
-                with open(args.cache, 'w') as f:
+                with open(args.cache, 'w', encoding='utf-8') as f:
                     json.dump(cache, f, indent=1)
-        with open(args.cache, 'w') as f:
+        with open(args.cache, 'w', encoding='utf-8') as f:
             json.dump(cache, f, indent=1)
 
     unresolved = []
-    with open(args.out, 'w', newline='') as f:
+    with open(args.out, 'w', newline='', encoding='utf-8') as f:
         w = csv.writer(f)
         w.writerow(['label', 'source_id', 'species', 'genus', 'family', 'family_source'])
         for label in sorted(label_map):

@@ -22,7 +22,7 @@ class Taxonomy(object):
     def from_csv(cls, path, class_index):
         """class_index: lt.classes.ClassIndex (maps original labels to output indices)."""
         rows = {}
-        with open(path, newline='') as f:
+        with open(path, newline='', encoding='utf-8') as f:
             for r in csv.DictReader(f):
                 rows[int(r['label'])] = r
         C = class_index.num_classes

@@ -110,7 +110,7 @@ class ShotGroups(object):
 def read_split_file(txt):
     """Return (relative paths, original labels) from a 'path label' split file."""
     paths, labels = [], []
-    with open(txt) as f:
+    with open(txt, encoding='utf-8') as f:
         for line in f:
             parts = line.split()
             if not parts:
@@ -121,5 +121,5 @@ def read_split_file(txt):
 
 
 def save_json(obj, path):
-    with open(path, 'w') as f:
+    with open(path, 'w', encoding='utf-8') as f:
         json.dump(obj, f, indent=1)

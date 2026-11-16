@@ -32,7 +32,7 @@ def per_class_split(n):
 
 
 def load_metadata(path, prefix):
-    with open(path) as f:
+    with open(path, encoding='utf-8') as f:
         meta = json.load(f)
     files = {img['image_id']: img['file_name'] for img in meta['images']}
     items = [(prefix + files[a['image_id']], int(a['category_id'])) for a in meta['annotations']]
@@ -43,7 +43,7 @@ def load_metadata(path, prefix):
 def load_txt(paths):
     seen = {}
     for txt in paths:
-        with open(txt) as f:
+        with open(txt, encoding='utf-8') as f:
             for line in f:
                 parts = line.split()
                 if parts:
@@ -103,18 +103,18 @@ def main():
     os.makedirs(args.out, exist_ok=True)
     for name, rows in splits.items():
         out = os.path.join(args.out, 'h22clean_{}.txt'.format(name))
-        with open(out, 'w') as f:
+        with open(out, 'w', encoding='utf-8') as f:
             for x, lab in rows:
                 f.write('{} {}\n'.format(x, lab))
         print('{:5s} {:7d} images -> {}'.format(name, len(rows), out))
 
-    with open(os.path.join(args.out, 'h22clean_label_map.json'), 'w') as f:
+    with open(os.path.join(args.out, 'h22clean_label_map.json'), 'w', encoding='utf-8') as f:
         json.dump({str(i): {'category_id': c, 'name': cats.get(c, {}).get('scientificName')}
                    for i, c in enumerate(cat_ids)}, f, indent=1)
 
     if cats:
         os.makedirs(os.path.dirname(args.taxonomy_out) or '.', exist_ok=True)
-        with open(args.taxonomy_out, 'w', newline='') as f:
+        with open(args.taxonomy_out, 'w', newline='', encoding='utf-8') as f:
             w = csv.writer(f)
             w.writerow(['label', 'source_id', 'species', 'genus', 'family'])
             for i, c in enumerate(cat_ids):
@@ -136,7 +136,7 @@ def main():
              'thresholds': {'few_thr': args.few_thr, 'many_thr': args.many_thr},
              'shot_groups_clean_train': groups,
              'train_count_tertiles': [float(q) for q in np.quantile(tc, [1 / 3, 2 / 3])]}
-    with open(os.path.join(args.out, 'h22clean_stats.json'), 'w') as f:
+    with open(os.path.join(args.out, 'h22clean_stats.json'), 'w', encoding='utf-8') as f:
         json.dump(stats, f, indent=1)
     print(json.dumps({k: stats[k] for k in ('num_classes', 'largest_class_all_images', 'classes_n_le_2_train_only',
                                             'classes_n_3_to_4_now_1_2_shot', 'shot_groups_clean_train')}, indent=1))

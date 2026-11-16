@@ -33,7 +33,7 @@ def read_manifest(root, split, encoder):
     path = os.path.join(split_dir(root, split, encoder), 'manifest.json')
     if not os.path.isfile(path):
         return None
-    with open(path) as f:
+    with open(path, encoding='utf-8') as f:
         return json.load(f)
 
 
@@ -41,7 +41,7 @@ def write_manifest(root, split, encoder, manifest):
     d = split_dir(root, split, encoder)
     os.makedirs(d, exist_ok=True)
     tmp = os.path.join(d, 'manifest.json.tmp')
-    with open(tmp, 'w') as f:
+    with open(tmp, 'w', encoding='utf-8') as f:
         json.dump(manifest, f, indent=1)
     os.replace(tmp, os.path.join(d, 'manifest.json'))
 

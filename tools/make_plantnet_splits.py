@@ -98,7 +98,7 @@ def main():
         prefix = os.path.relpath(split_dir(dataset_dir, split), args.root).replace(os.sep, '/')
         out = os.path.join(out_dir, 'plantnet_{}.txt'.format(split))
         n = 0
-        with open(out, 'w') as f:
+        with open(out, 'w', encoding='utf-8') as f:
             for species_id in sorted(set(files) & set(label_of)):
                 for name in files[species_id]:
                     f.write('{}/{}/{} {}\n'.format(prefix, species_id, name, label_of[species_id]))
@@ -106,11 +106,11 @@ def main():
         print('{}: {} images -> {}'.format(split, n, out))
 
     names_file = args.names or find_names_file(args.root, dataset_dir)
-    names = json.load(open(names_file)) if names_file and os.path.isfile(names_file) else {}
+    names = json.load(open(names_file, encoding='utf-8')) if names_file and os.path.isfile(names_file) else {}
     print('species names: {}'.format(names_file if names else 'NOT FOUND (taxonomy/plantnet.csv needs them; '
                                                             'pass --names path/to/' + NAMES_FILE + ')'))
     label_map = {label: {'species_id': s, 'name': names.get(s)} for label, s in enumerate(species)}
-    with open(os.path.join(out_dir, 'plantnet_label_map.json'), 'w') as f:
+    with open(os.path.join(out_dir, 'plantnet_label_map.json'), 'w', encoding='utf-8') as f:
         json.dump(label_map, f, indent=1)
 
     counts = np.array([len(train[s]) for s in species])

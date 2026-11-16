@@ -137,11 +137,11 @@ def append_rows(path, rows):
     header = BASE_KEYS + METRIC_KEYS
     new = not os.path.isfile(path)
     if not new:
-        with open(path, newline='') as f:
+        with open(path, newline='', encoding='utf-8') as f:
             existing = next(csv.reader(f), None)
         if existing != header:
             raise RuntimeError('{} has a different header; move it aside'.format(path))
-    with open(path, 'a', newline='') as f:
+    with open(path, 'a', newline='', encoding='utf-8') as f:
         w = csv.DictWriter(f, fieldnames=header)
         if new:
             w.writeheader()

@@ -89,7 +89,7 @@ def main():
     os.makedirs(args.out, exist_ok=True)
     for k, name in enumerate(PARTS):
         out = os.path.join(args.out, '{}_{}.txt'.format(args.prefix, name))
-        with open(out, 'w') as f:
+        with open(out, 'w', encoding='utf-8') as f:
             for i in np.flatnonzero(part == k):
                 f.write('{} {}\n'.format(paths[i], labels[i]))
         print('{:8s} {:7d} images  {:6d} classes  few-shot: {:6d} images in {:5d} classes -> {}'.format(
@@ -99,7 +99,7 @@ def main():
     report = {'val_file': os.path.abspath(args.val), 'train_file': os.path.abspath(args.train),
               'seed': args.seed, 'few_thr': args.few_thr, 'ratios': ratios, 'decision_8_0': decision,
               'few_classes_in_train': int(len(few_classes)), 'parts': summary}
-    with open(os.path.join(args.out, '{}_vparts.json'.format(args.prefix)), 'w') as f:
+    with open(os.path.join(args.out, '{}_vparts.json'.format(args.prefix)), 'w', encoding='utf-8') as f:
         json.dump(report, f, indent=1)
     print('plan 8.0 decision: ' + decision)
     print('Record these counts and ratios in the project notes before any gate is evaluated.')

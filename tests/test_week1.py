@@ -337,3 +337,19 @@ def test_genus_rescue_detail():
     lo, hi = d['genus_correct_wilson95']
     assert 0 < lo < 0.25 < hi < 1
     assert diagnostics.genus_rescue(y, pred, genus_pred, 2, genus_of)['genus_correct_share'] == 0.25
+
+
+def test_taxonomy_tool_keeps_utf8_names(tmp_path):
+    """Accented author names (e.g. L'Hér.) must survive on Windows, whose default encoding is not UTF-8."""
+    lm = {'0': {'species_id': '1', 'name': "Pelargonium capitatum (L.) L'Hér."},
+          '1': {'species_id': '2', 'name': 'Hepatica nobilis Schreb.'},
+          '2': {'species_id': '3', 'name': 'Mentha × piperita L.'}}
+    (tmp_path / 'lm.json').write_text(json.dumps(lm, ensure_ascii=False), encoding='utf-8')
+    out = subprocess.run([sys.executable, os.path.join(ROOT, 'tools', 'make_taxonomy_plantnet.py'),
+                          '--label_map', str(tmp_path / 'lm.json'), '--out', str(tmp_path / 't.csv'),
+                          '--cache', str(tmp_path / 'c.json'), '--offline'], capture_output=True, text=True)
+    assert out.returncode == 0, out.stderr
+    import csv
+    rows = list(csv.DictReader(open(tmp_path / 't.csv', encoding='utf-8')))
+    assert rows[0]['species'] == "Pelargonium capitatum (L.) L'Hér." and rows[2]['genus'] == 'Mentha'
+    assert rows[1]['family'] == 'Ranunculaceae' and rows[1]['family_source'] == 'manual'

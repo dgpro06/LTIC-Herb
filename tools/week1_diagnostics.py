@@ -59,9 +59,9 @@ def main():
     p.add_argument('--n_boot', type=int, default=2000)
     args = p.parse_args()
 
-    with open(args.config) as f:
+    with open(args.config, encoding='utf-8') as f:
         conf = json.load(f)
-    with open(args.thresholds) as f:
+    with open(args.thresholds, encoding='utf-8') as f:
         thr = json.load(f)
     preds = dict(np.load(args.la_preds))
     split = str(preds.get('split', '')) or next((s for s in ('vselect', 'vtune', 'test', 'vcal')
@@ -126,7 +126,7 @@ def main():
               'verdict': verdict}
     out = args.out or 'results/week1_gate_{}_{}.json'.format(conf['dataset'], conf['encoder'])
     os.makedirs(os.path.dirname(out) or '.', exist_ok=True)
-    with open(out, 'w') as f:
+    with open(out, 'w', encoding='utf-8') as f:
         json.dump(result, f, indent=1, default=float)
     print()
     for k, (v, ok) in checks.items():
