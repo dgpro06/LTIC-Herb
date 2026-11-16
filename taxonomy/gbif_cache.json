@@ -1,0 +1,1820 @@
+{
+ "Abeliophyllum": {
+  "family": "Oleaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Acacia": {
+  "family": "Fabaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Acalypha": {
+  "family": "Euphorbiaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Achyranthes": {
+  "family": "Amaranthaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Aciotis": {
+  "family": "Melastomataceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Adenostyles": {
+  "family": "Asteraceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Adlumia": {
+  "family": "Papaveraceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Adonis": {
+  "family": "Ranunculaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Aegopodium": {
+  "family": "Apiaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Aeschynomene": {
+  "family": "Fabaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Aextoxicon": {
+  "family": "Aextoxicaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Aizoanthemum": {
+  "family": "Aizoaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Aizoon": {
+  "family": "Aizoaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Alcea": {
+  "family": "Malvaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Alibertia": {
+  "family": "Rubiaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Alliaria": {
+  "family": "Brassicaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Alocasia": {
+  "family": "Araceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Althaea": {
+  "family": "Malvaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Anemone": {
+  "family": "Ranunculaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Angelica": {
+  "family": "Apiaceae",
+  "matchType": "EXACT",
+  "status": "DOUBTFUL",
+  "rank": "GENUS"
+ },
+ "Angostura": {
+  "family": "Rutaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Anisocampium": {
+  "family": "Athyriaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Ansellia": {
+  "family": "Orchidaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Anthericum": {
+  "family": "Asparagaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Anthurium": {
+  "family": "Araceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Antirhea": {
+  "family": "Rubiaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Aphelandra": {
+  "family": "Acanthaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Aralia": {
+  "family": "Araliaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Aristea": {
+  "family": "Iridaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Arthraxon": {
+  "family": null,
+  "matchType": "HIGHERRANK",
+  "status": "ACCEPTED",
+  "rank": "PHYLUM"
+ },
+ "Aspilia": {
+  "family": "Asteraceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Astydamia": {
+  "family": "Apiaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Asystasia": {
+  "family": "Acanthaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Atocion": {
+  "family": "Caryophyllaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Atractocarpus": {
+  "family": "Rubiaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Balsamorhiza": {
+  "family": "Asteraceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Barbarea": {
+  "family": "Brassicaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Barringtonia": {
+  "family": "Lecythidaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Bellium": {
+  "family": "Asteraceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Berula": {
+  "family": "Apiaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Bismarckia": {
+  "family": "Arecaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Bocoa": {
+  "family": "Fabaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Bonafousia": {
+  "family": "Apocynaceae",
+  "matchType": "EXACT",
+  "status": "SYNONYM",
+  "rank": "GENUS"
+ },
+ "Boscia": {
+  "family": "Capparaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Bourreria": {
+  "family": "Ehretiaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Breynia": {
+  "family": "Phyllanthaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Brodiaea": {
+  "family": "Asparagaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Browallia": {
+  "family": "Solanaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Butomus": {
+  "family": "Butomaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Calendula": {
+  "family": "Asteraceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Calochortus": {
+  "family": "Liliaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Calodendrum": {
+  "family": "Rutaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Calycanthus": {
+  "family": "Calycanthaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Calylophus": {
+  "family": "Onagraceae",
+  "matchType": "EXACT",
+  "status": "SYNONYM",
+  "rank": "GENUS"
+ },
+ "Caraipa": {
+  "family": "Calophyllaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Carthamus": {
+  "family": "Asteraceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Casuarina": {
+  "family": "Casuarinaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Cedrela": {
+  "family": "Meliaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Cenchrus": {
+  "family": "Poaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Centranthus": {
+  "family": "Caprifoliaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Cerbera": {
+  "family": "Apocynaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Cereus": {
+  "family": "Cactaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Chaerophyllum": {
+  "family": "Apiaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Chamerion": {
+  "family": "Onagraceae",
+  "matchType": "EXACT",
+  "status": "SYNONYM",
+  "rank": "GENUS"
+ },
+ "Cirsium": {
+  "family": "Asteraceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Clethra": {
+  "family": "Clethraceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Cobaea": {
+  "family": "Polemoniaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Collomia": {
+  "family": "Polemoniaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Comptonia": {
+  "family": "Myricaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Conoclinium": {
+  "family": "Asteraceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Conostomium": {
+  "family": "Rubiaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Cordyla": {
+  "family": null,
+  "matchType": "HIGHERRANK",
+  "status": "ACCEPTED",
+  "rank": "PHYLUM"
+ },
+ "Corispermum": {
+  "family": "Amaranthaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Coryphantha": {
+  "family": "Cactaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Couroupita": {
+  "family": "Lecythidaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Coussapoa": {
+  "family": "Urticaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Crotalaria": {
+  "family": "Fabaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Cryptopus": {
+  "family": "Orchidaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Cryptostegia": {
+  "family": "Apocynaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Cucurbita": {
+  "family": "Cucurbitaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Cyanotis": {
+  "family": "Commelinaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Cymbalaria": {
+  "family": "Plantaginaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Cyphostemma": {
+  "family": "Vitaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Cyrtanthus": {
+  "family": null,
+  "matchType": "HIGHERRANK",
+  "status": "ACCEPTED",
+  "rank": "PHYLUM"
+ },
+ "Cytinus": {
+  "family": "Cytinaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Dalbergia": {
+  "family": "Fabaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Dalea": {
+  "family": "Fabaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Danthonia": {
+  "family": "Poaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Daphne": {
+  "family": "Thymelaeaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Daucus": {
+  "family": "Apiaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Declieuxia": {
+  "family": "Rubiaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Dendrobium": {
+  "family": "Orchidaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Diascia": {
+  "family": "Scrophulariaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Diatelia": {
+  "family": "Cistaceae",
+  "matchType": "EXACT",
+  "status": "SYNONYM",
+  "rank": "GENUS"
+ },
+ "Dierama": {
+  "family": "Iridaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Diervilla": {
+  "family": "Caprifoliaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Dischidia": {
+  "family": "Apocynaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Dorotheanthus": {
+  "family": "Aizoaceae",
+  "matchType": "EXACT",
+  "status": "SYNONYM",
+  "rank": "GENUS"
+ },
+ "Dracontium": {
+  "family": "Araceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Dracophyllum": {
+  "family": "Ericaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Dryas": {
+  "family": "Rosaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Dryopteris": {
+  "family": "Dryopteridaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Dubouzetia": {
+  "family": "Elaeocarpaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Duchesnea": {
+  "family": "Rosaceae",
+  "matchType": "EXACT",
+  "status": "SYNONYM",
+  "rank": "GENUS"
+ },
+ "Egeria": {
+  "family": "Hydrocharitaceae",
+  "matchType": "EXACT",
+  "status": "SYNONYM",
+  "rank": "GENUS"
+ },
+ "Elephantopus": {
+  "family": "Asteraceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Elodea": {
+  "family": null,
+  "matchType": "HIGHERRANK",
+  "status": "ACCEPTED",
+  "rank": "PHYLUM"
+ },
+ "Empetrum": {
+  "family": "Ericaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Entada": {
+  "family": "Fabaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Epipactis": {
+  "family": "Orchidaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Eranthemum": {
+  "family": "Acanthaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Erechtites": {
+  "family": "Asteraceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Erianthemum": {
+  "family": "Loranthaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Eritrichium": {
+  "family": "Boraginaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Erucastrum": {
+  "family": "Brassicaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Erycina": {
+  "family": "Orchidaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Eucryphia": {
+  "family": "Cunoniaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Falcaria": {
+  "family": "Apiaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Falcataria": {
+  "family": "Fabaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Faujasia": {
+  "family": "Asteraceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Fedia": {
+  "family": "Caprifoliaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Fernelia": {
+  "family": "Rubiaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Fibigia": {
+  "family": "Brassicaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Fittonia": {
+  "family": null,
+  "matchType": "HIGHERRANK",
+  "status": "ACCEPTED",
+  "rank": "PHYLUM"
+ },
+ "Fragaria": {
+  "family": "Rosaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Freesia": {
+  "family": "Iridaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Freycinetia": {
+  "family": "Pandanaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Galega": {
+  "family": "Fabaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Garrya": {
+  "family": "Garryaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Geniostoma": {
+  "family": "Loganiaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Geropogon": {
+  "family": "Asteraceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Gomphocarpus": {
+  "family": "Apocynaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Goniolimon": {
+  "family": "Plumbaginaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Groenlandia": {
+  "family": "Potamogetonaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Guaiacum": {
+  "family": "Zygophyllaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Guarea": {
+  "family": "Meliaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Guatteria": {
+  "family": "Annonaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Guizotia": {
+  "family": "Asteraceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Gymnosporia": {
+  "family": "Celastraceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Gynura": {
+  "family": "Asteraceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Hackelia": {
+  "family": null,
+  "matchType": "HIGHERRANK",
+  "status": "ACCEPTED",
+  "rank": "PHYLUM"
+ },
+ "Haplophyton": {
+  "family": "Apocynaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Harpachne": {
+  "family": "Poaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Hebe": {
+  "family": "Plantaginaceae",
+  "matchType": "EXACT",
+  "status": "SYNONYM",
+  "rank": "GENUS"
+ },
+ "Helicodiceros": {
+  "family": "Araceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Helminthotheca": {
+  "family": "Asteraceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Hepatica": {
+  "family": null,
+  "matchType": "HIGHERRANK",
+  "status": "ACCEPTED",
+  "rank": "KINGDOM"
+ },
+ "Herbertia": {
+  "family": "Iridaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Hernandia": {
+  "family": "Hernandiaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Heteromorpha": {
+  "family": "Apiaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Hippophae": {
+  "family": "Elaeagnaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Holodiscus": {
+  "family": "Rosaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Honckenya": {
+  "family": "Caryophyllaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Humulus": {
+  "family": "Cannabaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Hunnemannia": {
+  "family": "Papaveraceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Hyoscyamus": {
+  "family": "Solanaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Hyoseris": {
+  "family": "Asteraceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Hypericum": {
+  "family": "Hypericaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Ibicella": {
+  "family": "Martyniaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Illicium": {
+  "family": "Schisandraceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Iva": {
+  "family": "Asteraceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Keckiella": {
+  "family": "Plantaginaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Kigelia": {
+  "family": "Bignoniaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Kniphofia": {
+  "family": null,
+  "matchType": "HIGHERRANK",
+  "status": "ACCEPTED",
+  "rank": "PHYLUM"
+ },
+ "Lactuca": {
+  "family": "Asteraceae",
+  "matchType": "EXACT",
+  "status": "DOUBTFUL",
+  "rank": "GENUS"
+ },
+ "Lagenaria": {
+  "family": "Cucurbitaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Lamium": {
+  "family": "Lamiaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Lapageria": {
+  "family": "Philesiaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Lapsana": {
+  "family": "Asteraceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Lathraea": {
+  "family": "Orobanchaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Lavandula": {
+  "family": "Lamiaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Leersia": {
+  "family": null,
+  "matchType": "HIGHERRANK",
+  "status": "ACCEPTED",
+  "rank": "KINGDOM"
+ },
+ "Leonitis": {
+  "family": "Lamiaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Leptinella": {
+  "family": "Asteraceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Leucophyta": {
+  "family": "Asteraceae",
+  "matchType": "EXACT",
+  "status": "DOUBTFUL",
+  "rank": "GENUS"
+ },
+ "Limbarda": {
+  "family": "Asteraceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Limnanthes": {
+  "family": "Limnanthaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Limonia": {
+  "family": "Rutaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Liriodendron": {
+  "family": "Magnoliaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Liriope": {
+  "family": "Asparagaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Lithodora": {
+  "family": "Boraginaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Lithops": {
+  "family": "Aizoaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Lomatia": {
+  "family": "Proteaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Loropetalum": {
+  "family": "Hamamelidaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Luffa": {
+  "family": "Cucurbitaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Lupinus": {
+  "family": "Fabaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Lycoris": {
+  "family": "Amaryllidaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Lyonothamnus": {
+  "family": "Rosaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Macrosyringion": {
+  "family": "Orobanchaceae",
+  "matchType": "EXACT",
+  "status": "SYNONYM",
+  "rank": "GENUS"
+ },
+ "Maerua": {
+  "family": "Capparaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Maianthemum": {
+  "family": "Asparagaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Margaritopsis": {
+  "family": "Rubiaceae",
+  "matchType": "EXACT",
+  "status": "SYNONYM",
+  "rank": "GENUS"
+ },
+ "Maurandya": {
+  "family": "Plantaginaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Mauritia": {
+  "family": "Arecaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Maytenus": {
+  "family": "Celastraceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Mazus": {
+  "family": "Mazaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Mecardonia": {
+  "family": "Plantaginaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Melampodium": {
+  "family": "Asteraceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Melilotus": {
+  "family": "Fabaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Mercurialis": {
+  "family": "Euphorbiaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Mertensia": {
+  "family": null,
+  "matchType": "HIGHERRANK",
+  "status": "ACCEPTED",
+  "rank": "KINGDOM"
+ },
+ "Metasequoia": {
+  "family": "Cupressaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Meum": {
+  "family": "Apiaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Microchloa": {
+  "family": "Poaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Mitella": {
+  "family": "Saxifragaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Moehringia": {
+  "family": "Caryophyllaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Montanoa": {
+  "family": "Asteraceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Morinda": {
+  "family": "Rubiaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Mussaenda": {
+  "family": "Rubiaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Myosoton": {
+  "family": "Caryophyllaceae",
+  "matchType": "EXACT",
+  "status": "SYNONYM",
+  "rank": "GENUS"
+ },
+ "Myosurus": {
+  "family": "Ranunculaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Nandina": {
+  "family": "Berberidaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Narthecium": {
+  "family": "Nartheciaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Neobuxbaumia": {
+  "family": "Cactaceae",
+  "matchType": "EXACT",
+  "status": "SYNONYM",
+  "rank": "GENUS"
+ },
+ "Neolamarckia": {
+  "family": "Rubiaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Neotinea": {
+  "family": "Orchidaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Nepenthes": {
+  "family": "Nepenthaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Nephrolepis": {
+  "family": "Nephrolepidaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Noccaea": {
+  "family": "Brassicaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Nothofagus": {
+  "family": "Nothofagaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Nyctaginia": {
+  "family": "Nyctaginaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Nymphaea": {
+  "family": "Nymphaeaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Nymphoides": {
+  "family": "Menyanthaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Oldenlandia": {
+  "family": "Rubiaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Oncostema": {
+  "family": "Asparagaceae",
+  "matchType": "EXACT",
+  "status": "SYNONYM",
+  "rank": "GENUS"
+ },
+ "Ophrys": {
+  "family": "Orchidaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Oreopteris": {
+  "family": "Thelypteridaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Osmunda": {
+  "family": "Osmundaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Othonna": {
+  "family": "Asteraceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Oxydendrum": {
+  "family": "Ericaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Paederia": {
+  "family": "Rubiaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Paederota": {
+  "family": "Plantaginaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Pancratium": {
+  "family": "Amaryllidaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Papaver": {
+  "family": "Papaveraceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Patzkea": {
+  "family": "Poaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Pelargonium": {
+  "family": "Geraniaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Peperomia": {
+  "family": "Piperaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Pereskia": {
+  "family": "Cactaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Perovskia": {
+  "family": "Lamiaceae",
+  "matchType": "EXACT",
+  "status": "SYNONYM",
+  "rank": "GENUS"
+ },
+ "Petiveria": {
+  "family": "Phytolaccaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Phalaris": {
+  "family": "Poaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Phedimus": {
+  "family": "Crassulaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Phyllanthus": {
+  "family": "Phyllanthaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Pilocarpus": {
+  "family": "Rutaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Pilosocereus": {
+  "family": "Cactaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Piriqueta": {
+  "family": "Turneraceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Pleurospermum": {
+  "family": "Apiaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Pogonophora": {
+  "family": null,
+  "matchType": "HIGHERRANK",
+  "status": "ACCEPTED",
+  "rank": "KINGDOM"
+ },
+ "Pongamia": {
+  "family": "Fabaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Prosopis": {
+  "family": "Fabaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Pterocephalus": {
+  "family": "Caprifoliaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Punica": {
+  "family": "Lythraceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Pyracantha": {
+  "family": "Rosaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Raphia": {
+  "family": "Arecaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Rhodanthe": {
+  "family": "Asteraceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Rhodothamnus": {
+  "family": "Ericaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Rumohra": {
+  "family": "Dryopteridaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Sagittaria": {
+  "family": "Alismataceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Sagotia": {
+  "family": "Euphorbiaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Sasa": {
+  "family": "Poaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Schefflera": {
+  "family": "Araliaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Schinopsis": {
+  "family": "Anacardiaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Schkuhria": {
+  "family": "Asteraceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Secale": {
+  "family": "Poaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Sedum": {
+  "family": "Crassulaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Selenicereus": {
+  "family": "Cactaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Smilax": {
+  "family": "Smilacaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Spergularia": {
+  "family": "Caryophyllaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Stanleya": {
+  "family": "Brassicaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Stemodia": {
+  "family": "Plantaginaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Stenanona": {
+  "family": "Annonaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Stenocactus": {
+  "family": "Cactaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Stoebe": {
+  "family": "Asteraceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Striga": {
+  "family": "Orobanchaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Strongylodon": {
+  "family": "Fabaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Tagetes": {
+  "family": "Asteraceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Telekia": {
+  "family": "Asteraceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Tephrocactus": {
+  "family": "Cactaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Tetraclinis": {
+  "family": "Cupressaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Thapsia": {
+  "family": "Apiaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Thesium": {
+  "family": "Thesiaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Trachelospermum": {
+  "family": "Apocynaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Tradescantia": {
+  "family": "Commelinaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Triadica": {
+  "family": "Euphorbiaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Trifolium": {
+  "family": "Fabaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Trimezia": {
+  "family": "Iridaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Trinia": {
+  "family": "Apiaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Uncinia": {
+  "family": "Cyperaceae",
+  "matchType": "EXACT",
+  "status": "SYNONYM",
+  "rank": "GENUS"
+ },
+ "Urera": {
+  "family": "Urticaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Vaccaria": {
+  "family": "Caryophyllaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Vangueria": {
+  "family": "Rubiaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Vanilla": {
+  "family": "Orchidaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Vepris": {
+  "family": "Rutaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Viscaria": {
+  "family": "Caryophyllaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Vismia": {
+  "family": "Hypericaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Wigandia": {
+  "family": "Namaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Wodyetia": {
+  "family": "Arecaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Xylococcus": {
+  "family": "Picrodendraceae",
+  "matchType": "EXACT",
+  "status": "SYNONYM",
+  "rank": "GENUS"
+ },
+ "Xylopia": {
+  "family": "Annonaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Zaleya": {
+  "family": "Aizoaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Zamia": {
+  "family": "Zamiaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Zamioculcas": {
+  "family": "Araceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ },
+ "Zannichellia": {
+  "family": "Potamogetonaceae",
+  "matchType": "EXACT",
+  "status": "ACCEPTED",
+  "rank": "GENUS"
+ }
+}
