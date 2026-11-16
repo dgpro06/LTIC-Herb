@@ -1,0 +1,40 @@
+{
+ "n_images": 31112,
+ "n_tail_fp": 201,
+ "share": {
+  "same_genus": 0.6119402985074627,
+  "same_family": 0.11442786069651742,
+  "diff_family": 0.2736318407960199,
+  "unknown_family": 0.0,
+  "cross_genus": 0.3880597014925373
+ },
+ "ci95": {
+  "same_genus": [
+   0.5414589393600359,
+   0.6807562038900067
+  ],
+  "same_family": [
+   0.07344632768361582,
+   0.16099052082223872
+  ],
+  "diff_family": [
+   0.2125536393814266,
+   0.3371617742987605
+  ],
+  "unknown_family": [
+   0.0,
+   0.0
+  ],
+  "cross_genus": [
+   0.31924379610999326,
+   0.45854106063996414
+  ]
+ },
+ "source": "results/preds/plantnet_bioclip2_la_test_seed0.npz",
+ "tau": 0.3584833022120488,
+ "few_end": 523,
+ "top1": 0.8352404217022371,
+ "method": "la",
+ "encoder": "bioclip2",
+ "dataset": "plantnet"
+}

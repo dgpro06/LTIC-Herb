@@ -1,0 +1,155 @@
+{
+ "dataset": "plantnet",
+ "encoder": "bioclip2",
+ "split": "vselect",
+ "thresholds": {
+  "_note": "Plan v9.1 \u00a78.1 defaults. Agree and commit these BEFORE computing any diagnostic; the git log is the record.",
+  "donor_median_ratio_min": 3.0,
+  "cross_genus_share_min": 0.3,
+  "genus_correct_share_min": 0.5,
+  "c2_p_value_max": 0.05,
+  "a9_max_gain_retained": 0.5,
+  "vselect_min_tail_images": 500
+ },
+ "groups": {
+  "few": 523,
+  "medium": 266,
+  "many": 292
+ },
+ "donor_pooling": {
+  "tail_species": 523,
+  "median_ratio": 58.5,
+  "quantiles_10_25_50_75_90": [
+   0.0,
+   1.8786764705882353,
+   58.5,
+   626.9,
+   1683.625
+  ],
+  "share_no_congener_images": 0.18546845124282982,
+  "share_ratio_ge_3": 0.7208413001912046
+ },
+ "cross_genus": {
+  "n_images": 12453,
+  "n_tail_fp": 91,
+  "share": {
+   "same_genus": 0.7472527472527473,
+   "same_family": 0.03296703296703297,
+   "diff_family": 0.21978021978021978,
+   "unknown_family": 0.0,
+   "cross_genus": 0.25274725274725274
+  },
+  "ci95": {
+   "same_genus": [
+    0.6568553178847296,
+    0.8333333333333334
+   ],
+   "same_family": [
+    0.0,
+    0.07526881720430108
+   ],
+   "diff_family": [
+    0.13952752428613482,
+    0.30771276595744673
+   ],
+   "unknown_family": [
+    0.0,
+    0.0
+   ],
+   "cross_genus": [
+    0.16666666666666663,
+    0.3431446821152703
+   ]
+  }
+ },
+ "genus_rescue": {
+  "n_cross_genus_tail_fp": 23,
+  "genus_correct_share": 0.21739130434782608,
+  "genus_probe_split_macro_f1": 0.7771800958136176
+ },
+ "genus_rescue_secondary": {
+  "_note": "sensitivity analyses of check (b); not gate criteria",
+  "balanced_probe": {
+   "n": 23,
+   "genus_correct": 5,
+   "genus_correct_share": 0.21739130434782608,
+   "genus_correct_wilson95": [
+    0.09663835601719065,
+    0.4190388018273492
+   ],
+   "same_wrong_genus_share": 0.30434782608695654,
+   "third_genus_share": 0.4782608695652174,
+   "genus_acc_all_images": 0.9619368826788726,
+   "by_true_group": {
+    "few": {
+     "n": 5,
+     "genus_correct_share": 0.2
+    },
+    "medium": {
+     "n": 3,
+     "genus_correct_share": 0.0
+    },
+    "many": {
+     "n": 15,
+     "genus_correct_share": 0.26666666666666666
+    }
+   }
+  },
+  "ce_probe": {
+   "n": 23,
+   "genus_correct": 7,
+   "genus_correct_share": 0.30434782608695654,
+   "genus_correct_wilson95": [
+    0.15603828020972454,
+    0.5086612906057261
+   ],
+   "same_wrong_genus_share": 0.34782608695652173,
+   "third_genus_share": 0.34782608695652173,
+   "genus_acc_all_images": 0.9702882839476431,
+   "by_true_group": {
+    "few": {
+     "n": 5,
+     "genus_correct_share": 0.2
+    },
+    "medium": {
+     "n": 3,
+     "genus_correct_share": 0.0
+    },
+    "many": {
+     "n": 15,
+     "genus_correct_share": 0.4
+    }
+   },
+   "split_macro_f1": 0.8218471700004181
+  }
+ },
+ "c2_covariance": {
+  "eligible_species": 558,
+  "k": 10,
+  "same_genus_pairs": 2631,
+  "same_genus_mean_sim": 0.2729915678501129,
+  "random_pair_mean_sim": 0.12220366299152374,
+  "null_mean": 0.12162210489064455,
+  "n_perm": 1000,
+  "p_value": 0.000999000999000999
+ },
+ "checks": {
+  "C1_donor_median_ge": {
+   "value": 58.5,
+   "pass": true
+  },
+  "C1a_cross_genus_share_ge": {
+   "value": 0.25274725274725274,
+   "pass": false
+  },
+  "C1b_genus_correct_ge": {
+   "value": 0.21739130434782608,
+   "pass": false
+  },
+  "C2_p_value_lt": {
+   "value": 0.000999000999000999,
+   "pass": true
+  }
+ },
+ "verdict": "only C2 supported: keep C2"
+}
