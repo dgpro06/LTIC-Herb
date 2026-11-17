@@ -16,6 +16,10 @@ Methods (plan §7, baselines 1-9):
     ltic3         C0: branches H, M, T; prediction H + M + T
     flat_genus    species probe + genus probe (genus trained with the logit-adjusted loss)
 Every method also accepts a post-hoc 'tau' (LA at decision time) if it is in its search space.
+
+C2 (lt/calibration.py) is an option on top of any method: cfg['c2'] = True adds k synthetic features per
+tail species per epoch (keys c2_tau_mu, c2_k, c2_rank, c2_nmin; c2_shuffle = A9 control). The log prior
+used by LA / balanced softmax / LDAM stays the REAL train prior.
 """
 import copy
 import math
@@ -102,8 +106,21 @@ def predict(model, fs, cfg, log_pi, batch=8192):
     return torch.cat(sp), (torch.cat(gn) if gn else None)
 
 
-def train(cfg, train_fs, tune_fs, counts, few_end, many_start, seed=0, genus_of=None, log=print):
-    """Train one configuration; return (model at the best V-tune epoch, info dict)."""
+C2_DEFAULTS = {'c2': False, 'c2_tau_mu': 5.0, 'c2_k': 10, 'c2_rank': 'diag', 'c2_nmin': 20,
+               'c2_shuffle': False, 'c2_shuffle_seed': 0}
+
+
+def c2_stats_for(cfg, train_fs, counts, few_end, taxonomy):
+    from lt.calibration import DonorStats
+    return DonorStats(train_fs.x[0], train_fs.y, counts, taxonomy.genus_of, taxonomy.family_of, few_end,
+                      n_min=cfg['c2_nmin'], rank=cfg['c2_rank'])
+
+
+def train(cfg, train_fs, tune_fs, counts, few_end, many_start, seed=0, genus_of=None, log=print,
+          taxonomy=None, c2_stats=None):
+    """Train one configuration; return (model at the best V-tune epoch, info dict).
+
+    C2 needs `taxonomy` (lt.taxonomy.Taxonomy, already shuffled for A9) or a prebuilt `c2_stats`."""
     cfg = dict(DEFAULTS, **cfg)
     device = train_fs.x.device
     torch.manual_seed(seed)
@@ -128,11 +145,22 @@ def train(cfg, train_fs, tune_fs, counts, few_end, many_start, seed=0, genus_of=
         ldam = L.LDAMLoss(counts, cfg['ldam_max_m'], cfg['ldam_s'], int(cfg['drw_frac'] * cfg['epochs']),
                           device=device)
 
+    c2 = None
+    if cfg.get('c2'):
+        cfg = dict(C2_DEFAULTS, **cfg)
+        if c2_stats is None:
+            if taxonomy is None:
+                raise ValueError('C2 needs a taxonomy')
+            c2_stats = c2_stats_for(cfg, train_fs, counts, few_end, taxonomy)
+        c2 = c2_stats.sampler(cfg['c2_tau_mu'], cfg['c2_k'])
+    n_syn = c2.n_samples if c2 is not None else 0
+    n_all = train_fs.n + n_syn
+
     opt = torch.optim.SGD(model.parameters(), lr=cfg['lr'], momentum=cfg['momentum'],
                           weight_decay=cfg['weight_decay'])
-    steps_per_epoch = max(1, train_fs.n // cfg['batch_size'])
+    steps_per_epoch = max(1, n_all // cfg['batch_size'])
     total = steps_per_epoch * cfg['epochs']
-    balanced = _ClassBalancedSampler(train_fs.y, C, g) if method == 'crt' else None
+    balanced = _ClassBalancedSampler(train_fs.y, C, g) if method == 'crt' and c2 is None else None
 
     best = {'score': -math.inf, 'epoch': -1, 'state': None}
     history = []
@@ -140,13 +168,28 @@ def train(cfg, train_fs, tune_fs, counts, few_end, many_start, seed=0, genus_of=
     step = 0
     for epoch in range(cfg['epochs']):
         model.train()
-        perm = torch.randperm(train_fs.n, device=device, generator=g)
+        if c2 is not None:
+            # fresh synthetic tail features every epoch, appended after the real ones (index >= n)
+            syn_x, syn_y = c2.sample(g)
+            y_all = torch.cat([train_fs.y, syn_y])
+            if method == 'crt':
+                balanced = _ClassBalancedSampler(y_all, C, g)
+        perm = torch.randperm(n_all, device=device, generator=g)
         for k in range(steps_per_epoch):
             lr = 0.5 * cfg['lr'] * (1 + math.cos(math.pi * step / total))
             for pg in opt.param_groups:
                 pg['lr'] = lr
             idx = balanced.sample(cfg['batch_size']) if balanced else perm[k * cfg['batch_size']:(k + 1) * cfg['batch_size']]
-            x, y = train_fs.batch(idx, g), train_fs.y[idx]
+            if c2 is None:
+                x, y = train_fs.batch(idx, g), train_fs.y[idx]
+            else:
+                real = idx < train_fs.n
+                x = torch.empty(len(idx), train_fs.dim, device=device)
+                if real.any():
+                    x[real] = train_fs.batch(idx[real], g)
+                if (~real).any():
+                    x[~real] = syn_x[idx[~real] - train_fs.n]
+                y = y_all[idx]
             out = model(x)
             if method in ('ltic2', 'ltic3', 'reslt'):
                 loss = L.ltic_loss(out['branches'], y, masks, cfg['alpha'])[0]
@@ -162,7 +205,7 @@ def train(cfg, train_fs, tune_fs, counts, few_end, many_start, seed=0, genus_of=
                 loss = loss + cfg['genus_weight'] * L.la_loss(out['genus'], genus_t[y], genus_log_pi, cfg['genus_tau'])
             if not torch.isfinite(loss):
                 log('   non-finite loss at epoch {}; stopping this run'.format(epoch))
-                return _finish(model, best, history, cfg, t0, diverged=True)
+                return _finish(model, best, history, cfg, t0, diverged=True, c2_stats=c2_stats)
             opt.zero_grad(set_to_none=True)
             loss.backward()
             opt.step()
@@ -176,12 +219,14 @@ def train(cfg, train_fs, tune_fs, counts, few_end, many_start, seed=0, genus_of=
             history.append({'epoch': epoch + 1, 'loss': float(loss.detach()),'vtune_' + cfg['select_metric']: score})
             if score > best['score']:
                 best = {'score': score, 'epoch': epoch + 1, 'state': copy.deepcopy(model.state_dict())}
-    return _finish(model, best, history, cfg, t0)
+    return _finish(model, best, history, cfg, t0, c2_stats=c2_stats)
 
 
-def _finish(model, best, history, cfg, t0, diverged=False):
+def _finish(model, best, history, cfg, t0, diverged=False, c2_stats=None):
     if best['state'] is not None:
         model.load_state_dict(best['state'])
     info = {'best_epoch': best['epoch'], 'vtune_score': best['score'], 'history': history,
             'seconds': time.time() - t0, 'diverged': diverged, 'cfg': cfg}
+    if c2_stats is not None:
+        info['c2_summary'] = c2_stats.summary
     return model, info

@@ -9,6 +9,8 @@ Stages:
     vselect  ONE score of the saved winner on V-select (+ its V-select logits)
     final    the saved winner with each seed on test and V-cal (+ logits for C-F and C4)
 Method names may fix settings: 'ltic3@gamma=0' (the gamma = 0 row).
+C2 on top of a base method: 'crt+c2', 'la+c2', 'ltic3+c2', ...; A9 control: 'crt+c2shuf'. The donor-level shares
+of the chosen C2 configuration are written to results/c2/.
 """
 import argparse
 import json
@@ -64,6 +66,16 @@ def main():
             print('   chosen: {}'.format(json.dumps(cfg)))
         with open(cfg_path, encoding='utf-8') as f:
             cfg = json.load(f)
+        if cfg.get('c2'):
+            summary = data.c2_stats(cfg).summary
+            c2_dir = os.path.join(os.path.dirname(args.results) or '.', 'c2')
+            os.makedirs(c2_dir, exist_ok=True)
+            with open(os.path.join(c2_dir, '{}_{}_{}_donors.json'.format(conf['dataset'], conf['encoder'], tag)),
+                      'w', encoding='utf-8') as f:
+                json.dump(summary, f, indent=1)
+            print('=> {} donors (n_min {}): genus {:.1%}, family {:.1%}, global {:.1%}, none {}'.format(
+                name, summary['n_min'], summary['genus_share'], summary['family_share'], summary['global_share'],
+                summary['none']))
         if 'vselect' in stages:
             m = harness.score_vselect(name, cfg, data, args.results, seed=0, save_dir=args.preds)
             print('=> {} V-select: macro-F1 {:.4f} top-1 {:.4f} few {:.4f} (pooled {:.4f}) med {:.4f} many {:.4f}'.format(

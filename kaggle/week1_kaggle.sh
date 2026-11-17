@@ -17,6 +17,7 @@ BASELINE_ENCODERS=${BASELINE_ENCODERS:-$ENCODERS}
 TRIALS=${TRIALS:-20}                        # random-search trials per method (cut to 10 for ALL methods if runs are slow)
 EPOCHS=${EPOCHS:-}                          # default: the config's 30
 SEEDS=${SEEDS:-0,1,2}
+CF_FROM_CE=${CF_FROM_CE:-0}                 # 1 = C-F tau curve from the CE baseline's test predictions
 BATCH=${BATCH:-128}                         # extraction batch size
 WORKERS=${WORKERS:-4}                       # Kaggle notebooks have 4 CPU cores
 INPUT=${INPUT:-/kaggle/input}
@@ -137,6 +138,16 @@ if [ -n "$BASELINES" ]; then
     stamp "STEP 9  Baselines on $enc: $BASELINES (finished methods are skipped)"
     python "$CODE/tools/run_baselines.py" --config "configs/plantnet_${enc}.json" --methods "$BASELINES" \
       --trials "$TRIALS" --seeds "$SEEDS" $EP --skip_done
+  done
+fi
+
+if [ "$CF_FROM_CE" = 1 ]; then
+  # the paper's "tail-FP share vs tau" curve, drawn from the plain CE probe (tau = 0 is the untouched model)
+  for enc in $(echo "$BASELINE_ENCODERS" | tr ',' ' '); do
+    f="results/preds/plantnet_${enc}_ce_test_seed0.npz"
+    [ -e "$f" ] || { echo "no CE predictions for $enc ($f); C-F tau curve skipped"; continue; }
+    stamp "C-F tau curve from the CE baseline: $enc"
+    python "$CODE/tools/cf_report.py" --preds "$f" --taxonomy taxonomy/plantnet.csv --out results/cf --tau 0 --tau_max 2
   done
 fi
 

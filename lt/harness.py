@@ -8,6 +8,8 @@ Protocol, identical for every method:
      results/all_runs.csv; raw logits are saved for C-F (lt/cf.py) and C4 (lt/conformal.py).
 
 A method name may carry fixed settings after '@', e.g. 'ltic3@gamma=0' (the gamma = 0 row, §3.2).
+C2 is added to any base method with '+c2' (e.g. 'crt+c2', 'ltic3+c2@c2_rank="diag"'); '+c2shuf' is the A9
+control (C2 with Taxonomy.shuffled(c2_shuffle_seed), all parameters re-tuned).
 """
 import csv
 import datetime
@@ -42,12 +44,22 @@ SPACES = {
     'reslt': LTIC, 'ltic2': LTIC, 'ltic3': LTIC,
     'flat_genus': {'genus_weight': ('loguniform', 0.1, 3.0), 'genus_tau': ('uniform', 0.0, 2.0)},
 }
+# C2 parameters, searched on top of the base method's own space (PLAN_NEXT.md §6)
+C2_SPACE = {'c2_tau_mu': ('loguniform', 0.5, 50.0), 'c2_k': ('choice', [5, 10, 20, 40]),
+            'c2_rank': ('choice', ['diag', 8, 32, 64]), 'c2_nmin': ('choice', [10, 20, 40])}
+C2_SUFFIX = {'c2': {'c2': True}, 'c2shuf': {'c2': True, 'c2_shuffle': True}}
 
 
 def parse_method(name):
-    """'ltic3@gamma=0,alpha=0.85' -> ('ltic3', {'gamma': 0.0, 'alpha': 0.85})."""
+    """'ltic3@gamma=0,alpha=0.85' -> ('ltic3', {'gamma': 0.0, 'alpha': 0.85});
+    'crt+c2' -> ('crt', {'c2': True}); 'crt+c2shuf' -> ('crt', {'c2': True, 'c2_shuffle': True})."""
     base, _, rest = name.partition('@')
     fixed = {}
+    base, plus, extra = base.partition('+')
+    if plus:
+        if extra not in C2_SUFFIX:
+            raise ValueError('unknown suffix +{} in {} (choose from {})'.format(extra, name, sorted(C2_SUFFIX)))
+        fixed.update(C2_SUFFIX[extra])
     for kv in filter(None, rest.split(',')):
         k, v = kv.split('=')
         try:
@@ -61,6 +73,8 @@ def parse_method(name):
 
 def sample_config(method, rng, fixed=None, base=None):
     space = dict(COMMON, **SPACES[method])
+    if fixed and fixed.get('c2'):
+        space.update(C2_SPACE)
     cfg = dict(base or {})
     for k, spec in space.items():
         if fixed and k in fixed:
@@ -104,6 +118,28 @@ class Data(object):
             self.fs[s] = T.FeatureSet(x, self.index.remap(y.numpy()), self.device)
         self.taxonomy = Taxonomy.from_csv(conf['taxonomy'], self.index) if conf.get('taxonomy') else None
         self.log_pi = L.log_prior(self.index.counts, self.device)
+        self.c2_cache = {}
+
+    def taxonomy_for(self, cfg):
+        if self.taxonomy is None:
+            raise ValueError('{} needs "taxonomy" in the config'.format(cfg['method']))
+        if cfg.get('c2_shuffle'):
+            return self.taxonomy.shuffled(cfg.get('c2_shuffle_seed', 0))
+        return self.taxonomy
+
+    def c2_stats(self, cfg):
+        """Donor statistics depend only on (n_min, covariance form, taxonomy): built once, reused by trials."""
+        cfg = dict(T.C2_DEFAULTS, **cfg)
+        # low-rank statistics are built once at rank 64 and sliced for r = 8 / 32
+        diag = cfg['c2_rank'] == 'diag'
+        key = (cfg['c2_nmin'], 'diag' if diag else 'lowrank', bool(cfg['c2_shuffle']), cfg['c2_shuffle_seed'])
+        if key not in self.c2_cache:
+            if len(self.c2_cache) >= 6:                     # bound GPU memory
+                self.c2_cache.pop(next(iter(self.c2_cache)))
+            build = dict(cfg, c2_rank='diag' if diag else 64)
+            self.c2_cache[key] = T.c2_stats_for(build, self.fs['train'], self.index.counts, self.groups.few_end,
+                                                self.taxonomy_for(cfg))
+        return self.c2_cache[key].at_rank(cfg['c2_rank'])
 
     def describe(self):
         parts = ['{} {}'.format(k, v.n) for k, v in self.fs.items()]
@@ -116,8 +152,9 @@ def train_one(cfg, data, seed):
     genus_of = data.taxonomy.genus_of if data.taxonomy is not None else None
     if cfg['method'] == 'flat_genus' and genus_of is None:
         raise ValueError('flat_genus needs "taxonomy" in the config')
+    c2_stats = data.c2_stats(cfg) if cfg.get('c2') else None
     return T.train(cfg, data.fs['train'], data.fs['vtune'], data.index.counts, data.groups.few_end,
-                   data.groups.many_start, seed=seed, genus_of=genus_of, log=lambda *_: None)
+                   data.groups.many_start, seed=seed, genus_of=genus_of, log=lambda *_: None, c2_stats=c2_stats)
 
 
 # ---------------------------------------------------------------------------------------------
@@ -159,7 +196,8 @@ def _row(data, method_name, cfg, info, stage, trial, seed, split, metrics):
                 encoder=data.conf['encoder'], method=method_name, config_id=config_id(cfg), stage=stage,
                 trial=trial, seed=seed, split=split, best_epoch=info['best_epoch'],
                 vtune_score=round(info['vtune_score'], 6), seconds=round(info['seconds'], 1),
-                hparams=json.dumps({k: cfg[k] for k in sorted(cfg) if k in T.DEFAULTS or k == 'method'}),
+                hparams=json.dumps({k: cfg[k] for k in sorted(cfg)
+                                    if k in T.DEFAULTS or k == 'method' or (cfg.get('c2') and k in T.C2_DEFAULTS)}),
                 **metrics)
 
 
