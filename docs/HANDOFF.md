@@ -19,8 +19,9 @@ Everything trains small heads on cached frozen-encoder features.
 - **User:** GitHub `dgpro06`, works on Windows 11 (`E:\LTIC-Herb`), laptop GPU RTX 4050 6 GB (not the team's
   4070; the 4070 machine has not been used yet). System Python 3.11 has **no torch**. Not deeply familiar with
   Kaggle/Git UIs: give click-by-click instructions. The PC sometimes sleeps/turns off.
-- **Standing permission:** "push anything by yourself if anything needed to be fixed for the run". Commit
-  messages end with `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>`. Other commits: ask first.
+- **Standing permission:** "push anything by yourself if anything needed to be fixed for the run". Other
+  commits: ask first. **Never put Claude's name in a commit** (no `Co-Authored-By: Claude` trailer, no
+  "Generated with Claude" line): the user asked for this on 2026-11-17.
 - **Git:** branch `Dgpro`, tracks `fork/Dgpro` = https://github.com/dgpro06/LTIC-Herb (public; Kaggle clones it).
   Other remotes: `origin` = fussfreak/LTIC-Herb, `upstream` = Raiyan007-gb/LTIC-Herb (original authors).
   `.gitattributes` forces LF for `*.sh` (needed on Kaggle); `core.autocrlf=true` (CRLF warnings are harmless).
