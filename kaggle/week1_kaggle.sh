@@ -141,6 +141,15 @@ if [ -n "$BASELINES" ]; then
   done
 fi
 
+if [[ "$BASELINES" == *+c2* ]]; then
+  for enc in $(echo "$BASELINE_ENCODERS" | tr ',' ' '); do
+    stamp "Week-2 gate (PLAN_NEXT 5) on $enc: C2 vs the best baseline, A9 (V-select)"
+    OUT="results/week2_gate_plantnet_${enc}.json"
+    [ -e "$OUT" ] && OUT="results/week2_gate_plantnet_${enc}_rerun.json"
+    python "$CODE/tools/week2_gate.py" --encoder "$enc" --out "$OUT" || echo "week-2 gate on $enc did not run (see above)"
+  done
+fi
+
 if [ "$CF_FROM_CE" = 1 ]; then
   # the paper's "tail-FP share vs tau" curve, drawn from the plain CE probe (tau = 0 is the untouched model)
   for enc in $(echo "$BASELINE_ENCODERS" | tr ',' ' '); do

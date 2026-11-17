@@ -156,7 +156,7 @@ class DonorStats(object):
                 evals = evals.clamp(min=0).flip(0)                        # descending
                 R = max(self.rank, min(self.MAX_RANK, D))
                 self._evals.append(evals)
-                self._evecs.append(evecs.flip(1)[:, :R].contiguous())
+                self._evecs.append(evecs.flip(1)[:, :R].float().contiguous())    # float32: ~2,500 sets on H22
         if rank != 'diag':
             self._set_rank(self.rank)
 
@@ -165,7 +165,7 @@ class DonorStats(object):
         self.rank = r
         self.set_factor = []
         for j, (ev, V) in enumerate(zip(self._evals, self._evecs)):
-            self.set_factor.append(V[:, :r] * ev[:r].sqrt().unsqueeze(0))
+            self.set_factor.append(V[:, :r] * ev[:r].sqrt().float().unsqueeze(0))
             rest = ev[r:] if r < len(ev) else ev.new_zeros(1)
             self.set_resid[j] = rest.mean().sqrt()
 

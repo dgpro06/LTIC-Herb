@@ -75,7 +75,7 @@ def test_low_rank_covariance_matches_pooled_covariance():
     w = torch.tensor([30., 40.], dtype=torch.float64) / 70
     cov = w[0] * torch.cov(xf[y == 4].t()) + w[1] * torch.cov(xf[y == 5].t())
     f = st.set_factor[st.tail_set[0]]
-    assert torch.allclose(f @ f.t(), cov, atol=1e-6)
+    assert torch.allclose((f @ f.t()).double(), cov, atol=1e-4)
     st2 = C.DonorStats(x, y, COUNTS, GENUS, FAMILY, few_end=4, n_min=20, rank=2)   # truncated + residual
     f2 = st2.set_factor[st2.tail_set[0]]
     ev = torch.linalg.eigvalsh(cov)
@@ -90,7 +90,7 @@ def test_rank_slicing_matches_a_direct_build():
     sliced = big.at_rank(2)
     assert big.rank == 5 and sliced.rank == 2                    # the cached object is not modified
     for a, b in zip(sliced.set_factor, direct.set_factor):
-        assert torch.allclose(a @ a.t(), b @ b.t(), atol=1e-8)
+        assert torch.allclose(a @ a.t(), b @ b.t(), atol=1e-5)
     assert torch.allclose(sliced.set_resid, direct.set_resid, atol=1e-8)
     with pytest.raises(ValueError):
         big.at_rank('diag')
@@ -168,3 +168,87 @@ def test_runner_end_to_end_with_c2(synth, tmp_path):
     assert os.path.isfile(os.path.join(preds, 'synth_synth_crt+c2_test_seed0.npz'))
     donors = json.load(open(tmp_path / 'c2' / 'synth_synth_crt+c2_donors.json', encoding='utf-8'))
     assert donors['tail_species'] > 0
+
+
+# ----------------------------------------------------------------------------- TaxoNet (baseline 11)
+def test_taxonet_margins_and_loss():
+    from lt.losses import TaxoNetLoss
+    import torch.nn.functional as F
+    counts = np.array([2, 10, 100, 1000])                    # output order: rarest first
+    for rho_norm in ('sum', 'max'):
+        L = TaxoNetLoss(counts, s=32.0, m0=0.15, lam=0.5, rho_norm=rho_norm)
+        d = L.deltas().detach()
+        assert torch.all(d[:-1] > d[1:]) and float(d.min()) >= 0 and float(d.max()) <= 0.15 + 1e-6
+        ref = {'sum': float(L.rho.sum()), 'max': float(L.rho.max())}[rho_norm]
+        assert abs(ref - 0.15) < 1e-6
+    z = torch.tensor([[0.3, 0.1, -0.2, 0.5]], requires_grad=True)
+    t = torch.tensor([1])
+    L = TaxoNetLoss(counts, s=32.0, m0=0.15, lam=0.5, rho_norm='max')
+    d = L.deltas()
+    m = d.detach().clone()
+    m[1] += 0.15
+    expect = F.cross_entropy(32.0 * (z - m).unsqueeze(0).squeeze(0), t) + 0.5 * ((d - L.rho) ** 2).sum()
+    got = L(z, t)
+    assert torch.allclose(got, expect, atol=1e-6)
+    got.backward()
+    assert L.gamma.grad is not None                          # the margin exponent is learned
+
+
+# ----------------------------------------------------------------------------- extraction split across machines
+def test_extractor_parts_merge_to_the_full_store(tmp_path):
+    """--part 0/2 and 1/2 on two 'machines', chunk files copied together == one full run."""
+    import shutil
+    from PIL import Image
+    from tools import extract_features as X
+    from networks.backbones import build_backbone
+    from lt.features import load_split
+    img_root = tmp_path / 'imgs'
+    img_root.mkdir()
+    rng = np.random.default_rng(0)
+    lines = []
+    for i in range(10):
+        Image.fromarray(rng.integers(0, 255, (40, 30, 3), dtype=np.uint8)).save(img_root / '{}.png'.format(i))
+        lines.append('{}.png {}'.format(i, i % 3))
+    txt = tmp_path / 'split.txt'
+    txt.write_text('\n'.join(lines) + '\n')
+    enc = build_backbone('debug_tiny')
+    encoders = {'debug_tiny': (enc, torch.tensor(enc.mean).view(1, 3, 1, 1), torch.tensor(enc.std).view(1, 3, 1, 1))}
+
+    def args(out, part):
+        class A:
+            root, chunk, batch, workers, views, size, resize, seed, limit = str(img_root), 3, 2, 0, 1, 32, 36, 0, 0
+            deadline_min, rate, stopped = 0, 30.0, False
+        A.out, A.part_kn = str(out), part
+        return A
+    full = tmp_path / 'full'
+    X.extract_split(args(full, (0, 1)), 'train', str(txt), encoders, torch.device('cpu'))
+    for k in (0, 1):
+        X.extract_split(args(tmp_path / 'p{}'.format(k), (k, 2)), 'train', str(txt), encoders, torch.device('cpu'))
+    with pytest.raises(RuntimeError):
+        load_split(str(tmp_path / 'p0'), 'train', 'debug_tiny')            # half the chunks only
+    merged = tmp_path / 'merged'
+    for k in (0, 1):
+        shutil.copytree(tmp_path / 'p{}'.format(k), merged, dirs_exist_ok=True)
+    f1, l1 = load_split(str(full), 'train', 'debug_tiny')
+    f2, l2 = load_split(str(merged), 'train', 'debug_tiny')
+    assert torch.equal(f1, f2) and torch.equal(l1, l2)
+
+
+# ----------------------------------------------------------------------------- week-2 gate
+def test_week2_gate_end_to_end(synth, tmp_path):
+    _, conf_path, _, _ = synth
+    results, preds = str(tmp_path / 'all_runs.csv'), str(tmp_path / 'preds')
+    run = subprocess.run([sys.executable, os.path.join(ROOT, 'tools', 'run_baselines.py'), '--config', conf_path,
+                          '--methods', 'ce,crt,crt+c2,crt+c2shuf', '--trials', '1', '--seeds', '0,1', '--epochs', '2',
+                          '--results', results, '--preds', preds], cwd=str(tmp_path), capture_output=True, text=True)
+    assert run.returncode == 0, run.stderr[-3000:]
+    cmd = [sys.executable, os.path.join(ROOT, 'tools', 'week2_gate.py'), '--dataset', 'synth', '--encoder', 'synth',
+           '--results', results, '--preds', preds, '--n_boot', '200']
+    gate = subprocess.run(cmd, cwd=str(tmp_path), capture_output=True, text=True)
+    assert gate.returncode == 0, gate.stderr[-3000:]
+    g = json.load(open(tmp_path / 'week2_gate_synth_synth.json', encoding='utf-8'))
+    assert g['c2_method'] == 'crt+c2' and g['best_baseline'] in ('ce', 'crt')
+    assert set(g['criterion1']) == {'macro_f1', 'few_shot_pooled_acc'}
+    assert g['criterion2_a9']['a9_base'] == 'crt' and g['criterion2_a9']['pass'] in (True, False)
+    assert g['seed_spread_test_macro_f1']['crt+c2']['n'] == 2
+    assert subprocess.run(cmd, cwd=str(tmp_path), capture_output=True, text=True).returncode != 0   # never overwritten

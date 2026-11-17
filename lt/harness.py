@@ -43,6 +43,9 @@ SPACES = {
                  'drw_frac': ('uniform', 0.5, 0.9)},
     'reslt': LTIC, 'ltic2': LTIC, 'ltic3': LTIC,
     'flat_genus': {'genus_weight': ('loguniform', 0.1, 3.0), 'genus_tau': ('uniform', 0.0, 2.0)},
+    # s fixed at the paper's 32; m0 around the paper's 0.15; lam is not given in the paper
+    'taxonet': {'taxonet_m0': ('uniform', 0.05, 0.35), 'taxonet_lam': ('loguniform', 0.01, 10.0),
+                'taxonet_rho': ('choice', ['sum', 'max'])},
 }
 # C2 parameters, searched on top of the base method's own space (PLAN_NEXT.md §6)
 C2_SPACE = {'c2_tau_mu': ('loguniform', 0.5, 50.0), 'c2_k': ('choice', [5, 10, 20, 40]),
@@ -197,7 +200,8 @@ def _row(data, method_name, cfg, info, stage, trial, seed, split, metrics):
                 trial=trial, seed=seed, split=split, best_epoch=info['best_epoch'],
                 vtune_score=round(info['vtune_score'], 6), seconds=round(info['seconds'], 1),
                 hparams=json.dumps({k: cfg[k] for k in sorted(cfg)
-                                    if k in T.DEFAULTS or k == 'method' or (cfg.get('c2') and k in T.C2_DEFAULTS)}),
+                                    if k in T.DEFAULTS or k == 'method' or (cfg.get('c2') and k in T.C2_DEFAULTS)
+                                    or (cfg['method'] == 'taxonet' and k in T.TAXONET_DEFAULTS)}),
                 **metrics)
 
 

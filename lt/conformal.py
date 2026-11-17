@@ -3,7 +3,10 @@
 Score: PAS (prevalence-adjusted softmax, Ding, Fermanian, Salmon, ICLR 2026),
     s(x, y) = -p(y | x) / pi(y),
 with pi the train label prior; 'softmax' (s = 1 - p) is kept for comparison.
-TODO before reporting: check the PAS definition against github.com/tiffanyding/long-tail-conformal.
+Checked 2026-11-17 against github.com/tiffanyding/long-tail-conformal (example.ipynb: compute_PAS_scores =
+-softmax / class_distribution, class_distribution = train label frequencies; standard_CP keeps classes with
+score <= the ceil((n+1)(1-alpha))/n 'inverted_cdf' quantile): the species-level score and threshold below are
+identical. The genus-level score (summed species probabilities / genus prior) is our extension for CP-2..CP-4.
 
     CP-1  species split CP at alpha                       marginal >= 1 - alpha (species)
     CP-2  genus split CP at alpha on summed probabilities  marginal >= 1 - alpha (genus)

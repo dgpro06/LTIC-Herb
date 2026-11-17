@@ -6,6 +6,7 @@ All species classifiers are bias-free (plan §3.1), so frequency correction is e
     Balanced Softmax            CE(logits + log(pi))            (Ren et al., NeurIPS 2020)
     LDAM-DRW                    margin C / n^(1/4), deferred re-weighting (Cao et al., NeurIPS 2019)
     tau-norm                    w / ||w||^tau at test time       (Kang et al., ICLR 2020)
+    TaxoNet dual-margin         see TaxoNetLoss                  (Low et al., arXiv 2512.18994)
 """
 import numpy as np
 import torch
@@ -47,6 +48,39 @@ class LDAMLoss(object):
         adjusted = cos_logits - F.one_hot(target, cos_logits.size(1)) * self.margins[target].unsqueeze(1)
         weight = self.drw_weight if self.drw_epoch is not None and epoch >= self.drw_epoch else None
         return F.cross_entropy(self.s * adjusted, target, weight=weight)
+
+
+class TaxoNetLoss(torch.nn.Module):
+    """Dual-margin loss of TaxoNet (Low et al., arXiv 2512.18994, Eq. 2-5), feature-level version (baseline 11).
+
+        L     = -log softmax_y( s * (z - m) ),  m_y = m0 + Delta_y (target),  m_k = Delta_k (k != y)
+        Delta = m0 * (rho / m0) ** softplus(gamma),   gamma learnable
+        rho_k ~ -log(N_k / N)  scaled so that sum_k rho_k = m0   ('sum', as stated in the paper)
+                                          or max_k rho_k = m0   ('max', an option: with 1000+ classes the
+                                                                  'sum' scaling makes every Delta tiny)
+        total = L + lam * sum_k (Delta_k - rho_k)^2
+    z are cosine logits (normalized features and prototypes, AM-Softmax style); s = 32 and m0 = 0.15 in the paper.
+    Not reproduced at feature level: AugMix oversampling of tail images (images are not available) and the
+    norm-guided sampling. lam and the initial gamma are not given in the paper; lam is searched, gamma starts at 0.
+    """
+
+    def __init__(self, counts, s=32.0, m0=0.15, lam=1.0, rho_norm='sum', gamma_init=0.0, device=None):
+        super().__init__()
+        counts = np.maximum(np.asarray(counts, dtype=np.float64), 1)
+        rho = -np.log(counts / counts.sum())
+        rho = rho * (m0 / (rho.sum() if rho_norm == 'sum' else rho.max()))
+        self.register_buffer('rho', torch.tensor(rho, dtype=torch.float32, device=device))
+        self.gamma = torch.nn.Parameter(torch.tensor(float(gamma_init), device=device))
+        self.s, self.m0, self.lam = s, m0, lam
+
+    def deltas(self):
+        return self.m0 * (self.rho / self.m0).clamp(min=1e-12).pow(F.softplus(self.gamma))
+
+    def forward(self, cos_logits, target):
+        delta = self.deltas()
+        m = delta.unsqueeze(0) + self.m0 * F.one_hot(target, cos_logits.size(1))
+        loss = F.cross_entropy(self.s * (cos_logits - m), target)
+        return loss + self.lam * ((delta - self.rho) ** 2).sum()
 
 
 def branch_masks_for(num_classes, few_end, many_start, branches, device=None):

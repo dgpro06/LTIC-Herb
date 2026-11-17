@@ -11,6 +11,10 @@ Labels are stored as the ORIGINAL split-file labels; renumbering happens at load
         --split test=splits/plantnet_test.txt
 
 Throughput test (plan §11.2, Nov 1): add --limit 10000 --out /tmp/feat_bench.
+Several machines / Kaggle accounts: --part K/N makes this run do only chunks i with i % N == K (K = 0..N-1);
+copy the chunk files of all parts into one --out folder afterwards (same split files on every machine).
+--deadline_min M: no new chunk is started if it would likely end after M minutes (Kaggle's 12 h limit);
+re-run the same command later to continue.
 View 0 is Resize(256) + CenterCrop(224); --views N adds N-1 RandomResizedCrop + flip views (A12 only).
 """
 import argparse
@@ -20,6 +24,8 @@ import time
 
 import torch
 from PIL import Image
+
+T_START = time.time()
 from torch.utils.data import DataLoader, Dataset
 from torchvision import transforms
 
@@ -91,12 +97,24 @@ def extract_split(args, split, txt, encoders, device):
 
     dataset = DecodeOnce(args.root, paths, labels, args.size, args.resize, args.views, args.seed)
     t_start, done_imgs = time.time(), 0
+    part_k, part_n = getattr(args, 'part_kn', (0, 1))
+    deadline = getattr(args, 'deadline_min', 0)
     for i in range(num_chunks):
+        if i % part_n != part_k:
+            continue
         if chunk_done(args.out, split, names, i):
             print('=> {} chunk {}/{} already done'.format(split, i + 1, num_chunks), flush=True)
             continue
         todo = [nm for nm in names if not os.path.isfile(chunk_path(args.out, split, nm, i))]
         start, end = i * args.chunk, min(n, (i + 1) * args.chunk)
+        if deadline:
+            elapsed = (time.time() - T_START) / 60
+            need = (end - start) / max(args.rate, 1e-6) / 60 * 1.15
+            if elapsed + need > deadline:
+                print('=> deadline: {:.0f} min used, chunk {} needs ~{:.0f} min; stopping here (re-run to continue)'.format(
+                    elapsed, i + 1, need), flush=True)
+                args.stopped = True
+                return
         loader = DataLoader(torch.utils.data.Subset(dataset, range(start, end)), batch_size=args.batch,
                             shuffle=False, num_workers=args.workers, pin_memory=device.type == 'cuda',
                             persistent_workers=False)
@@ -119,6 +137,7 @@ def extract_split(args, split, txt, encoders, device):
             save_chunk(args.out, split, nm, i, {'feats': torch.cat(feats[nm], dim=1), 'labels': lab,
                                                 'start': start, 'end': end})
         dt = time.time() - t0
+        args.rate = (end - start) / max(dt, 1e-6)
         done_imgs += end - start
         print('=> {} chunk {}/{} saved ({} images, {:.1f} img/s for {} encoders)'.format(
             split, i + 1, num_chunks, end - start, (end - start) / max(dt, 1e-6), len(todo)), flush=True)
@@ -141,13 +160,24 @@ def main():
     p.add_argument('--resize', type=int, default=256)
     p.add_argument('--seed', type=int, default=0)
     p.add_argument('--limit', type=int, default=0, help='first N images only (throughput test)')
+    p.add_argument('--part', default='0/1', help='K/N: only chunks i with i %% N == K (split work across machines)')
+    p.add_argument('--deadline_min', type=float, default=0, help='stop before a chunk that would end after this')
+    p.add_argument('--rate', type=float, default=30.0, help='img/s guess for the deadline until a chunk is timed')
     args = p.parse_args()
+    k, n = (int(v) for v in args.part.split('/'))
+    if not 0 <= k < n:
+        raise SystemExit('--part K/N needs 0 <= K < N')
+    args.part_kn = (k, n)
+    args.stopped = False
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     encoders = build_encoders(args.encoders.split(','), device)
     for spec in args.split:
         name, txt = spec.split('=', 1)
         extract_split(args, name, txt, encoders, device)
+        if args.stopped:
+            print('=> stopped at the deadline; the finished chunks are saved in {}'.format(args.out))
+            return
     print('=> done: {}'.format(args.out))
 
 

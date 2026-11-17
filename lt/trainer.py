@@ -15,6 +15,7 @@ Methods (plan §7, baselines 1-9):
     ltic2         IJCNN code: branches H, M; prediction H + M
     ltic3         C0: branches H, M, T; prediction H + M + T
     flat_genus    species probe + genus probe (genus trained with the logit-adjusted loss)
+    taxonet       cosine classifier + TaxoNet dual-margin loss (baseline 11, lt/losses.py TaxoNetLoss)
 Every method also accepts a post-hoc 'tau' (LA at decision time) if it is in its search space.
 
 C2 (lt/calibration.py) is an option on top of any method: cfg['c2'] = True adds k synthetic features per
@@ -41,7 +42,9 @@ DEFAULTS = {
 }
 
 HEAD_OF = {'ce': 'linear', 'la': 'linear', 'balanced_softmax': 'linear', 'crt': 'linear', 'tau_norm': 'linear',
-           'ldam_drw': 'linear', 'reslt': 'reslt', 'ltic2': 'ltic', 'ltic3': 'ltic', 'flat_genus': 'multitask'}
+           'ldam_drw': 'linear', 'reslt': 'reslt', 'ltic2': 'ltic', 'ltic3': 'ltic', 'flat_genus': 'multitask',
+           'taxonet': 'linear'}
+TAXONET_DEFAULTS = {'taxonet_s': 32.0, 'taxonet_m0': 0.15, 'taxonet_lam': 1.0, 'taxonet_rho': 'sum'}
 
 
 class FeatureSet(object):
@@ -80,7 +83,7 @@ class _ClassBalancedSampler(object):
 def build(cfg, in_dim, num_classes, num_genera=None):
     method = cfg['method']
     kind = HEAD_OF[method]
-    return H.build_head(kind, in_dim, num_classes, num_genera=num_genera, normed=method == 'ldam_drw',
+    return H.build_head(kind, in_dim, num_classes, num_genera=num_genera, normed=method in ('ldam_drw', 'taxonet'),
                         width=cfg['width'], gamma=cfg['gamma'])
 
 
@@ -156,7 +159,14 @@ def train(cfg, train_fs, tune_fs, counts, few_end, many_start, seed=0, genus_of=
     n_syn = c2.n_samples if c2 is not None else 0
     n_all = train_fs.n + n_syn
 
-    opt = torch.optim.SGD(model.parameters(), lr=cfg['lr'], momentum=cfg['momentum'],
+    params = list(model.parameters())
+    taxo = None
+    if method == 'taxonet':
+        cfg = dict(TAXONET_DEFAULTS, **cfg)
+        taxo = L.TaxoNetLoss(counts, cfg['taxonet_s'], cfg['taxonet_m0'], cfg['taxonet_lam'], cfg['taxonet_rho'],
+                             device=device)
+        params += list(taxo.parameters())            # the learnable margin exponent gamma
+    opt = torch.optim.SGD(params, lr=cfg['lr'], momentum=cfg['momentum'],
                           weight_decay=cfg['weight_decay'])
     steps_per_epoch = max(1, n_all // cfg['batch_size'])
     total = steps_per_epoch * cfg['epochs']
@@ -195,6 +205,8 @@ def train(cfg, train_fs, tune_fs, counts, few_end, many_start, seed=0, genus_of=
                 loss = L.ltic_loss(out['branches'], y, masks, cfg['alpha'])[0]
             elif method == 'ldam_drw':
                 loss = ldam(out['species'], y, epoch)
+            elif method == 'taxonet':
+                loss = taxo(out['species'], y)
             elif method == 'balanced_softmax':
                 loss = L.la_loss(out['species'], y, log_pi, 1.0)
             elif method == 'la' and cfg['la_mode'] == 'loss':
