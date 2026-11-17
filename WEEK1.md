@@ -66,7 +66,10 @@ and the C2 covariance test. The verdict, with every number, is saved to `results
 Gate diagnostics use V-select; the C-F figure uses test.
 
 ## Not done yet
-- SMART and the feature-level TaxoNet loss (baselines 10 and 11)
-- LIFT setup (Track A, Thu Nov 5)
+- SMART (baseline 10): its definition is in plan v9.1, not in the repo; not implemented yet
+- LIFT setup
 - iNat-2018 loader and taxonomy
-- the CP-5 option, and a check of the PAS score definition against Ding et al.'s code (`lt/conformal.py`, TODO)
+- the CP-5 option (cut, PLAN_NEXT D5)
+
+Done since: TaxoNet dual-margin loss (`taxonet`, baseline 11), C2 + A9 (`<method>+c2`, `<method>+c2shuf`),
+PAS checked against Ding et al.'s code (identical), H22 on Kaggle ([KAGGLE_H22.md](KAGGLE_H22.md)).

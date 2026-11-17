@@ -74,6 +74,22 @@ of the log are a one-line gate summary per encoder.
 If a session hits the 12-hour limit, start another one the same way, attaching the newest version's Output:
 finished LA probes and baselines are skipped (`--skip_done`), so it continues where it stopped.
 
+## Later sessions (same notebook, `PREV = "auto"`, attach the newest version's Output)
+Every later session works like session 2: attach the newest version's Output, keep PlantNet300k attached,
+`RUN_GATE = False`, and change only `ENCODERS`, `BASELINES`, `BASELINE_ENCODERS`. Finished methods are skipped.
+Which session produced which file is logged in [results/RUNS.md](results/RUNS.md).
+
+| Session | `ENCODERS` = `BASELINE_ENCODERS` | `BASELINES` |
+|---|---|---|
+| 3 (done) | `dinov2_b14,bioclip2` | baselines 1–9 (the session-2 list) |
+| 4 | `clip_b16` | baselines 1–9 (the session-2 list) |
+| 5: C2 + A9 + TaxoNet | `dinov2_b14,bioclip2,clip_b32` | `crt+c2,crt+c2shuf,tau_norm+c2,la+c2,ltic3+c2,ltic3+c2shuf,taxonet` |
+
+For session 5 also set `CF_FROM_CE = True`. A notebook imported before this setting existed needs one extra
+line at the end of its Settings cell: `import os; os.environ["CF_FROM_CE"] = "1"`. It redraws the C-F τ curve
+from the CE baseline (`results/cf/plantnet_<encoder>_ce_test_seed0_cf_tau.csv`).
+If GPU hours are short, run `dinov2_b14,bioclip2` first: the week-2 gate (Nov 21) needs them.
+
 ## Troubleshooting
 
 | Message | Fix |
