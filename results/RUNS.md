@@ -10,6 +10,7 @@ baselines on test (3 seeds) unless noted.
 | 2 | Version 2 "session-2" | 2026-11-16 | `ea25be9` | `PREV=auto`, gate on all four, baselines 1–9 on clip_b32, 20 trials, seeds 0–2 | `week1_gate_plantnet_{clip_b16,dinov2_b14,bioclip2}.json`, `week1_gate_plantnet_clip_b32_rerun.json` (adds the secondary analyses), all `cf/` files (clip_b32 redone with the completed taxonomy), `conformal/` ×4, `configs/` ×14, `all_runs.csv` (378 rows, includes session 1's 27) |
 
 | 3 | Version 3 (named "session-2" again in Kaggle) | 2026-11-17 | `a0baa85` | `ENCODERS=dinov2_b14,bioclip2`, `RUN_GATE=False`, baselines 1–9 on both, 20 trials, seeds 0–2, input = Version 2 output | `configs/` ×20 (dinov2_b14, bioclip2), `all_runs.csv` (918 rows, sessions 1–3; 540 new runs, 5.2 h of head training) |
+| 4 | Version 4 | 2026-11-17 | `ae60352`/`dc7e6ef` (no code change for baselines) | `ENCODERS=clip_b16`, `RUN_GATE=False`, baselines 1–9 on clip_b16, 20 trials, seeds 0–2, input = Version 3 output | `configs/` ×10 (clip_b16), `all_runs.csv` (1,188 rows, sessions 1–4; 270 new runs, 2.7 h of head training) |
 
 Session 1's original C-F files and `all_runs.csv` for clip_b32 are in commit `413fd74`; session 2's
 `all_runs.csv` is in `a0baa85`.
@@ -40,7 +41,10 @@ la 0.306 · ce 0.301 · flat_genus 0.291 · tau_norm 0.275 · ldam_drw 0.272 · 
   balanced_softmax 0.518 · ltic3 0.515 · ce 0.511 · flat_genus 0.510 · ltic2 0.413
 - LTIC-3's lead on clip_b32 (+0.014 over cRT) disappears on the strong encoders, where simple linear probes with a
   frequency correction (cRT, τ-norm, LA) are as good or better. LTIC-2 (IJCNN code) is last on every encoder.
-- Best baseline by V-select macro-F1 (the bar for the week-2 gate): clip_b32 ltic3@γ=0 (0.373), dinov2_b14 ldam_drw
+- clip_b16 (session 4): ltic3 0.359 [0.393] · ltic3@γ=0 0.356 [0.392] · crt 0.343 [0.369] · reslt 0.340 [0.382] ·
+  tau_norm 0.311 · ce 0.303 · la 0.296 · flat_genus 0.286 · ltic2 0.284 · ldam_drw 0.284 · balanced_softmax 0.279.
+  As on clip_b32, LTIC-3 leads on the CLIP encoders (+0.016 over cRT); best few-shot (pooled): ldam_drw 0.292, ltic2 0.286.
+- Best baseline by V-select macro-F1 (the bar for the week-2 gate): clip_b32 ltic3@γ=0 (0.373), clip_b16 ltic3 (0.393), dinov2_b14 ldam_drw
   (0.542; cRT 0.535), bioclip2 tau_norm (0.591).
 
 **Conformal (test, α = 0.1), average set size in species:** CP-1: clip_b32 141.5, clip_b16 157.6, dinov2_b14 5.9,
