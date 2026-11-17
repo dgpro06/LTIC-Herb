@@ -19,6 +19,8 @@
 
 Modern transformer-based image encoders have revolutionized computer vision, consistently achieving new benchmarks in various tasks. However, challenges like the long-tail distribution of species in botanical datasets and incomplete representation of rare specimens in herbarium collections hinder accurate classification of diverse plant species. We propose a three-stage approach: leveraging pre-trained transformers for feature extraction, introducing parameter specialization to address class imbalance, and employing a residual fusion mechanism for unified predictions. Evaluations on the Herbarium 2021 and Herbarium 2022 datasets demonstrate state-of-the-art performance across few-shot, medium-shot, and many-shot settings. This work highlights the potential of transformer-based encoders with targeted improvements in advancing biodiversity monitoring and botanical research.
 
+hello
+
 ![LTIC Overview](LTIC.png)
 
 ## Results
