@@ -126,23 +126,64 @@ def group_accuracy_ci(y_true, y_pred, class_ids, n_boot=2000, seed=0, alpha=0.05
     return point, (float(np.quantile(stats, alpha / 2)), float(np.quantile(stats, 1 - alpha / 2)))
 
 
-def paired_bootstrap(metric_fn, y_true, pred_a, pred_b, n_boot=10000, seed=0, alpha=0.05):
+def stratified_resample(strata, rng):
+    """One bootstrap resample of positions 0..n-1 drawn WITHIN each stratum (same size per stratum).
+    Vectorized: positions are grouped by stratum, and each slot draws uniformly from its own stratum."""
+    strata = _np(strata).astype(np.int64)
+    order = np.argsort(strata, kind='stable')
+    s_sorted = strata[order]
+    _, start, size = np.unique(s_sorted, return_index=True, return_counts=True)
+    group = np.repeat(np.arange(len(start)), size)                  # stratum id of each sorted slot
+    pick = start[group] + (rng.random(len(order)) * size[group]).astype(np.int64)
+    return order[pick]
+
+
+def paired_bootstrap(metric_fn, y_true, pred_a, pred_b, n_boot=10000, seed=0, alpha=0.05, stratified=False):
     """Difference metric(a) - metric(b) on the same images, resampled jointly (plan §8.2).
-    metric_fn(y_true, y_pred) -> float. Returns (delta, (lo, hi), excludes_zero)."""
+    metric_fn(y_true, y_pred) -> float. Returns (delta, (lo, hi), excludes_zero).
+
+    stratified=True resamples images within each true class, so every class keeps its support. With plain image
+    resampling a class with one image drops out of ~37% of the resamples and is then scored 0 for whichever
+    method still predicts it, which biases a macro-F1 difference (the week-2 gate showed point estimates at
+    the edge of their own CI). Stratifying removes most of that bias but not all (F1 is non-linear in counts
+    of one or two), so use paired_randomization for the significance DECISION on macro-F1 and report this
+    interval as a description."""
     rng = np.random.default_rng(seed)
     y_true, pred_a, pred_b = _np(y_true), _np(pred_a), _np(pred_b)
     n = len(y_true)
     delta = metric_fn(y_true, pred_a) - metric_fn(y_true, pred_b)
     diffs = np.empty(n_boot)
     for b in range(n_boot):
-        idx = rng.integers(0, n, n)
+        idx = stratified_resample(y_true, rng) if stratified else rng.integers(0, n, n)
         diffs[b] = metric_fn(y_true[idx], pred_a[idx]) - metric_fn(y_true[idx], pred_b[idx])
     lo, hi = float(np.quantile(diffs, alpha / 2)), float(np.quantile(diffs, 1 - alpha / 2))
     return float(delta), (lo, hi), bool(lo > 0 or hi < 0)
 
 
+def paired_randomization(metric_fn, y_true, pred_a, pred_b, n_perm=10000, seed=0):
+    """Paired approximate randomization test of metric(a) - metric(b) (e.g. Riezler & Maxwell 2005; Dror et al.
+    2018): under H0 the two methods' predictions are exchangeable per image, so each image's pair is swapped with
+    probability 1/2. Valid for non-linear metrics such as macro-F1, where bootstrap intervals can be off-centre
+    for classes with one or two images.
+    Returns (delta, p_greater, p_two_sided); p_greater tests H1: metric(a) > metric(b). p = (1 + #extreme) / (1 + n_perm)."""
+    rng = np.random.default_rng(seed)
+    y_true, pred_a, pred_b = _np(y_true), _np(pred_a), _np(pred_b)
+    delta = metric_fn(y_true, pred_a) - metric_fn(y_true, pred_b)
+    diff = pred_a != pred_b                     # swapping identical predictions changes nothing
+    ge = ge_abs = 0
+    for _ in range(n_perm):
+        swap = diff & (rng.random(len(y_true)) < 0.5)
+        pa = np.where(swap, pred_b, pred_a)
+        pb = np.where(swap, pred_a, pred_b)
+        d = metric_fn(y_true, pa) - metric_fn(y_true, pb)
+        ge += d >= delta - 1e-12
+        ge_abs += abs(d) >= abs(delta) - 1e-12
+    return float(delta), (1 + ge) / (1 + n_perm), (1 + ge_abs) / (1 + n_perm)
+
+
 def mcnemar(y_true, pred_a, pred_b):
-    """Exact two-sided McNemar test on top-1 correctness. Returns (b, c, p): b = a right & b wrong."""
+    """Exact two-sided McNemar test on top-1 correctness. Returns (b, c, p): b = a right & b wrong.
+    The test is two-sided: a small p says the methods DIFFER; a is ahead only if b > c."""
     y_true, pred_a, pred_b = _np(y_true), _np(pred_a), _np(pred_b)
     ra, rb = pred_a == y_true, pred_b == y_true
     b, c = int((ra & ~rb).sum()), int((~ra & rb).sum())

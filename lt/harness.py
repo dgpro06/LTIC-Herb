@@ -24,7 +24,7 @@ from lt import losses as L
 from lt import trainer as T
 from lt.classes import ClassIndex, ShotGroups
 from lt.features import load_split
-from lt.metrics import evaluate
+from lt.metrics import evaluate, macro_f1
 from lt.taxonomy import Taxonomy
 
 # ---------------------------------------------------------------------------------------------
@@ -50,7 +50,42 @@ SPACES = {
 # C2 parameters, searched on top of the base method's own space (PLAN_NEXT.md §6)
 C2_SPACE = {'c2_tau_mu': ('loguniform', 0.5, 50.0), 'c2_k': ('choice', [5, 10, 20, 40]),
             'c2_rank': ('choice', ['diag', 8, 32, 64]), 'c2_nmin': ('choice', [10, 20, 40])}
-C2_SUFFIX = {'c2': {'c2': True}, 'c2shuf': {'c2': True, 'c2_shuffle': True}}
+# +c2 / +c2shuf: C2 and the A9 control, base hyperparameters searched together with C2's (Pl@ntNet sessions)
+# +c2f / +c2fshuf: the base method's tuned configuration is FROZEN (read from results/configs/); only C2's
+#                  settings and the post-hoc knobs are searched, so base vs base+C2 differ only by C2
+C2_SUFFIX = {'c2': {'c2': True}, 'c2shuf': {'c2': True, 'c2_shuffle': True},
+             'c2f': {'c2': True, 'c2_frozen_base': True},
+             'c2fshuf': {'c2': True, 'c2_frozen_base': True, 'c2_shuffle': True}}
+# decision-time knobs: re-tuned on top of a frozen base, and grid-searched when the config sets posthoc_grid
+POSTHOC_KEYS = ('tau', 'test_tau', 'gamma')
+POSTHOC_GRID = [round(0.1 * i, 1) for i in range(21)]          # 0.0, 0.1, ..., 2.0
+
+
+def search_seed_key(method_name):
+    """The name the random search is seeded from. The A9 control shares it with its C2 method, so real and
+    shuffled taxonomy are tried on the SAME candidate configurations; the shuffle seed is left out so every
+    shuffle seed also gets those candidates.
+    'crt+c2shuf@c2_shuffle_seed=2' -> 'crt+c2';  'crt+c2fshuf' -> 'crt+c2f';  'ltic3@gamma=0' unchanged.
+    (Before 2026-11-18 the seed came from the full method name, so +c2 and +c2shuf drew different candidates.)"""
+    base, _, rest = method_name.partition('@')
+    base = base.replace('+c2fshuf', '+c2f').replace('+c2shuf', '+c2')
+    kept = [kv for kv in filter(None, rest.split(',')) if not kv.startswith('c2_shuffle_seed=')]
+    return base + ('@' + ','.join(kept) if kept else '')
+
+
+def base_method_name(method_name):
+    """The method C2 is added to: 'tau_norm+c2f' -> 'tau_norm'; 'ltic3+c2f@gamma=0,c2_rank=8' -> 'ltic3@gamma=0'."""
+    base, _, rest = method_name.partition('@')
+    base = base.partition('+')[0]
+    kept = [kv for kv in filter(None, rest.split(',')) if not kv.startswith('c2')]
+    return base + ('@' + ','.join(kept) if kept else '')
+
+
+def frozen_settings(method, base_cfg):
+    """Training settings taken from the base method's tuned config (everything except post-hoc knobs and C2)."""
+    keys = set(COMMON) | set(SPACES[method]) | set(T.DEFAULTS)
+    return {k: v for k, v in base_cfg.items()
+            if k in keys and k not in POSTHOC_KEYS and k != 'method' and not k.startswith('c2')}
 
 
 def parse_method(name):
@@ -122,6 +157,16 @@ class Data(object):
         self.taxonomy = Taxonomy.from_csv(conf['taxonomy'], self.index) if conf.get('taxonomy') else None
         self.log_pi = L.log_prior(self.index.counts, self.device)
         self.c2_cache = {}
+
+    def prior_counts(self, cfg):
+        """Counts behind the prior this configuration trains with (real counts unless c2_prior='augmented')."""
+        stats = self.c2_stats(cfg) if cfg.get('c2') and cfg.get('c2_prior', 'real') != 'real' else None
+        return T.prior_counts(cfg, self.index.counts, stats)
+
+    def log_pi_for(self, cfg):
+        if not cfg.get('c2') or cfg.get('c2_prior', 'real') == 'real':
+            return self.log_pi
+        return L.log_prior(self.prior_counts(cfg), self.device)
 
     def taxonomy_for(self, cfg):
         if self.taxonomy is None:
@@ -208,16 +253,59 @@ def _row(data, method_name, cfg, info, stage, trial, seed, split, metrics):
 # ---------------------------------------------------------------------------------------------
 # Protocol
 # ---------------------------------------------------------------------------------------------
-def search(method_name, data, trials, results_csv, seed=0, base=None, log=print):
+def posthoc_knob(cfg, fixed=None):
+    """The decision-time knob a grid can tune for this configuration, or None."""
+    fixed = fixed or {}
+    if cfg['method'] == 'tau_norm' and 'test_tau' not in fixed:
+        return 'test_tau'
+    if cfg['method'] == 'la' and cfg.get('la_mode') == 'posthoc' and 'tau' not in fixed:
+        return 'tau'
+    return None
+
+
+def tune_posthoc(model, cfg, data, fixed=None):
+    """Grid-search the post-hoc knob (tau-norm's test_tau, LA's tau) on V-tune for a trained model; no
+    retraining. Returns (cfg with the best value, its V-tune score). Ties keep the smaller value."""
+    knob = posthoc_knob(cfg, fixed)
+    if knob is None:
+        return cfg, None
+    y = data.fs['vtune'].y.cpu().numpy()
+    log_pi = data.log_pi_for(cfg)
+    best_cfg, best_score = cfg, -np.inf
+    for v in POSTHOC_GRID:
+        c = dict(cfg, **{knob: v})
+        logits, _ = T.predict(model, data.fs['vtune'], c, log_pi)
+        pred = logits.argmax(1).numpy()
+        score = macro_f1(y, pred, data.index.num_classes) if c.get('select_metric', 'macro_f1') == 'macro_f1' \
+            else float((pred == y).mean())
+        if score > best_score:
+            best_cfg, best_score = c, score
+    return best_cfg, best_score
+
+
+def search(method_name, data, trials, results_csv, seed=0, base=None, log=print, frozen_base=None):
+    """frozen_base: the base method's tuned config (required for +c2f / +c2fshuf)."""
     method, fixed = parse_method(method_name)
-    # deterministic per method name (Python's hash() is salted per process)
-    rng = np.random.default_rng(int(hashlib.sha1(method_name.encode()).hexdigest(), 16) % (2 ** 32) + seed)
+    if fixed.get('c2_frozen_base'):
+        if frozen_base is None:
+            raise ValueError('{} freezes the base config: pass the tuned config of {}'.format(
+                method_name, base_method_name(method_name)))
+        fixed = dict(frozen_settings(method, frozen_base), **fixed)
+    # deterministic per method name (Python's hash() is salted per process); the A9 control shares the seed
+    # of its C2 method (search_seed_key)
+    key = search_seed_key(method_name)
+    rng = np.random.default_rng(int(hashlib.sha1(key.encode()).hexdigest(), 16) % (2 ** 32) + seed)
+    grid = bool(data.conf.get('posthoc_grid'))
     best = None
     rows = []
     for t in range(trials):
         cfg = sample_config(method, rng, fixed, base)
         model, info = train_one(cfg, data, seed)
-        logits, _ = T.predict(model, data.fs['vtune'], info['cfg'], data.log_pi)
+        if grid:
+            cfg_g, score_g = tune_posthoc(model, info['cfg'], data, fixed)
+            if score_g is not None:
+                info = dict(info, cfg=cfg_g, vtune_score=score_g)
+        logits, _ = T.predict(model, data.fs['vtune'], info['cfg'], data.log_pi_for(info['cfg']))
         m = evaluate(logits, data.fs['vtune'].y.cpu().numpy(), data.groups)
         rows.append(_row(data, method_name, info['cfg'], info, 'trial', t, seed, 'vtune', m))
         log('  [{}] trial {:2d}/{}: V-tune macro-F1 {:.4f} (epoch {}, {:.0f}s){}'.format(
@@ -232,7 +320,7 @@ def search(method_name, data, trials, results_csv, seed=0, base=None, log=print)
 def score_vselect(method_name, cfg, data, results_csv, seed=0, save_dir=None):
     """The ONE V-select evaluation of a chosen configuration."""
     model, info = train_one(cfg, data, seed)
-    logits, _ = T.predict(model, data.fs['vselect'], info['cfg'], data.log_pi)
+    logits, _ = T.predict(model, data.fs['vselect'], info['cfg'], data.log_pi_for(info['cfg']))
     m = evaluate(logits, data.fs['vselect'].y.cpu().numpy(), data.groups)
     append_rows(results_csv, [_row(data, method_name, info['cfg'], info, 'vselect', '', seed, 'vselect', m)])
     if save_dir:
@@ -248,7 +336,7 @@ def final_runs(method_name, cfg, data, seeds, results_csv, save_dir=None, splits
         for s in splits:
             if s not in data.fs:
                 continue
-            logits, _ = T.predict(model, data.fs[s], info['cfg'], data.log_pi)
+            logits, _ = T.predict(model, data.fs[s], info['cfg'], data.log_pi_for(info['cfg']))
             m = evaluate(logits, data.fs[s].y.cpu().numpy(), data.groups)
             rows.append(_row(data, method_name, info['cfg'], info, 'final', '', seed, s, m))
             out.append((seed, s, m))
@@ -265,9 +353,9 @@ def save_predictions(save_dir, method_name, seed, model, cfg, data, splits):
     for s in splits:
         if s not in data.fs:
             continue
-        logits, genus = T.predict(model, data.fs[s], raw_cfg, data.log_pi)
+        logits, genus = T.predict(model, data.fs[s], raw_cfg, data.log_pi_for(cfg))
         payload = dict(logits=logits.half().numpy(), y=data.fs[s].y.cpu().numpy(), tau=cfg.get('tau', 0.0), split=s,
-                       counts=data.index.counts, class_map=data.index.class_map,
+                       counts=data.index.counts, prior_counts=data.prior_counts(cfg), class_map=data.index.class_map,
                        few_end=data.groups.few_end, many_start=data.groups.many_start,
                        method=method_name, encoder=data.conf['encoder'], dataset=data.conf['dataset'],
                        cfg=json.dumps(cfg))

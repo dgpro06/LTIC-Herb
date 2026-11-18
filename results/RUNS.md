@@ -11,6 +11,7 @@ baselines on test (3 seeds) unless noted.
 
 | 3 | Version 3 (named "session-2" again in Kaggle) | 2026-11-17 | `a0baa85` | `ENCODERS=dinov2_b14,bioclip2`, `RUN_GATE=False`, baselines 1–9 on both, 20 trials, seeds 0–2, input = Version 2 output | `configs/` ×20 (dinov2_b14, bioclip2), `all_runs.csv` (918 rows, sessions 1–3; 540 new runs, 5.2 h of head training) |
 | 4 | Version 4 | 2026-11-17 | `ae60352`/`dc7e6ef` (no code change for baselines) | `ENCODERS=clip_b16`, `RUN_GATE=False`, baselines 1–9 on clip_b16, 20 trials, seeds 0–2, input = Version 3 output | `configs/` ×10 (clip_b16), `all_runs.csv` (1,188 rows, sessions 1–4; 270 new runs, 2.7 h of head training) |
+| 5 | Version 5 | 2026-11-17 → 18 (rows 17:39 – 00:23) | `c30d91a` (C2 + TaxoNet code from `dc7e6ef`/`3dee815`; confirm in the Kaggle log) | `ENCODERS = BASELINE_ENCODERS = dinov2_b14,bioclip2,clip_b32`, `RUN_GATE=False`, `BASELINES = crt+c2,crt+c2shuf,tau_norm+c2,la+c2,ltic3+c2,ltic3+c2shuf,taxonet`, 20 trials, seeds 0–2, `CF_FROM_CE=True`, input = Version 4 output | `c2/` donor files ×18, `week2_gate_plantnet_{dinov2_b14,bioclip2,clip_b32}.txt` (JSON saved as .txt by the browser), `all_runs.csv` (1,755 rows, sessions 1–5; 567 new runs, 7.5 h of head training). Committed in `98ba06b`. The C2 configs and the CE-based C-F files are not in the repo |
 
 Session 1's original C-F files and `all_runs.csv` for clip_b32 are in commit `413fd74`; session 2's
 `all_runs.csv` is in `a0baa85`.
@@ -52,3 +53,42 @@ bioclip2 8.5 (median 3 for both). CP-3 (K = 5): coverage 0.94–0.95, fallback 0
 
 **Run time:** 12–15 s per linear-probe run, 33–52 s for LTIC/ResLT/LDAM/flat-genus, up to 112 s; 201 GPU-minutes of
 head training in session 2.
+
+## Week-2 gate (session 5, V-select): FAIL on all three encoders
+
+Recorded files: `week2_gate_plantnet_<encoder>.txt`. Rule fixed on Nov 16 (PLAN_NEXT §5): best `+c2` method vs the
+best non-C2 baseline (both by V-select macro-F1), on macro-F1 and pooled few-shot accuracy, then A9.
+
+| Encoder | Best baseline | Best C2 | Macro-F1 Δ [95% CI] | Pooled few-shot Δ [95% CI] | A9 | Verdict |
+|---|---|---|---|---|---|---|
+| clip_b32 | ltic3@γ=0 0.373 | ltic3+c2 0.355 | −0.018 [−0.031, −0.004] | −1.3 pts [−5.9, +3.3] | fails (C2 below its own base) | **FAIL** |
+| bioclip2 | tau_norm 0.591 | la+c2 0.588 | −0.004 [−0.008, +0.020] | −4.6 pts [−8.2, −1.0] | not run | **FAIL** |
+| dinov2_b14 | ldam_drw 0.542 | tau_norm+c2 0.547 | +0.006 [−0.017, +0.008] | +6.6 pts [+3.3, +9.8] | not run | **FAIL** (file says "INCOMPLETE": see correction) |
+
+**Correction (2026-11-18): the DINOv2 macro-F1 "pass" in the recorded file is invalid.** It came from McNemar
+p = 6.1e-10, but McNemar is two-sided on top-1 and here favours the **baseline**: V-select top-1 is 0.842 for
+ldam_drw vs 0.828 for tau_norm+c2 (`all_runs.csv`, stage `vselect`). The script counted any p < 0.05 with a
+positive macro-F1 delta as a C2 pass, without checking which method was ahead (bug fixed in
+`tools/week2_gate.py`). The bootstrap CI on macro-F1 includes 0, so criterion 1 fails on DINOv2 and the A9 run
+cannot change the verdict. **All three encoders fail.** The recorded file is kept unchanged as the record; the
+gate is not re-run (the verdict cannot change, and re-running with a different test after seeing the result
+would look like fishing).
+
+Other known weaknesses of this gate, fixed in the code for later runs (H22) but not re-run on Pl@ntNet:
+- The macro-F1 bootstrap resampled images, so classes with one V-select image dropped out of resamples and
+  biased the difference (point estimates sit at the edge of their own CIs). Now: class-stratified bootstrap for
+  reported intervals and a paired randomization test for the decision (`lt/metrics.py`).
+- `+c2` and `+c2shuf` were searched on different random candidate configurations (seed from the method name),
+  so A9 mixed the taxonomy effect with search luck. Now they share candidates (`lt/harness.search_seed_key`);
+  the `+c2shuf` search draws of sessions 1–5 are reproducible only with code up to `98ba06b`. The chosen
+  configurations themselves do not depend on this.
+- C2 re-searched all base hyperparameters with the same 20 trials over a larger space. Now `+c2f` / `+c2fshuf`
+  freeze the tuned base and search only C2's settings and the post-hoc knobs.
+- V-select has 305 tail images over 291 classes; on the strong encoders V-select and test rank methods
+  differently (Spearman 0.48 DINOv2, 0.46 BioCLIP 2; 0.84 / 0.91 on the CLIP encoders).
+
+**Descriptive only (test set, already seen, not evidence for the method):** C2 raises test macro-F1 over the same
+base for cRT (+0.007 / +0.015 / +0.007 on clip_b32 / dinov2_b14 / bioclip2) and τ-norm (+0.035 / +0.034 /
++0.007), but the shuffled-taxonomy control keeps most of cRT's gain on DINOv2 and BioCLIP 2 (+0.013 and +0.006),
+so on strong encoders the gain is mostly generic tail augmentation, not taxonomy. LA + C2 loses 0.041 on
+clip_b32 (the real prior plus synthetic tail samples corrects the tail twice; `c2_prior='augmented'` now exists).

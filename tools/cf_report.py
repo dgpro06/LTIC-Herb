@@ -43,8 +43,9 @@ def write_csv(rows, path):
 def report(pred_path, taxonomy_csv, out_dir, tau=None, tau_max=None, n_boot=2000):
     d = load_preds(pred_path)
     tax = Taxonomy.from_csv(taxonomy_csv, _Index(d['class_map']))
-    counts = d['counts']
-    log_pi = np.log(np.maximum(counts, 1) / counts.sum())
+    counts = d['counts']                                   # real train counts (count curve)
+    prior = d.get('prior_counts', counts)                  # the prior the model trained with (post-hoc tau)
+    log_pi = np.log(np.maximum(prior, 1) / prior.sum())
     logits, y, few_end = d['logits'].astype(np.float32), d['y'], int(d['few_end'])
     tau = float(d['tau']) if tau is None else tau
     pred = cf.predictions(logits, log_pi, tau)

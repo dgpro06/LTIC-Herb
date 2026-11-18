@@ -20,7 +20,8 @@ Every method also accepts a post-hoc 'tau' (LA at decision time) if it is in its
 
 C2 (lt/calibration.py) is an option on top of any method: cfg['c2'] = True adds k synthetic features per
 tail species per epoch (keys c2_tau_mu, c2_k, c2_rank, c2_nmin; c2_shuffle = A9 control). The log prior
-used by LA / balanced softmax / LDAM stays the REAL train prior.
+used by LA / balanced softmax / LDAM is the REAL train prior by default (c2_prior='real', as in the Pl@ntNet
+sessions); c2_prior='augmented' counts the synthetic tail samples (see prior_counts).
 """
 import copy
 import math
@@ -110,7 +111,29 @@ def predict(model, fs, cfg, log_pi, batch=8192):
 
 
 C2_DEFAULTS = {'c2': False, 'c2_tau_mu': 5.0, 'c2_k': 10, 'c2_rank': 'diag', 'c2_nmin': 20,
-               'c2_shuffle': False, 'c2_shuffle_seed': 0}
+               'c2_shuffle': False, 'c2_shuffle_seed': 0,
+               # 'real': LA / balanced softmax / LDAM / post-hoc tau use the real train prior (Pl@ntNet sessions);
+               # 'augmented': the prior counts the k synthetic samples added to each tail class, i.e. the label
+               # distribution the head actually trains on (avoids correcting the tail twice)
+               'c2_prior': 'real',
+               # True: the base method's tuned configuration is frozen and only C2's settings (and post-hoc
+               # knobs) are searched (method suffixes +c2f / +c2fshuf; lt.harness)
+               'c2_frozen_base': False}
+
+
+def prior_counts(cfg, counts, c2_stats=None):
+    """Class counts behind the log prior. Equal to `counts` unless C2 runs with c2_prior='augmented'."""
+    cfg = dict(C2_DEFAULTS, **cfg)
+    counts = np.asarray(counts, dtype=np.float64)
+    if not cfg['c2'] or cfg['c2_prior'] == 'real':
+        return counts
+    if cfg['c2_prior'] != 'augmented':
+        raise ValueError("c2_prior must be 'real' or 'augmented', got {!r}".format(cfg['c2_prior']))
+    if c2_stats is None:
+        raise ValueError("c2_prior='augmented' needs the C2 donor statistics")
+    out = counts.copy()
+    out[np.asarray(c2_stats.tail, dtype=np.int64)] += int(cfg['c2_k'])
+    return out
 
 
 def c2_stats_for(cfg, train_fs, counts, few_end, taxonomy):
@@ -133,20 +156,7 @@ def train(cfg, train_fs, tune_fs, counts, few_end, many_start, seed=0, genus_of=
     C = len(counts)
     num_genera = int(genus_of.max()) + 1 if genus_of is not None else None
     model = build(cfg, train_fs.dim, C, num_genera).to(device)
-    log_pi = L.log_prior(counts, device)
     method = cfg['method']
-
-    genus_t = genus_log_pi = None
-    if method == 'flat_genus':
-        genus_t = torch.as_tensor(genus_of, device=device)
-        genus_log_pi = L.log_prior(np.bincount(genus_of, weights=counts, minlength=num_genera), device)
-    masks = None
-    if method in ('ltic2', 'ltic3', 'reslt'):
-        masks = L.branch_masks_for(C, few_end, many_start, 2 if method == 'ltic2' else 3, device)
-    ldam = None
-    if method == 'ldam_drw':
-        ldam = L.LDAMLoss(counts, cfg['ldam_max_m'], cfg['ldam_s'], int(cfg['drw_frac'] * cfg['epochs']),
-                          device=device)
 
     c2 = None
     if cfg.get('c2'):
@@ -156,6 +166,21 @@ def train(cfg, train_fs, tune_fs, counts, few_end, many_start, seed=0, genus_of=
                 raise ValueError('C2 needs a taxonomy')
             c2_stats = c2_stats_for(cfg, train_fs, counts, few_end, taxonomy)
         c2 = c2_stats.sampler(cfg['c2_tau_mu'], cfg['c2_k'])
+    # the prior used by LA / balanced softmax / LDAM / post-hoc tau ('real' counts unless c2_prior='augmented')
+    p_counts = prior_counts(cfg, counts, c2_stats)
+    log_pi = L.log_prior(p_counts, device)
+
+    genus_t = genus_log_pi = None
+    if method == 'flat_genus':
+        genus_t = torch.as_tensor(genus_of, device=device)
+        genus_log_pi = L.log_prior(np.bincount(genus_of, weights=p_counts, minlength=num_genera), device)
+    masks = None
+    if method in ('ltic2', 'ltic3', 'reslt'):
+        masks = L.branch_masks_for(C, few_end, many_start, 2 if method == 'ltic2' else 3, device)
+    ldam = None
+    if method == 'ldam_drw':
+        ldam = L.LDAMLoss(p_counts, cfg['ldam_max_m'], cfg['ldam_s'], int(cfg['drw_frac'] * cfg['epochs']),
+                          device=device)
     n_syn = c2.n_samples if c2 is not None else 0
     n_all = train_fs.n + n_syn
 

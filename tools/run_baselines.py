@@ -11,6 +11,11 @@ Stages:
 Method names may fix settings: 'ltic3@gamma=0' (the gamma = 0 row).
 C2 on top of a base method: 'crt+c2', 'la+c2', 'ltic3+c2', ...; A9 control: 'crt+c2shuf'. The donor-level shares
 of the chosen C2 configuration are written to results/c2/.
+C2 on a FROZEN base: 'tau_norm+c2f' (A9: 'tau_norm+c2fshuf', more shuffle seeds: 'tau_norm+c2fshuf@c2_shuffle_seed=1').
+The base must have been run first: its results/configs/ file supplies every training setting, and only C2's
+settings and the post-hoc knobs are searched. Real and shuffled C2 share the same candidate configurations.
+Dataset config keys: "posthoc_grid": true grid-searches tau-norm's test_tau / LA's tau (0..2, step 0.1) on
+V-tune for every trial; "c2_prior": "augmented" makes C2 runs use the prior that counts synthetic samples.
 """
 import argparse
 import json
@@ -60,7 +65,22 @@ def main():
             continue
         if 'search' in stages:
             print('=> search {} ({} trials)'.format(name, trials), flush=True)
-            cfg = harness.search(name, data, trials, args.results, seed=0, base=base)
+            _, fixed = harness.parse_method(name)
+            m_base = dict(base)
+            if fixed.get('c2') and 'c2_prior' in conf:
+                m_base['c2_prior'] = conf['c2_prior']           # dataset-level choice (e.g. H22 pre-registration)
+            frozen = None
+            if fixed.get('c2_frozen_base'):
+                b_name = harness.base_method_name(name)
+                b_tag = b_name.replace('@', '-').replace('=', '').replace(',', '-')
+                b_path = os.path.join(cfg_dir, '{}_{}_{}.json'.format(conf['dataset'], conf['encoder'], b_tag))
+                if not os.path.isfile(b_path):
+                    raise SystemExit('{} freezes the tuned config of {}, but {} does not exist: run {} first'.format(
+                        name, b_name, b_path, b_name))
+                with open(b_path, encoding='utf-8') as f:
+                    frozen = json.load(f)
+                print('   frozen base: {}'.format(b_path))
+            cfg = harness.search(name, data, trials, args.results, seed=0, base=m_base, frozen_base=frozen)
             with open(cfg_path, 'w', encoding='utf-8') as f:
                 json.dump(cfg, f, indent=1)
             print('   chosen: {}'.format(json.dumps(cfg)))

@@ -11,12 +11,14 @@ The week-2 gate (PLAN_NEXT §5, Kaggle session 5, V-select) **fails**:
 
 | Encoder | Best baseline | Best C2 | Macro-F1 Δ (95% CI) | Pooled few-shot Δ (95% CI) | A9 | Verdict |
 |---|---|---|---|---|---|---|
-| DINOv2 B/14 | ldam_drw 0.542 | tau_norm+c2 0.547 | +0.006 [−0.017, +0.008] | **+6.6 pts [+3.3, +9.8]** | not run | incomplete |
+| DINOv2 B/14 | ldam_drw 0.542 | tau_norm+c2 0.547 | +0.006 [−0.017, +0.008] | **+6.6 pts [+3.3, +9.8]** | not run | **FAIL** (corrected, see below) |
 | BioCLIP 2 | tau_norm 0.591 | la+c2 0.588 | −0.004 [−0.008, +0.020] | **−4.6 pts [−8.2, −1.0]** | not run | FAIL |
 | CLIP B/32 | ltic3@γ=0 0.373 | ltic3+c2 0.355 | **−0.018 [−0.031, −0.004]** | −1.3 pts [−5.9, +3.3] | fails | FAIL |
 
-- On DINOv2 the script marks macro-F1 "pass" only through McNemar, which tests top-1 **accuracy**. The bootstrap CI
-  on macro-F1 includes 0. The rule is not changed after the fact: both readings are reported.
+- **Corrected 2026-11-18:** on DINOv2 the script marked macro-F1 "pass" only through McNemar, and that McNemar
+  result favours the **baseline** (V-select top-1 0.842 ldam_drw vs 0.828 tau_norm+c2): the script did not check
+  the direction (bug, fixed in `tools/week2_gate.py`). The bootstrap CI on macro-F1 includes 0, so criterion 1 fails
+  and **all three encoders fail**; the missing A9 run cannot change that. Details in `results/RUNS.md`.
 - The plan's literal criterion is **LTIC-3 + C2**. LTIC-3 is not the best base on DINOv2 or BioCLIP 2, so that
   reading fails as well (to be confirmed from `all_runs.csv`).
 - By the rule fixed on Nov 16: **the paper becomes the benchmark/analysis paper; C2 is a reported component, not
@@ -97,7 +99,7 @@ Per encoder, from train features only:
 
 | Session | Where | Settings | Purpose | Estimate |
 |---|---|---|---|---|
-| 6 | Kaggle (user) | `BASELINES = "tau_norm+c2shuf"` on dinov2_b14, plus §4 tools on all saved predictions | A9 for the only encoder where C2 helps; geometry + error taxonomy tables | ~1–1.5 h |
+| 6 | Kaggle (user) | ~~`BASELINES = "tau_norm+c2shuf"` on dinov2_b14~~ (dropped 2026-11-18: the DINOv2 gate fails on criterion 1, so A9 cannot change the verdict; new Pl@ntNet runs prove nothing now that test has been seen). Only the §4 tools on the saved predictions | Geometry + error taxonomy tables | ~0.5 h (CPU work) |
 | H22 merge | Kaggle (owner) | `PART = "0/1"`, `PREV = "auto"`, teammates' three outputs attached | Full H22-clean feature store | ~0.5 h if all parts are done |
 | 7 | Kaggle, **one account per encoder** | H22-clean core set: `la, crt, tau_norm, ltic3` on dinov2_b14, bioclip2, clip_b32, plus `tau_norm+c2, tau_norm+c2shuf` on dinov2_b14; `TRIALS = 10` (same budget for every method; disclosed). Add `ce, ldam_drw` only if time is left | B1/B2/B3 on a second dataset | ~25 GPU-h in total (~7 h per encoder, ~11 h for DINOv2); extrapolated from Pl@ntNet run times (~12× per run: 2.75× images, 14× classes), to be re-checked after the first method finishes |
 | 8 | Kaggle | IJCNN configuration (original commit) on H22-clean | Corrected-evaluation table (B4) | ~1 h |

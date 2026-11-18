@@ -21,7 +21,7 @@ from tools.cf_report import _Index, load_preds  # noqa: E402
 
 
 def adjusted(d):
-    counts = d['counts']
+    counts = d.get('prior_counts', d['counts'])            # the prior the model trained with
     log_pi = np.log(np.maximum(counts, 1) / counts.sum())
     return d['logits'].astype(np.float32) - float(d['tau']) * log_pi[None, :]
 
