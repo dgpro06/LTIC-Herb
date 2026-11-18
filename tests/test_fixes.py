@@ -193,6 +193,37 @@ def test_runner_frozen_base_end_to_end(synth, tmp_path):
         assert cfg['c2_frozen_base'] and cfg['c2_shuffle'] == (m.endswith('shuf'))
 
 
+# ----------------------------------------------------------------------------- confirmatory gate (H22 rules)
+def test_confirmatory_gate_end_to_end(synth, tmp_path):
+    _, conf_path, _, _ = synth
+    results, preds = str(tmp_path / 'all_runs.csv'), str(tmp_path / 'preds')
+    methods = 'ce,tau_norm,tau_norm+c2f,tau_norm+c2fshuf,tau_norm+c2fshuf@c2_shuffle_seed=1'
+    run = subprocess.run([sys.executable, os.path.join(ROOT, 'tools', 'run_baselines.py'), '--config', conf_path,
+                          '--methods', methods, '--trials', '1', '--seeds', '0', '--epochs', '2',
+                          '--results', results, '--preds', preds], cwd=str(tmp_path), capture_output=True, text=True)
+    assert run.returncode == 0, run.stderr[-3000:]
+    with open(os.path.join(ROOT, 'gates', 'h22_confirmatory.json'), encoding='utf-8') as f:
+        rules = json.load(f)                            # the real draft, pointed at the synthetic dataset
+    rules.update(dataset='synth', encoders={'primary': ['synth']}, baselines=['ce', 'tau_norm'],
+                 c2_methods=['tau_norm+c2f'], a9=dict(rules['a9'], shuffle_seeds=[0, 1]),
+                 criteria=dict(rules['criteria'], n_perm=99))
+    rules_path = tmp_path / 'rules.json'
+    rules_path.write_text(json.dumps(rules), encoding='utf-8')
+    cmd = [sys.executable, os.path.join(ROOT, 'tools', 'confirmatory_gate.py'), '--rules', str(rules_path),
+           '--results', results, '--preds', preds]
+    g = subprocess.run(cmd + ['--encoder', 'synth'], cwd=str(tmp_path), capture_output=True, text=True)
+    assert g.returncode == 0, g.stderr[-3000:]
+    res = json.load(open(tmp_path / 'confirmatory_synth_synth.json', encoding='utf-8'))
+    assert res['selection']['c2_method'] == 'tau_norm+c2f' and res['selection']['best_baseline'] in ('ce', 'tau_norm')
+    assert res['criterion1']['macro_f1']['decided_by'] == 'randomization'
+    assert set(res['criterion2_a9']['per_shuffle_seed']) == {'tau_norm+c2fshuf', 'tau_norm+c2fshuf@c2_shuffle_seed=1'}
+    assert res['criterion2_a9']['base'] == 'tau_norm' and isinstance(res['pass'], bool)
+    s = subprocess.run(cmd + ['--summary'], cwd=str(tmp_path), capture_output=True, text=True)
+    assert s.returncode == 0 and json.loads(s.stdout)['verdict'] in rules['verdict'].values()
+    assert subprocess.run(cmd + ['--encoder', 'synth'], cwd=str(tmp_path), capture_output=True,
+                          text=True).returncode != 0                                   # recorded once
+
+
 # ----------------------------------------------------------------------------- 5. post-hoc grid
 def test_posthoc_grid_picks_the_best_knob_on_vtune(synth):
     conf, _, _, _ = synth

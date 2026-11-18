@@ -6,8 +6,16 @@
  "few_thr": 20,
  "many_thr": 50,
  "taxonomy": "taxonomy/h22.csv",
- "splits": {"train": "train", "vtune": "vtune", "vselect": "vselect", "vcal": "vcal", "test": "test"},
+ "splits": {
+  "train": "train",
+  "vtune": "vtune",
+  "vselect": "vselect",
+  "vcal": "vcal",
+  "test": "test"
+ },
  "epochs": 30,
  "eval_every": 2,
- "trials": 10
+ "trials": 10,
+ "posthoc_grid": true,
+ "c2_prior": "augmented"
 }

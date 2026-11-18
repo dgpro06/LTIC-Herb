@@ -1,0 +1,54 @@
+{
+ "_status": "DRAFT 2026-11-18, NOT AGREED. Commit only after the team and supervisor agree, and BEFORE any H22-clean model run (baselines included). Once committed, nothing in this file changes; the git log is the record.",
+ "_why": "Pl@ntNet-300K is now the development set: its V-select and test results have been seen (week-2 gate FAIL, results/RUNS.md). H22-clean is untouched, herbarium (the IJCNN paper's domain) and taxonomically rich, so it is where a taxonomy method is tested once, under rules fixed in advance.",
+ "_hypothesis": "On frozen features, taxonomy-guided feature calibration (C2) on top of a tau-norm linear probe improves macro-F1 and few-shot accuracy over the best tuned baseline, and the gain comes from the real taxonomy (shuffled taxonomy keeps less than half of it). Chosen from the Pl@ntNet results: tau_norm+c2 was the best method on the Pl@ntNet test set for DINOv2 and BioCLIP 2.",
+
+ "dataset": "h22clean",
+ "configs": "configs/h22clean_<encoder>.json (with posthoc_grid = true and c2_prior = augmented, committed together with this file)",
+ "encoders": {
+  "primary": ["dinov2_b14", "bioclip2"],
+  "reported": ["clip_b32"],
+  "_note": "Primary encoders decide the verdict. DINOv2 is the leakage control (BioCLIP 2's training data may include herbarium images from GBIF). CLIP B/32 is the IJCNN backbone: reported for continuity, not decisive."
+ },
+
+ "baselines": ["ce", "la", "crt", "tau_norm", "ltic2", "ltic3"],
+ "c2_methods": ["tau_norm+c2f"],
+ "a9": {
+  "shuffle_seeds": [0, 1, 2],
+  "max_gain_retained": 0.5,
+  "_runs": "tau_norm+c2fshuf, tau_norm+c2fshuf@c2_shuffle_seed=1, tau_norm+c2fshuf@c2_shuffle_seed=2: same frozen base and the same candidate configurations as tau_norm+c2f (lt.harness.search_seed_key), each searched and re-tuned with the same trial budget."
+ },
+
+ "tuning": {
+  "trials": 10,
+  "epochs": 30,
+  "seeds": [0, 1, 2],
+  "posthoc_grid": true,
+  "c2_prior": "augmented",
+  "_note": "Same budget for every method. +c2f freezes the tuned tau_norm config, so tau_norm must finish first. Only C2's settings (tau_mu, k, rank, n_min) and test_tau are searched for C2 and its controls. A9 controls need only seed 0 on test."
+ },
+
+ "selection": {
+  "best_baseline": "highest V-select macro-F1 among the baselines (favours the baseline)",
+  "c2_method": "highest V-tune score among c2_methods (one method here, so no choice is made)"
+ },
+
+ "evaluation": {"split": "test", "seed": 0},
+
+ "criteria": {
+  "alpha": 0.05,
+  "n_perm": 5000,
+  "criterion1": "C2 vs best baseline on H22-clean test (training seed 0): macro-F1 by paired randomization test, one-sided p < alpha; AND pooled few-shot accuracy (train count < 20) by exact McNemar with C2 ahead, p < alpha. Class-stratified bootstrap 95% CIs are reported, not decisive.",
+  "criterion2_a9": "Real C2 beats EACH shuffled-taxonomy run on macro-F1 (paired randomization, one-sided p < alpha), and the mean shuffled macro-F1 keeps less than max_gain_retained of C2's gain over tau_norm.",
+  "encoder_pass": "criterion1 AND criterion2_a9",
+  "_reported_not_decisive": "seed spread (3 seeds) of every method; per-group accuracy; C2 vs tau_norm (same base); everything on clip_b32"
+ },
+
+ "verdict": {
+  "all_primary_pass": "Method paper: benchmark + C2 as a method contribution (plan section 17, row 2).",
+  "some_primary_pass": "Analysis paper; C2 reported as an encoder-dependent component, with this result.",
+  "no_primary_pass": "Analysis paper (docs/PLAN_ANALYSIS.md); C2 reported as a negative result on both datasets."
+ },
+
+ "evaluated_by": "tools/confirmatory_gate.py --rules gates/h22_confirmatory.json --encoder <encoder>, then --summary"
+}
