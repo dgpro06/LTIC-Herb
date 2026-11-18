@@ -1,0 +1,166 @@
+{
+ "dataset": "plantnet",
+ "encoder": "dinov2_b14",
+ "split": "vselect",
+ "thresholds": {
+  "_note": "Plan v9.1 \u00a78.1 defaults. Agree and commit these BEFORE computing any diagnostic; the git log is the record.",
+  "donor_median_ratio_min": 3.0,
+  "cross_genus_share_min": 0.3,
+  "genus_correct_share_min": 0.5,
+  "c2_p_value_max": 0.05,
+  "a9_max_gain_retained": 0.5,
+  "vselect_min_tail_images": 500
+ },
+ "rules": {
+  "best_baseline": "non-C2 method with the highest V-select macro-F1",
+  "c2_method": "+c2 method with the highest V-select macro-F1",
+  "a9": "same base with +c2shuf; gain measured over the same base without C2",
+  "significance": "paired bootstrap 95% CI > 0, or McNemar p < 0.05 with C2 ahead"
+ },
+ "vselect_macro_f1": {
+  "tau_norm+c2": 0.5468517224490932,
+  "ldam_drw": 0.5418948902289,
+  "crt": 0.5354238862858081,
+  "taxonet": 0.5336109559942039,
+  "la": 0.5323233839102025,
+  "la+c2": 0.5322455110909798,
+  "crt+c2shuf": 0.527563689181932,
+  "ltic3": 0.5224888654799749,
+  "ce": 0.5222119423456126,
+  "flat_genus": 0.5195747394109709,
+  "crt+c2": 0.5163909980412018,
+  "ltic3@gamma=0": 0.5150671961390892,
+  "ltic3+c2": 0.5050055124300087,
+  "tau_norm": 0.5018138563968709,
+  "balanced_softmax": 0.49493244982290013,
+  "ltic3+c2shuf": 0.48767974867668945,
+  "reslt": 0.47020668449225456,
+  "ltic2": 0.4443286672913495
+ },
+ "best_baseline": "ldam_drw",
+ "c2_method": "tau_norm+c2",
+ "criterion1": {
+  "macro_f1": {
+   "tau_norm+c2": 0.5475801845305097,
+   "ldam_drw": 0.541881578662684,
+   "delta": 0.005698605867825668,
+   "ci95": [
+    -0.01673876108146833,
+    0.007758950894234402
+   ],
+   "mcnemar_p_all_images": 6.09676014859828e-10,
+   "pass": true
+  },
+  "few_shot_pooled_acc": {
+   "tau_norm+c2": 0.4491803278688525,
+   "ldam_drw": 0.3836065573770492,
+   "n_images": 305,
+   "delta": 0.0655737704918033,
+   "ci95": [
+    0.03278688524590162,
+    0.09836065573770492
+   ],
+   "mcnemar_p": 0.00017999112606048402,
+   "pass": true
+  }
+ },
+ "criterion2_a9": {
+  "missing": [
+   "tau_norm+c2shuf"
+  ],
+  "pass": null
+ },
+ "seed_spread_test_macro_f1": {
+  "balanced_softmax": {
+   "mean": 0.4804489438935809,
+   "std": 0.0038674889132433244,
+   "n": 3
+  },
+  "ce": {
+   "mean": 0.45398670473096675,
+   "std": 0.003032728074004365,
+   "n": 3
+  },
+  "crt": {
+   "mean": 0.5029567227442943,
+   "std": 0.0014763988800538224,
+   "n": 3
+  },
+  "crt+c2": {
+   "mean": 0.5178996831736202,
+   "std": 0.002230154001738561,
+   "n": 3
+  },
+  "crt+c2shuf": {
+   "mean": 0.515578816069855,
+   "std": 0.002648917138776803,
+   "n": 3
+  },
+  "flat_genus": {
+   "mean": 0.465076457835077,
+   "std": 0.004165799092369117,
+   "n": 3
+  },
+  "la": {
+   "mean": 0.4997259258749276,
+   "std": 0.005066641439222717,
+   "n": 3
+  },
+  "la+c2": {
+   "mean": 0.5013640837868264,
+   "std": 0.0025455413400317342,
+   "n": 3
+  },
+  "ldam_drw": {
+   "mean": 0.4958879022448934,
+   "std": 0.0014398691703823067,
+   "n": 3
+  },
+  "ltic2": {
+   "mean": 0.4242284797847997,
+   "std": 0.005670974073756205,
+   "n": 3
+  },
+  "ltic3": {
+   "mean": 0.4926528465860369,
+   "std": 0.0030993277052153837,
+   "n": 3
+  },
+  "ltic3+c2": {
+   "mean": 0.5002704088370123,
+   "std": 0.005848647674438278,
+   "n": 3
+  },
+  "ltic3+c2shuf": {
+   "mean": 0.4824313264567126,
+   "std": 0.00833366240026175,
+   "n": 3
+  },
+  "ltic3@gamma=0": {
+   "mean": 0.48099872210536604,
+   "std": 0.0011271494135034047,
+   "n": 3
+  },
+  "reslt": {
+   "mean": 0.4698341236973262,
+   "std": 0.010466241551885434,
+   "n": 3
+  },
+  "tau_norm": {
+   "mean": 0.49958441785165836,
+   "std": 0.0018346575890470216,
+   "n": 3
+  },
+  "tau_norm+c2": {
+   "mean": 0.53376932663946,
+   "std": 0.0015071074930149337,
+   "n": 3
+  },
+  "taxonet": {
+   "mean": 0.4662578370830703,
+   "std": 4.4620664295038915e-05,
+   "n": 3
+  }
+ },
+ "verdict": "INCOMPLETE: A9 runs missing"
+}

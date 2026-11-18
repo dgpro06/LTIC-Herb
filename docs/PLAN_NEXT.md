@@ -1,5 +1,8 @@
 # TaxoRes-LTIC: revised plan for weeks 2–4 (from Mon 2026-11-16)
 
+> **Superseded on 2026-11-18:** the week-2 gate failed (Kaggle session 5). The forward plan is now
+> [PLAN_ANALYSIS.md](PLAN_ANALYSIS.md). This file stays as the record of the gate rules (§5) and the C2 spec (§6).
+
 Revises plan v9.1 (`LTIC_journal_plan_v9_final.md`, § numbers below) after the week-1 results. The state of the
 code and every number referred to here are in [HANDOFF.md](HANDOFF.md). Final date unchanged: **hand-over
 Mon Nov 30**.

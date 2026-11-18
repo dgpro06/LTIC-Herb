@@ -1,0 +1,194 @@
+{
+ "dataset": "plantnet",
+ "encoder": "clip_b32",
+ "split": "vselect",
+ "thresholds": {
+  "_note": "Plan v9.1 \u00a78.1 defaults. Agree and commit these BEFORE computing any diagnostic; the git log is the record.",
+  "donor_median_ratio_min": 3.0,
+  "cross_genus_share_min": 0.3,
+  "genus_correct_share_min": 0.5,
+  "c2_p_value_max": 0.05,
+  "a9_max_gain_retained": 0.5,
+  "vselect_min_tail_images": 500
+ },
+ "rules": {
+  "best_baseline": "non-C2 method with the highest V-select macro-F1",
+  "c2_method": "+c2 method with the highest V-select macro-F1",
+  "a9": "same base with +c2shuf; gain measured over the same base without C2",
+  "significance": "paired bootstrap 95% CI > 0, or McNemar p < 0.05 with C2 ahead"
+ },
+ "vselect_macro_f1": {
+  "ltic3@gamma=0": 0.37279504181292566,
+  "ltic3": 0.3709954975646851,
+  "ltic3+c2shuf": 0.36942295836469646,
+  "reslt": 0.3677924951353642,
+  "la": 0.357365561409149,
+  "ltic3+c2": 0.35488691056416266,
+  "crt": 0.34981301249061286,
+  "ce": 0.3470045672006071,
+  "crt+c2shuf": 0.3424357836143778,
+  "flat_genus": 0.3420433337330972,
+  "crt+c2": 0.33979871964288066,
+  "tau_norm+c2": 0.3318442461794187,
+  "balanced_softmax": 0.31169483075250937,
+  "taxonet": 0.3054738995409834,
+  "tau_norm": 0.3044370547273999,
+  "la+c2": 0.2971641524992833,
+  "ltic2": 0.29140385445719047,
+  "ldam_drw": 0.28705766060280025
+ },
+ "best_baseline": "ltic3@gamma=0",
+ "c2_method": "ltic3+c2",
+ "criterion1": {
+  "macro_f1": {
+   "ltic3+c2": 0.35492274289531645,
+   "ltic3@gamma=0": 0.3725182970182336,
+   "delta": -0.017595554122917134,
+   "ci95": [
+    -0.03134399660061942,
+    -0.0038494466210070876
+   ],
+   "mcnemar_p_all_images": 0.029784003539923977,
+   "pass": false
+  },
+  "few_shot_pooled_acc": {
+   "ltic3+c2": 0.28852459016393445,
+   "ltic3@gamma=0": 0.3016393442622951,
+   "n_images": 305,
+   "delta": -0.01311475409836066,
+   "ci95": [
+    -0.059016393442622994,
+    0.032786885245901676
+   ],
+   "mcnemar_p": 0.6778086391424769,
+   "pass": false
+  }
+ },
+ "criterion2_a9": {
+  "real_vs_shuffled": {
+   "macro_f1": {
+    "ltic3+c2": 0.35492274289531645,
+    "ltic3+c2shuf": 0.3695992284723311,
+    "delta": -0.014676485577014675,
+    "ci95": [
+     -0.02908623105267975,
+     3.5371453577267024e-05
+    ],
+    "mcnemar_p_all_images": 0.27885883984503024,
+    "pass": false
+   },
+   "few_shot_pooled_acc": {
+    "ltic3+c2": 0.28852459016393445,
+    "ltic3+c2shuf": 0.29180327868852457,
+    "n_images": 305,
+    "delta": -0.003278688524590123,
+    "ci95": [
+     -0.04918032786885246,
+     0.042622950819672156
+    ],
+    "mcnemar_p": 1.0,
+    "pass": false
+   }
+  },
+  "a9_base": "ltic3",
+  "f1_base": 0.3709954975646851,
+  "f1_real": 0.35488691056416266,
+  "f1_shuffled": 0.36942295836469646,
+  "gain_real": -0.016108587000522423,
+  "share_of_gain_retained_by_shuffled": Infinity,
+  "pass": false
+ },
+ "seed_spread_test_macro_f1": {
+  "balanced_softmax": {
+   "mean": 0.2665948303861549,
+   "std": 0.017014692759010585,
+   "n": 3
+  },
+  "ce": {
+   "mean": 0.3007798748897845,
+   "std": 0.002709759657082892,
+   "n": 3
+  },
+  "crt": {
+   "mean": 0.32920939926176707,
+   "std": 0.0013844424741377627,
+   "n": 3
+  },
+  "crt+c2": {
+   "mean": 0.3366255184712596,
+   "std": 0.0013375187831896095,
+   "n": 3
+  },
+  "crt+c2shuf": {
+   "mean": 0.3287737412511184,
+   "std": 0.002611402553797372,
+   "n": 3
+  },
+  "flat_genus": {
+   "mean": 0.29087046697694235,
+   "std": 0.0007976575108614393,
+   "n": 3
+  },
+  "la": {
+   "mean": 0.3059745374537073,
+   "std": 0.0015145113595064828,
+   "n": 3
+  },
+  "la+c2": {
+   "mean": 0.2652374930367291,
+   "std": 0.0007759721051692445,
+   "n": 3
+  },
+  "ldam_drw": {
+   "mean": 0.27148975049694296,
+   "std": 0.0012610368494850954,
+   "n": 3
+  },
+  "ltic2": {
+   "mean": 0.261038275177612,
+   "std": 0.01918233235338196,
+   "n": 3
+  },
+  "ltic3": {
+   "mean": 0.33813886144276567,
+   "std": 0.005171551236575726,
+   "n": 3
+  },
+  "ltic3+c2": {
+   "mean": 0.3332338075362543,
+   "std": 0.005565735132434753,
+   "n": 3
+  },
+  "ltic3+c2shuf": {
+   "mean": 0.34276345212715653,
+   "std": 0.0033915158585178036,
+   "n": 3
+  },
+  "ltic3@gamma=0": {
+   "mean": 0.3430457509522488,
+   "std": 0.003097479004762185,
+   "n": 3
+  },
+  "reslt": {
+   "mean": 0.3259896931778683,
+   "std": 0.0010282360797998723,
+   "n": 3
+  },
+  "tau_norm": {
+   "mean": 0.27465080395035235,
+   "std": 0.008870180395777949,
+   "n": 3
+  },
+  "tau_norm+c2": {
+   "mean": 0.3093675529576674,
+   "std": 0.0009589101733239803,
+   "n": 3
+  },
+  "taxonet": {
+   "mean": 0.26458341444429645,
+   "std": 0.0035732777055468364,
+   "n": 3
+  }
+ },
+ "verdict": "FAIL: benchmark/analysis paper (PLAN_NEXT \u00a75); C2 reported as a modest component"
+}
