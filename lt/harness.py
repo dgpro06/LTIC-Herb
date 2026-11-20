@@ -24,7 +24,7 @@ from lt import losses as L
 from lt import trainer as T
 from lt.classes import ClassIndex, ShotGroups
 from lt.features import load_split
-from lt.metrics import evaluate, macro_f1
+from lt.metrics import evaluate, evaluate_predictions, macro_f1
 from lt.taxonomy import Taxonomy
 
 # ---------------------------------------------------------------------------------------------
@@ -274,8 +274,7 @@ def tune_posthoc(model, cfg, data, fixed=None):
     best_cfg, best_score = cfg, -np.inf
     for v in POSTHOC_GRID:
         c = dict(cfg, **{knob: v})
-        logits, _ = T.predict(model, data.fs['vtune'], c, log_pi)
-        pred = logits.argmax(1).numpy()
+        pred = T.predict_labels(model, data.fs['vtune'], c, log_pi)
         score = macro_f1(y, pred, data.index.num_classes) if c.get('select_metric', 'macro_f1') == 'macro_f1' \
             else float((pred == y).mean())
         if score > best_score:
@@ -305,8 +304,7 @@ def search(method_name, data, trials, results_csv, seed=0, base=None, log=print,
             cfg_g, score_g = tune_posthoc(model, info['cfg'], data, fixed)
             if score_g is not None:
                 info = dict(info, cfg=cfg_g, vtune_score=score_g)
-        logits, _ = T.predict(model, data.fs['vtune'], info['cfg'], data.log_pi_for(info['cfg']))
-        m = evaluate(logits, data.fs['vtune'].y.cpu().numpy(), data.groups)
+        m, _ = split_eval(model, info['cfg'], data, 'vtune')
         rows.append(_row(data, method_name, info['cfg'], info, 'trial', t, seed, 'vtune', m))
         log('  [{}] trial {:2d}/{}: V-tune macro-F1 {:.4f} (epoch {}, {:.0f}s){}'.format(
             method_name, t + 1, trials, info['vtune_score'], info['best_epoch'], info['seconds'],
@@ -320,11 +318,10 @@ def search(method_name, data, trials, results_csv, seed=0, base=None, log=print,
 def score_vselect(method_name, cfg, data, results_csv, seed=0, save_dir=None):
     """The ONE V-select evaluation of a chosen configuration."""
     model, info = train_one(cfg, data, seed)
-    logits, _ = T.predict(model, data.fs['vselect'], info['cfg'], data.log_pi_for(info['cfg']))
-    m = evaluate(logits, data.fs['vselect'].y.cpu().numpy(), data.groups)
+    m, comp = split_eval(model, info['cfg'], data, 'vselect')
     append_rows(results_csv, [_row(data, method_name, info['cfg'], info, 'vselect', '', seed, 'vselect', m)])
     if save_dir:
-        save_predictions(save_dir, method_name, seed, model, info['cfg'], data, ['vselect'])
+        save_predictions(save_dir, method_name, seed, model, info['cfg'], data, ['vselect'], {'vselect': comp})
     return m
 
 
@@ -332,23 +329,68 @@ def final_runs(method_name, cfg, data, seeds, results_csv, save_dir=None, splits
     out = []
     for seed in seeds:
         model, info = train_one(cfg, data, seed)
-        rows = []
+        rows, comps = [], {}
         for s in splits:
             if s not in data.fs:
                 continue
-            logits, _ = T.predict(model, data.fs[s], info['cfg'], data.log_pi_for(info['cfg']))
-            m = evaluate(logits, data.fs[s].y.cpu().numpy(), data.groups)
+            m, comps[s] = split_eval(model, info['cfg'], data, s)
             rows.append(_row(data, method_name, info['cfg'], info, 'final', '', seed, s, m))
             out.append((seed, s, m))
         append_rows(results_csv, rows)
         if save_dir:
-            save_predictions(save_dir, method_name, seed, model, info['cfg'], data, splits)
+            save_predictions(save_dir, method_name, seed, model, info['cfg'], data, splits, comps)
     return out
 
 
-def save_predictions(save_dir, method_name, seed, model, cfg, data, splits):
-    """Raw species logits (tau = 0) + the chosen tau, so C-F can sweep tau and C4 can calibrate."""
+def compact_preds(conf):
+    """True when the dataset config asks for compact predictions ("pred_format": "topk"; H22-clean, where
+    full test logits would be 84,759 x 15,501 = 2.6 GB per file and as much again in RAM)."""
+    fmt = conf.get('pred_format', 'full')
+    if fmt not in ('full', 'topk'):
+        raise ValueError('pred_format must be "full" or "topk", got {!r}'.format(fmt))
+    return fmt == 'topk'
+
+
+def split_eval(model, cfg, data, split):
+    """Metrics of a trained model on one split -> (metrics, compact predictions or None).
+
+    'full' (default): logits on the CPU, lt.metrics.evaluate (the Pl@ntNet sessions).
+    'topk': argmax and top-k on the device (T.predict_topk); the metrics are the same numbers."""
+    fs = data.fs[split]
+    y = fs.y.cpu().numpy()
+    log_pi = data.log_pi_for(cfg)
+    if not compact_preds(data.conf):
+        logits, _ = T.predict(model, fs, cfg, log_pi)
+        return evaluate(logits, y, data.groups), None
+    k = max(5, int(data.conf.get('pred_topk', 20)))
+    pred, idx, val, lse = T.predict_topk(model, fs, cfg, log_pi, k)
+    top5 = float((idx[:, :5] == torch.as_tensor(y).view(-1, 1)).any(1).float().mean())
+    m = evaluate_predictions(y, pred.numpy(), data.index.num_classes, data.groups, top5)
+    return m, {'pred': pred, 'idx': idx, 'val': val, 'lse': lse}
+
+
+def save_predictions(save_dir, method_name, seed, model, cfg, data, splits, compact=None):
+    """'full' format: raw species logits (tau = 0) + the chosen tau, so C-F can sweep tau and C4 can calibrate.
+    'topk' format (compact[split] from split_eval): the final prediction `pred` (post-hoc tau applied) and
+    the top-k FINAL logits with their logsumexp; C-F's tau sweep needs the full format."""
     os.makedirs(save_dir, exist_ok=True)
+    if compact_preds(data.conf):
+        for s in splits:
+            if s not in data.fs:
+                continue
+            c = compact[s]
+            name = '{}_{}_{}_{}_seed{}.npz'.format(data.conf['dataset'], data.conf['encoder'],
+                                                   method_name.replace('@', '-').replace('=', '').replace(',', '-'),
+                                                   s, seed)
+            np.savez_compressed(
+                os.path.join(save_dir, name), format='topk', pred=c['pred'].numpy().astype(np.int32),
+                top_idx=c['idx'].numpy().astype(np.int32), top_val=c['val'].numpy().astype(np.float32),
+                logsumexp=c['lse'].numpy().astype(np.float32), y=data.fs[s].y.cpu().numpy(),
+                tau=cfg.get('tau', 0.0), split=s, counts=data.index.counts, prior_counts=data.prior_counts(cfg),
+                class_map=data.index.class_map, few_end=data.groups.few_end, many_start=data.groups.many_start,
+                method=method_name, encoder=data.conf['encoder'], dataset=data.conf['dataset'],
+                cfg=json.dumps(cfg))
+        return
     raw_cfg = dict(cfg, tau=0.0)
     for s in splits:
         if s not in data.fs:

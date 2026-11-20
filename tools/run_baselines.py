@@ -40,7 +40,16 @@ def main():
     p.add_argument('--skip_done', action='store_true',
                    help='skip a method whose chosen config and test predictions for every seed already exist '
                         '(lets a session that hit the time limit be resumed)')
+    p.add_argument('--deadline_min', type=float, default=0,
+                   help='do not START a method if (minutes since --t0) + its estimated time would pass this '
+                        '(Kaggle kills a session at 12 h and keeps no output); 0 = off')
+    p.add_argument('--t0', type=float, default=None, help='session start (unix time); default: now')
+    p.add_argument('--budget_min', type=float, default=150,
+                   help='time estimate for the first method of this call; later methods use 1.25 x the '
+                        'longest method seen so far in this call')
     args = p.parse_args()
+    t_session = args.t0 or time.time()
+    longest = 0.0
 
     with open(args.config, encoding='utf-8') as f:
         conf = json.load(f)
@@ -63,6 +72,15 @@ def main():
         if args.skip_done and os.path.isfile(cfg_path) and all(os.path.isfile(d) for d in done):
             print('=> {} already done (config and test predictions for seeds {}); skipped'.format(name, seeds))
             continue
+        if args.deadline_min:
+            used = (time.time() - t_session) / 60
+            need = 1.25 * longest if longest else args.budget_min
+            if used + need > args.deadline_min:
+                print('=> DEADLINE: {:.0f} min used, {} needs ~{:.0f} min, limit {:.0f}; stopping before it '
+                      '(the next session continues with PREV=auto)'.format(used, name, need, args.deadline_min),
+                      flush=True)
+                break
+        t_method = time.time()
         if 'search' in stages:
             print('=> search {} ({} trials)'.format(name, trials), flush=True)
             _, fixed = harness.parse_method(name)
@@ -105,6 +123,9 @@ def main():
             f1 = [m['macro_f1'] for _, split, m in out if split == 'test']
             if f1:
                 print('=> {} test macro-F1 over seeds {}: {}'.format(name, seeds, ', '.join('{:.4f}'.format(v) for v in f1)))
+        dt = (time.time() - t_method) / 60
+        longest = max(longest, dt)
+        print('=> {} took {:.1f} min ({:.0f} s)'.format(name, dt, dt * 60), flush=True)
     print('=> done in {:.1f} min; rows in {}'.format((time.time() - t0) / 60, args.results))
 
 

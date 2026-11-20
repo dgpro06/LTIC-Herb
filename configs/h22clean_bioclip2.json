@@ -17,5 +17,7 @@
  "eval_every": 2,
  "trials": 10,
  "posthoc_grid": true,
- "c2_prior": "augmented"
+ "c2_prior": "augmented",
+ "pred_format": "topk",
+ "pred_topk": 20
 }

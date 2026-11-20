@@ -64,11 +64,42 @@ stops early".
 4. **Save Version → Save & Run All (Commit)**. The script copies all three outputs, finds that every chunk is
    already there, and prints `ALL CHUNKS PRESENT`. If chunks are missing, it extracts them itself (that's
    also how one account finishes alone).
-5. This notebook's Output is the full H22-clean feature store. Later sessions attach it with `PREV = "auto"`
-   and set `BASELINES`, e.g. `"la,crt,tau_norm,ltic3,crt+c2,crt+c2shuf"`. Baselines refuse to start until
-   all chunks are present.
+5. This notebook's Output is the full H22-clean feature store (done 2026-11-18: `h22_extract` Version 1,
+   see `results/RUNS.md`). Training uses a separate notebook: see "Training" below. Don't use `BASELINES`
+   here for H22: it does not follow the pre-registered order and skips the time limit per method.
 6. Download `splits/` and `taxonomy/h22.csv` from the Output and commit them, as with Pl@ntNet. Don't commit
    `feats/`.
+
+## Training (Phase 3): `kaggle/LTIC_H22_Train_Kaggle.ipynb`
+
+Runs the pre-registered methods of `gates/h22_confirmatory.json` on the features. **No H22 model may be
+trained in `full` mode before the rules file says `"_status": "AGREED ..."` and is committed**; the script
+refuses otherwise.
+
+1. Import the notebook (**File → Import Notebook → Link**):
+   `https://raw.githubusercontent.com/dgpro06/LTIC-Herb/Dgpro/kaggle/LTIC_H22_Train_Kaggle.ipynb`.
+   Name it `h22_train`.
+2. Panel: **GPU T4 x2**, **Internet on**, **Input → Your Work → `h22_extract`** (or the `h22clean-feats`
+   Dataset). The competition is not needed.
+3. **First: `MODE = "timing"`** (about 15–25 min). One 2-epoch trial of `tau_norm`, `tau_norm+c2f` and `ltic3`
+   per encoder, scored on V-tune only and then deleted. It checks the features against the committed split
+   sha1s, runs C2's donor statistics on 15,501 classes, and prints seconds per trial. Send the
+   "Timing summary" block to plan the GPU hours. It never touches V-select or test.
+4. **After the rules are AGREED: `MODE = "full"`**, `ENCODERS = "dinov2_b14,bioclip2"` (one per GPU).
+   Order per encoder: `tau_norm` → `tau_norm+c2f` → the 3 A9 controls (test seed 0) → `la, crt, ce, ltic3, ltic2`
+   (seeds 0–2), 10 trials each with the post-hoc grid and the augmented C2 prior from the config.
+5. A session stops starting methods after `DEADLINE_MIN` (600) minutes. To continue: **Edit → Input → Your
+   Work →** add this notebook's newest version (keep `h22_extract` attached) → **Save & Run All** again.
+   Finished methods are skipped; earlier results are copied in automatically.
+6. When the log says `READY` for an encoder, download `results/` (small: the predictions are top-20 only,
+   `"pred_format": "topk"`) and commit it. Then, once per encoder and never again:
+   `python tools/confirmatory_gate.py --rules gates/h22_confirmatory.json --results results/all_runs_h22clean.csv --encoder <enc>`
+   and finally `--summary`.
+7. `clip_b32` (reported, not decisive) runs in a later session with `ENCODERS = "clip_b32"`.
+
+Outputs: `results/all_runs_h22clean_<enc>.csv` (one per GPU process) merged into `results/all_runs_h22clean.csv`,
+`results/configs/`, `results/preds/` (compact: final prediction + top-20 logits + logsumexp), `results/c2/`,
+`logs/gpu<k>.log`. C-F's tau sweep needs full logits and is not run on H22 from these files.
 
 ## If a session stops early
 

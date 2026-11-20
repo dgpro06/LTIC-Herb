@@ -110,6 +110,34 @@ def predict(model, fs, cfg, log_pi, batch=8192):
     return torch.cat(sp), (torch.cat(gn) if gn else None)
 
 
+@torch.no_grad()
+def predict_topk(model, fs, cfg, log_pi, k=0, batch=8192):
+    """The method's final decision (argmax after post-hoc tau) computed on the device, so a large head
+    (H22: 15,501 classes) never materialises [N, C] logits on the CPU. Same argmax as predict().argmax(1).
+    k > 0 also returns the top-k of the final logits and their per-row logsumexp (exact softmax for the top-k).
+    Returns (pred [N], top_idx [N, k] or None, top_val [N, k] or None, lse [N] or None), all on the CPU."""
+    model.eval()
+    if cfg['method'] == 'tau_norm':
+        model.test_tau = cfg['test_tau']
+    pred, idx, val, lse = [], [], [], []
+    for s in range(0, fs.n, batch):
+        z = L.logit_adjust(species_logits(model, model(fs.x[0, s:s + batch].float()), cfg), log_pi, cfg['tau'])
+        pred.append(z.argmax(1).cpu())
+        if k:
+            v, i = z.topk(min(k, z.size(1)), dim=1)
+            idx.append(i.cpu())
+            val.append(v.cpu())
+            lse.append(torch.logsumexp(z, 1).cpu())
+    if not k:
+        return torch.cat(pred), None, None, None
+    return torch.cat(pred), torch.cat(idx), torch.cat(val), torch.cat(lse)
+
+
+def predict_labels(model, fs, cfg, log_pi):
+    """argmax of the final logits as a numpy array (same values as predict(...)[0].argmax(1))."""
+    return predict_topk(model, fs, cfg, log_pi)[0].numpy()
+
+
 C2_DEFAULTS = {'c2': False, 'c2_tau_mu': 5.0, 'c2_k': 10, 'c2_rank': 'diag', 'c2_nmin': 20,
                'c2_shuffle': False, 'c2_shuffle_seed': 0,
                # 'real': LA / balanced softmax / LDAM / post-hoc tau use the real train prior (Pl@ntNet sessions);
@@ -249,8 +277,7 @@ def train(cfg, train_fs, tune_fs, counts, few_end, many_start, seed=0, genus_of=
             step += 1
 
         if (epoch + 1) % cfg['eval_every'] == 0 or epoch + 1 == cfg['epochs']:
-            logits, _ = predict(model, tune_fs, cfg, log_pi)
-            pred = logits.argmax(1).numpy()
+            pred = predict_labels(model, tune_fs, cfg, log_pi)
             y_t = tune_fs.y.cpu().numpy()
             score = macro_f1(y_t, pred, C) if cfg['select_metric'] == 'macro_f1' else float((pred == y_t).mean())
             history.append({'epoch': epoch + 1, 'loss': float(loss.detach()),'vtune_' + cfg['select_metric']: score})

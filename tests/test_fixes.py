@@ -278,3 +278,56 @@ def test_augmented_prior_is_used_and_saved(synth, tmp_path):
     p = week2_gate.load_pred(str(tmp_path / 'preds'), 'synth', 'synth', 'la+c2', split='test')
     logits = d['logits'].astype(np.float64) - 1.0 * np.log(expect / expect.sum())[None, :]
     assert np.array_equal(p['pred'], logits.argmax(1))
+
+
+# ----------------------------------------------------------------------------- 7. compact predictions (H22)
+@pytest.mark.parametrize('method,extra', [('tau_norm', {'test_tau': 0.8}), ('la', {'la_mode': 'posthoc', 'tau': 1.0}),
+                                          ('ltic3', {'gamma': 0.3})])
+def test_compact_predictions_match_full(synth, tmp_path, method, extra):
+    """pred_format='topk' must give the same metrics, rows and gate predictions as the full logits."""
+    conf, _, _, _ = synth
+    cfg = harness.sample_config(method, np.random.default_rng(1), base={'epochs': 2, 'eval_every': 2})
+    cfg.update(extra)
+    out = {}
+    for fmt in ('full', 'topk'):
+        data = harness.Data(dict(conf, pred_format=fmt, pred_topk=7), device=torch.device('cpu'))
+        res = str(tmp_path / '{}.csv'.format(fmt))
+        preds = str(tmp_path / fmt)
+        vs = harness.score_vselect(method, cfg, data, res, save_dir=preds)
+        fin = harness.final_runs(method, cfg, data, [0], res, save_dir=preds, splits=('test', 'vcal'))
+        out[fmt] = (vs, fin, preds, data)
+    assert out['full'][0] == out['topk'][0]
+    assert [m for _, _, m in out['full'][1]] == [m for _, _, m in out['topk'][1]]
+    full_dir, top_dir, data = out['full'][2], out['topk'][2], out['topk'][3]
+    reported = dict([('vselect', out['topk'][0])] + [(s, m) for _, s, m in out['topk'][1]])
+    for split in ('vselect', 'test', 'vcal'):
+        a = week2_gate.load_pred(full_dir, 'synth', 'synth', method, split=split)
+        b = week2_gate.load_pred(top_dir, 'synth', 'synth', method, split=split)
+        assert a['C'] == b['C'] and a['few_end'] == b['few_end'] and np.array_equal(a['y'], b['y'])
+        # compact stores the exact decision: it reproduces the reported metric exactly
+        assert metrics.macro_f1(b['y'], b['pred'], b['C']) == reported[split]['macro_f1']
+        # the full format re-derives it from fp16 logits, which can flip a rare near-tie
+        assert (a['pred'] == b['pred']).mean() > 0.97
+    d = np.load(os.path.join(top_dir, 'synth_synth_{}_test_seed0.npz'.format(method)))
+    assert 'logits' not in d.files and d['top_idx'].shape == (len(d['y']), 7)
+    assert np.array_equal(d['top_idx'][:, 0], d['pred'])
+    # the stored top-k logits + logsumexp give the exact softmax of the final logits
+    model, info = harness.train_one(cfg, data, 0)
+    logits, _ = T.predict(model, data.fs['test'], info['cfg'], data.log_pi)
+    p = torch.softmax(logits.float(), 1).gather(1, torch.as_tensor(d['top_idx']).long()).numpy()
+    q = np.exp(d['top_val'].astype(np.float64) - d['logsumexp'][:, None])
+    assert d['top_val'].dtype == np.float32
+    assert np.allclose(p, q, atol=1e-5)
+
+
+def test_predict_labels_equals_full_argmax(synth):
+    conf, _, _, _ = synth
+    data = harness.Data(conf, device=torch.device('cpu'))
+    cfg = harness.sample_config('tau_norm', np.random.default_rng(2), base={'epochs': 2, 'eval_every': 2})
+    model, info = harness.train_one(cfg, data, 0)
+    for v in (0.0, 0.5, 1.5):
+        c = dict(info['cfg'], test_tau=v, tau=0.7)
+        logits, _ = T.predict(model, data.fs['vtune'], c, data.log_pi)
+        assert np.array_equal(T.predict_labels(model, data.fs['vtune'], c, data.log_pi), logits.argmax(1).numpy())
+    with pytest.raises(ValueError):
+        harness.compact_preds({'pred_format': 'bogus'})

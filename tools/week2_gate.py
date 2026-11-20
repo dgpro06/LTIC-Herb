@@ -35,6 +35,9 @@ def tag(method):
 def load_pred(preds_dir, dataset, encoder, method, split='vselect', seed=0):
     path = os.path.join(preds_dir, '{}_{}_{}_{}_seed{}.npz'.format(dataset, encoder, tag(method), split, seed))
     d = np.load(path)
+    if 'pred' in d.files:                       # compact 'topk' format (H22): the final prediction is stored
+        return {'y': d['y'], 'pred': d['pred'].astype(np.int64), 'few_end': int(d['few_end']),
+                'C': len(d['counts']), 'path': path}
     logits = d['logits'].astype(np.float64)
     # post-hoc LA uses the prior the model was trained with (C2 with c2_prior='augmented' saves prior_counts)
     counts = np.maximum((d['prior_counts'] if 'prior_counts' in d.files else d['counts']).astype(np.float64), 1)
