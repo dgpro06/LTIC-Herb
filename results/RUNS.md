@@ -92,3 +92,30 @@ base for cRT (+0.007 / +0.015 / +0.007 on clip_b32 / dinov2_b14 / bioclip2) and 
 +0.007), but the shuffled-taxonomy control keeps most of cRT's gain on DINOv2 and BioCLIP 2 (+0.013 and +0.006),
 so on strong encoders the gain is mostly generic tail augmentation, not taxonomy. LA + C2 loses 0.041 on
 clip_b32 (the real prior plus synthetic tail samples corrects the tail twice; `c2_prior='augmented'` now exists).
+
+## H22-clean feature extraction (2026-11-18)
+
+Notebook `h22_extract` (Kaggle, dgpro06), Version 1, GPU T4 x2, competition data `herbarium-2022-fgvc9`,
+code `208f9a1`, `ENCODERS=dinov2_b14,bioclip2,clip_b32`, `PART=0/1`, no baselines. Log 12:55 → 16:30
+(3 h 35 min; 65.5 img/s for the three encoders together). **ALL CHUNKS PRESENT**; output `feats/` 3.3 GB
+(stays on Kaggle), `splits/` 37 MB, `taxonomy/` 1 MB. No H22 model has been trained yet.
+
+Split (plan 5.2): 839,772 images, 15,501 classes (none without images), largest class 80 images,
+no classes with ≤ 2 images. Train 670,254 · val 84,759 · test 84,759. Shot groups on clean train
+(few < 20, many ≥ 50): few 2,833 · medium 4,273 · many 8,395 classes.
+
+| Part | Images | Classes | Few-shot images (classes) |
+|---|---|---|---|
+| V-tune | 33,883 | 14,342 | 1,755 (1,714) |
+| V-select | 25,514 | 13,663 | 1,305 (1,297) |
+| V-cal | 25,362 | 13,678 | 1,336 (1,326) |
+
+Plan 8.0: kept 40/30/30 (V-select few-shot images ≥ 500). Split-file sha1 (every account must reproduce these):
+
+```
+ed57110a0acb707e50b597721d110793907eb22d  splits/h22clean_train.txt
+ff065459598762ce9d605f4a99456ec61d476744  splits/h22clean_vtune.txt
+e65f8c6bafc73007e40f28849dbbdcb22a6cfec1  splits/h22clean_vselect.txt
+9b00dea5c9b324e82f358f3feb149a00cd3603f5  splits/h22clean_vcal.txt
+62fe0f7ba0243209dd9cf29eec3d3fcc6ae2c9f0  splits/h22clean_test.txt
+```

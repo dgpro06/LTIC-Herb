@@ -1,0 +1,33 @@
+{
+ "val_file": "/kaggle/working/splits/h22clean_val.txt",
+ "train_file": "/kaggle/working/splits/h22clean_train.txt",
+ "seed": 0,
+ "few_thr": 20,
+ "ratios": [
+  40.0,
+  30.0,
+  30.0
+ ],
+ "decision_8_0": "kept 40,30,30 (V-select few-shot images >= 500)",
+ "few_classes_in_train": 2833,
+ "parts": {
+  "vtune": {
+   "images": 33883,
+   "classes": 14342,
+   "few_images": 1755,
+   "few_classes": 1714
+  },
+  "vselect": {
+   "images": 25514,
+   "classes": 13663,
+   "few_images": 1305,
+   "few_classes": 1297
+  },
+  "vcal": {
+   "images": 25362,
+   "classes": 13678,
+   "few_images": 1336,
+   "few_classes": 1326
+  }
+ }
+}

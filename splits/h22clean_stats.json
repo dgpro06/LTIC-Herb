@@ -1,0 +1,29 @@
+{
+ "source": "/kaggle/input/competitions/herbarium-2022-fgvc9/train_metadata.json",
+ "seed": 0,
+ "images": 839772,
+ "num_classes": 15501,
+ "category_ids_without_images": [],
+ "largest_class_all_images": 80,
+ "largest_class_train": 64,
+ "classes_n_le_2_train_only": 0,
+ "classes_n_3_to_4_now_1_2_shot": 0,
+ "split_images": {
+  "train": 670254,
+  "val": 84759,
+  "test": 84759
+ },
+ "thresholds": {
+  "few_thr": 20,
+  "many_thr": 50
+ },
+ "shot_groups_clean_train": {
+  "few": 2833,
+  "medium": 4273,
+  "many": 8395
+ },
+ "train_count_tertiles": [
+  36.0,
+  58.0
+ ]
+}
