@@ -1,5 +1,5 @@
 {
- "_status": "DRAFT 2026-11-18, NOT AGREED. Commit only after the team and supervisor agree, and BEFORE any H22-clean model run (baselines included). Once committed, nothing in this file changes; the git log is the record.",
+ "_status": "AGREED 2026-11-21 by the team and supervisor (draft of 2026-11-18, unchanged). Committed BEFORE any H22-clean model run (baselines included). Once committed, nothing in this file changes; the git log is the record.",
  "_why": "Pl@ntNet-300K is now the development set: its V-select and test results have been seen (week-2 gate FAIL, results/RUNS.md). H22-clean is untouched, herbarium (the IJCNN paper's domain) and taxonomically rich, so it is where a taxonomy method is tested once, under rules fixed in advance.",
  "_hypothesis": "On frozen features, taxonomy-guided feature calibration (C2) on top of a tau-norm linear probe improves macro-F1 and few-shot accuracy over the best tuned baseline, and the gain comes from the real taxonomy (shuffled taxonomy keeps less than half of it). Chosen from the Pl@ntNet results: tau_norm+c2 was the best method on the Pl@ntNet test set for DINOv2 and BioCLIP 2.",
 

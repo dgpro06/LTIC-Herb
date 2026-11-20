@@ -119,3 +119,8 @@ e65f8c6bafc73007e40f28849dbbdcb22a6cfec1  splits/h22clean_vselect.txt
 9b00dea5c9b324e82f358f3feb149a00cd3603f5  splits/h22clean_vcal.txt
 62fe0f7ba0243209dd9cf29eec3d3fcc6ae2c9f0  splits/h22clean_test.txt
 ```
+
+## H22-clean rules agreed (2026-11-21)
+gates/h22_confirmatory.json marked AGREED by the team and supervisor, unchanged from the 2026-11-18 draft (208f9a1).
+Committed before any H22-clean model run. Since the draft, the configs only gained "pred_format": "topk" and
+"pred_topk": 20 (a0d2d83): how predictions are stored, not what is run or how it is judged.
