@@ -124,3 +124,19 @@ e65f8c6bafc73007e40f28849dbbdcb22a6cfec1  splits/h22clean_vselect.txt
 gates/h22_confirmatory.json marked AGREED by the team and supervisor, unchanged from the 2026-11-18 draft (208f9a1).
 Committed before any H22-clean model run. Since the draft, the configs only gained "pred_format": "topk" and
 "pred_topk": 20 (a0d2d83): how predictions are stored, not what is run or how it is judged.
+
+## H22-clean training, session 1 (2026-11-21)
+Kaggle notebook dgpro06/h22-train Version 1 (pushed through the Kaggle API), code b8cf6f4 (rules AGREED), MODE=full,
+T4 x2, 02:57 -> 11:52 UTC (535 min), both workers exit 0, stopped by the 600-min deadline as designed.
+Every run takes 85-102 min (10 trials x 30 epochs + V-select + 3 test/V-cal seeds; ~87 min for A9 controls).
+
+| encoder    | done (6 + 4 C2/A9 needed)                         | todo                    |
+|------------|---------------------------------------------------|-------------------------|
+| dinov2_b14 | tau_norm, tau_norm+c2f, 3 x c2fshuf, la           | crt, ce, ltic3, ltic2   |
+| bioclip2   | tau_norm, tau_norm+c2f, 3 x c2fshuf               | la, crt, ce, ltic3, ltic2 |
+
+V-select macro-F1 (selects the best baseline; the gate needs all 6 baselines, so NO verdict yet):
+dinov2_b14 la 0.5226, tau_norm 0.5137, tau_norm+c2f 0.5138; bioclip2 tau_norm 0.6903, tau_norm+c2f 0.6914.
+Committed: all_runs_h22clean*.csv, configs/, c2/ donor shares, h22_logs/session1_*.log.
+Prediction files (results/preds/, 53 files, 278 MB) are gitignored as usual; copies are on this machine and in the
+notebook's Version 1 output. The official gate (tools/confirmatory_gate.py) has NOT been run.
