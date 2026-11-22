@@ -140,3 +140,20 @@ dinov2_b14 la 0.5226, tau_norm 0.5137, tau_norm+c2f 0.5138; bioclip2 tau_norm 0.
 Committed: all_runs_h22clean*.csv, configs/, c2/ donor shares, h22_logs/session1_*.log.
 Prediction files (results/preds/, 53 files, 278 MB) are gitignored as usual; copies are on this machine and in the
 notebook's Version 1 output. The official gate (tools/confirmatory_gate.py) has NOT been run.
+
+## H22-clean training, session 2, and the confirmatory gate (2026-11-22)
+Session 2 (h22-train Version 2, queued 17:00 -> started 20:30 UTC Nov 21, done 05:32 UTC Nov 22, exit 0 / 0):
+crt, ce, ltic3, ltic2 for dinov2_b14; la, crt, ce, ltic3, ltic2 for bioclip2. 10/10 methods for both encoders.
+GPU used for H22 training: ~20 h of quota (2 sessions).
+
+Confirmatory gate (tools/confirmatory_gate.py, rules gates/h22_confirmatory.json AGREED b8cf6f4), test seed 0:
+
+| encoder    | best baseline (V-select) | macro-F1 C2 / base | randomization p | few-shot C2 / base | McNemar | A9 retained | result |
+|------------|--------------------------|--------------------|-----------------|--------------------|---------|-------------|--------|
+| dinov2_b14 | crt (0.5227 vs la 0.5226) | 0.5395 / 0.5382   | 0.138 FAIL      | 0.472 / 0.406      | 342:52 PASS | 45% PASS | FAIL |
+| bioclip2   | la (0.6959)              | 0.7132 / 0.7120    | 0.105 FAIL      | 0.639 / 0.617      | 165:67 PASS | 13% PASS | FAIL |
+
+Verdict (rules["verdict"]["no_primary_pass"]): Analysis paper (docs/PLAN_ANALYSIS.md); C2 reported as a negative
+result on both datasets. Files: results/confirmatory_h22clean_{dinov2_b14,bioclip2,summary}.json.
+Not decisive, reported: the class-stratified bootstrap CI of the macro-F1 delta is [+0.0004, +0.0036] (DINOv2) and
+[-0.0000, +0.0024] (BioCLIP 2); C2's few-shot gain is large and taxonomy-specific (A9 passes on both encoders).

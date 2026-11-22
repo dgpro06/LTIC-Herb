@@ -1,0 +1,101 @@
+{
+ "dataset": "h22clean",
+ "encoder": "dinov2_b14",
+ "rules_file": "gates/h22_confirmatory.json",
+ "evaluation": {
+  "split": "test",
+  "seed": 0
+ },
+ "selection": {
+  "best_baseline": "crt",
+  "best_baseline_vselect_macro_f1": 0.5226616277375897,
+  "baselines_vselect_macro_f1": {
+   "ce": 0.5162988242758574,
+   "la": 0.5226303076921331,
+   "crt": 0.5226616277375897,
+   "tau_norm": 0.5137471009480409,
+   "ltic2": 0.44327331537724524,
+   "ltic3": 0.4932660134252758
+  },
+  "c2_method": "tau_norm+c2f",
+  "c2_methods_vtune_score": {
+   "tau_norm+c2f": 0.527323
+  }
+ },
+ "criterion1": {
+  "macro_f1": {
+   "tau_norm+c2f": 0.539463181459316,
+   "crt": 0.5381501545632327,
+   "delta": 0.001313026896083369,
+   "ci95": [
+    0.00036066054552412463,
+    0.0035719238473910227
+   ],
+   "mcnemar_p_all_images": 6.507436091258601e-05,
+   "mcnemar_a_only_right": 2510,
+   "mcnemar_b_only_right": 2802,
+   "decided_by": "randomization",
+   "randomization_p_greater": 0.13817236552689463,
+   "randomization_p_two_sided": 0.28134373125374923,
+   "pass": false
+  },
+  "few_shot_pooled_acc": {
+   "tau_norm+c2f": 0.47202001819836215,
+   "crt": 0.40605095541401276,
+   "n_images": 4396,
+   "delta": 0.06596906278434939,
+   "ci95": [
+    0.06141947224749772,
+    0.07051865332120111
+   ],
+   "mcnemar_p": 1.975388802635086e-53,
+   "mcnemar_a_only_right": 342,
+   "mcnemar_b_only_right": 52,
+   "pass": true
+  },
+  "pass": false
+ },
+ "same_base_reported": {
+  "base": "tau_norm",
+  "macro_f1_base": 0.5288198319556026,
+  "macro_f1_c2": 0.539463181459316,
+  "delta": 0.010643349503713484
+ },
+ "criterion2_a9": {
+  "base": "tau_norm",
+  "gain_over_base": 0.010643349503713484,
+  "mean_shuffled_macro_f1": 0.5336065372640929,
+  "share_of_gain_retained": 0.44973674000090447,
+  "per_shuffle_seed": {
+   "tau_norm+c2fshuf": {
+    "macro_f1_shuffled": 0.5339229274028282,
+    "randomization_p_greater": 0.0001999600079984003,
+    "ci95_stratified": [
+     0.004771716297176365,
+     0.006792042208559952
+    ],
+    "real_beats_shuffled": true
+   },
+   "tau_norm+c2fshuf@c2_shuffle_seed=1": {
+    "macro_f1_shuffled": 0.5344346545756409,
+    "randomization_p_greater": 0.0001999600079984003,
+    "ci95_stratified": [
+     0.004342399205434597,
+     0.006380562420846411
+    ],
+    "real_beats_shuffled": true
+   },
+   "tau_norm+c2fshuf@c2_shuffle_seed=2": {
+    "macro_f1_shuffled": 0.5324620298138096,
+    "randomization_p_greater": 0.0001999600079984003,
+    "ci95_stratified": [
+     0.006633680326264338,
+     0.00874748862361496
+    ],
+    "real_beats_shuffled": true
+   }
+  },
+  "pass": true
+ },
+ "pass": false
+}
