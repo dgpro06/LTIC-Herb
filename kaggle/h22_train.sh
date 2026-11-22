@@ -6,8 +6,13 @@
 #                checks the pipeline end to end and measures speed. Touches no V-select or test image.
 #   MODE=full    the pre-registered runs. Refuses to start unless gates/h22_confirmatory.json is AGREED.
 #
-# One encoder per GPU (T4 x2 -> two encoders at once). Every call stops cleanly before DEADLINE_MIN; the next
-# session attaches this notebook's earlier output (PREV=auto) and skips finished methods.
+# One encoder per GPU (T4 x2 -> two encoders at once). With fewer encoders than GPUs (e.g. clip_b32 alone), the
+# methods of each encoder are split: GPU 0 runs tau_norm, C2 (and IJCNN=1) then A9, GPU 1 the other baselines.
+# Every call stops cleanly before DEADLINE_MIN; the next session attaches this notebook's earlier output
+# (PREV=auto) and skips finished methods.
+#
+#   IJCNN=1      also run the IJCNN 2025 configuration (LTIC-2, the paper's settings from sh/R50.sh, untuned,
+#                200 epochs, epoch chosen by top-1, training seed 0) on clip_b32: the corrected H22-clean number.
 set -eo pipefail
 
 MODE=${MODE:-timing}
@@ -18,6 +23,7 @@ A9_SEEDS=${A9_SEEDS:-0}                     # the A9 controls are compared on te
 DEADLINE_MIN=${DEADLINE_MIN:-600}           # Kaggle kills at 12 h and then keeps NO output
 BUDGET_MIN=${BUDGET_MIN:-150}               # time allowed for the first method of each call (later: 1.25 x longest)
 PREV=${PREV:-auto}
+IJCNN=${IJCNN:-0}
 INPUT=${INPUT:-/kaggle/input}
 WORK=${WORK:-/kaggle/working}
 SCRATCH=${SCRATCH:-/kaggle/tmp}             # not saved as Output
@@ -26,6 +32,8 @@ SCRATCH=${SCRATCH:-/kaggle/tmp}             # not saved as Output
 C2_METHODS="tau_norm,tau_norm+c2f"
 A9_METHODS="tau_norm+c2fshuf,tau_norm+c2fshuf@c2_shuffle_seed=1,tau_norm+c2fshuf@c2_shuffle_seed=2"
 BASE_METHODS="la,crt,ce,ltic3,ltic2"
+# sh/R50.sh: -b 256 --epochs 200 --lr 0.1 --weight-decay 1e-4 --alpha 0.85 --gamma 0.3 --select_metric top1
+IJCNN_METHOD="ltic2@lr=0.1,weight_decay=0.0001,batch_size=256,epochs=200,alpha=0.85,gamma=0.3,select_metric=top1"
 
 CODE="$(cd "$(dirname "$0")/.." && pwd)"
 export PYTHONUNBUFFERED=1
@@ -101,24 +109,32 @@ json.dump(c, open(sys.argv[2], 'w', encoding='utf-8'), indent=1)
 EOF
 done
 
-run() {   # run <encoder> <methods> <seeds> [extra args]
+run() {   # run <encoder> <methods> <seeds> [extra args]; CSV_PART keeps parallel workers' CSVs apart
   local enc=$1 methods=$2 seeds=$3; shift 3
   python "$CODE/tools/run_baselines.py" --config "configs/h22clean_${enc}.json" --methods "$methods" \
-    --seeds "$seeds" --results "$RES/all_runs_h22clean_${enc}.csv" --preds "$RES/preds" \
+    --seeds "$seeds" --results "$RES/all_runs_h22clean_${enc}${CSV_PART}.csv" --preds "$RES/preds" \
     --t0 "$T0" --deadline_min "$DEADLINE_MIN" --budget_min "$BUDGET_MIN" "$@"
 }
 
-worker() {   # worker <gpu> <encoders...>; keeps going after a failed call, exit status 1 if any failed
-  local gpu=$1 rc=0; shift
+worker() {   # worker <gpu> <part: all|c2|base> <encoders...>; keeps going after a failed call, exit 1 if any failed
+  local gpu=$1 part=$2 rc=0; shift 2
   export CUDA_VISIBLE_DEVICES=$gpu
+  [ "$part" = all ] && CSV_PART="" || CSV_PART="_$part"
   for enc in "$@"; do
-    stamp "GPU $gpu: $enc ($MODE)"
+    stamp "GPU $gpu: $enc ($MODE, $part)"
     if [ "$MODE" = timing ]; then
       run "$enc" "tau_norm,tau_norm+c2f,ltic3" 0 --trials 1 --epochs 2 --stages search || rc=1
-    else
-      local tr=(); [ -n "$TRIALS" ] && tr=(--trials "$TRIALS")
+      continue
+    fi
+    local tr=(); [ -n "$TRIALS" ] && tr=(--trials "$TRIALS")
+    if [ "$part" != base ]; then
       run "$enc" "$C2_METHODS" "$SEEDS" --skip_done "${tr[@]}" || rc=1
+      if [ "$IJCNN" = 1 ] && [ "$enc" = clip_b32 ]; then   # all settings fixed: 1 "trial" = the paper's config
+        run "$enc" "$IJCNN_METHOD;" 0 --skip_done --trials 1 --stages search,final || rc=1
+      fi
       run "$enc" "$A9_METHODS" "$A9_SEEDS" --skip_done "${tr[@]}" || rc=1
+    fi
+    if [ "$part" != c2 ]; then
       run "$enc" "$BASE_METHODS" "$SEEDS" --skip_done "${tr[@]}" || rc=1
     fi
   done
@@ -127,13 +143,25 @@ worker() {   # worker <gpu> <encoders...>; keeps going after a failed call, exit
 
 stamp "STEP 3  Training: $ENCODERS on $NGPU GPU(s), stop before ${DEADLINE_MIN} min"
 ENC_ARR=($(echo "$ENCODERS" | tr ',' ' '))
-for g in $(seq 0 $((NGPU - 1))); do
-  mine=()
-  for i in "${!ENC_ARR[@]}"; do [ $((i % NGPU)) -eq "$g" ] && mine+=("${ENC_ARR[$i]}"); done
-  [ ${#mine[@]} -eq 0 ] && continue
-  ( set +e; worker "$g" "${mine[@]}" > "logs/gpu${g}.log" 2>&1; echo $? > "logs/gpu${g}.exit" ) &
-  echo "GPU $g: ${mine[*]}  (log: logs/gpu${g}.log)"
-done
+if [ "$MODE" = full ] && [ "$NGPU" -ge 2 ] && [ ${#ENC_ARR[@]} -lt "$NGPU" ]; then
+  # fewer encoders than GPUs: encoder i gets GPU 2i (tau_norm, C2, IJCNN, A9) and GPU 2i+1 (other baselines)
+  for i in "${!ENC_ARR[@]}"; do
+    for part in c2 base; do
+      g=$((2 * i)); [ "$part" = base ] && g=$((g + 1))
+      [ "$g" -ge "$NGPU" ] && continue
+      ( set +e; worker "$g" "$part" "${ENC_ARR[$i]}" > "logs/gpu${g}.log" 2>&1; echo $? > "logs/gpu${g}.exit" ) &
+      echo "GPU $g: ${ENC_ARR[$i]} ($part methods)  (log: logs/gpu${g}.log)"
+    done
+  done
+else
+  for g in $(seq 0 $((NGPU - 1))); do
+    mine=()
+    for i in "${!ENC_ARR[@]}"; do [ $((i % NGPU)) -eq "$g" ] && mine+=("${ENC_ARR[$i]}"); done
+    [ ${#mine[@]} -eq 0 ] && continue
+    ( set +e; worker "$g" all "${mine[@]}" > "logs/gpu${g}.log" 2>&1; echo $? > "logs/gpu${g}.exit" ) &
+    echo "GPU $g: ${mine[*]}  (log: logs/gpu${g}.log)"
+  done
+fi
 # progress every 5 min while any worker runs (the notebook log only shows this process's output)
 n=0
 while [ -n "$(jobs -rp)" ]; do
@@ -170,7 +198,7 @@ if header:
         w = csv.writer(f); w.writerow(header); w.writerows(rows)
 print('{} rows from {} -> all_runs_h22clean.csv'.format(len(rows), [os.path.basename(p) for p in parts]))
 EOF
-  python - "$RES" "$ENCODERS" <<'EOF'
+  IJCNN=$IJCNN IJCNN_METHOD=$IJCNN_METHOD python - "$RES" "$ENCODERS" <<'EOF'
 import json, os, sys
 res, encs = sys.argv[1], sys.argv[2].split(',')
 need = ['tau_norm', 'tau_norm+c2f', 'tau_norm+c2fshuf', 'tau_norm+c2fshuf@c2_shuffle_seed=1',
@@ -188,6 +216,10 @@ for enc in encs:
     if all(done):
         print('  {:11s} READY for: python tools/confirmatory_gate.py --rules gates/h22_confirmatory.json '
               '--results results/all_runs_h22clean.csv --encoder {}'.format('', enc))
+    if enc == 'clip_b32' and os.environ.get('IJCNN') == '1':
+        ij = os.environ['IJCNN_METHOD'].replace('@', '-').replace('=', '').replace(',', '-')
+        ok = os.path.isfile(os.path.join(res, 'preds', 'h22clean_clip_b32_{}_test_seed0.npz'.format(ij)))
+        print('  {:11s} IJCNN configuration: {}'.format('', 'done' if ok else 'todo'))
 EOF
 else
   stamp "Timing summary (2 epochs, 1 trial; a full run is 30 epochs)"

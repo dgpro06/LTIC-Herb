@@ -8,7 +8,8 @@ Stages:
     search   `trials` random-search trials on V-tune; the winner is saved to results/configs/
     vselect  ONE score of the saved winner on V-select (+ its V-select logits)
     final    the saved winner with each seed on test and V-cal (+ logits for C-F and C4)
-Method names may fix settings: 'ltic3@gamma=0' (the gamma = 0 row).
+Method names may fix settings: 'ltic3@gamma=0' (the gamma = 0 row). A name fixing several settings has commas,
+so separate the methods with ';' instead: --methods 'ltic2@lr=0.1,epochs=200;crt'.
 C2 on top of a base method: 'crt+c2', 'la+c2', 'ltic3+c2', ...; A9 control: 'crt+c2shuf'. The donor-level shares
 of the chosen C2 configuration are written to results/c2/.
 C2 on a FROZEN base: 'tau_norm+c2f' (A9: 'tau_norm+c2fshuf', more shuffle seeds: 'tau_norm+c2fshuf@c2_shuffle_seed=1').
@@ -64,7 +65,9 @@ def main():
     cfg_dir = os.path.join(os.path.dirname(args.results) or '.', 'configs')
     os.makedirs(cfg_dir, exist_ok=True)
 
-    for name in args.methods.split(','):
+    # ';' separates methods when a name fixes several settings ('ltic2@lr=0.1,epochs=200;crt')
+    names = args.methods.split(';') if ';' in args.methods else args.methods.split(',')
+    for name in filter(None, names):
         tag = name.replace('@', '-').replace('=', '').replace(',', '-')
         cfg_path = os.path.join(cfg_dir, '{}_{}_{}.json'.format(conf['dataset'], conf['encoder'], tag))
         done = [os.path.join(args.preds, '{}_{}_{}_test_seed{}.npz'.format(conf['dataset'], conf['encoder'], tag, s))
