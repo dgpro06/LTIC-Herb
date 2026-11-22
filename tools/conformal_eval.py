@@ -16,6 +16,7 @@ import numpy as np
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from lt.conformal import GenusFallbackCP  # noqa: E402
+from lt.conformal_topk import TopKGenusFallbackCP, topk_probs  # noqa: E402
 from lt.taxonomy import Taxonomy  # noqa: E402
 from tools.cf_report import _Index, load_preds  # noqa: E402
 
@@ -41,15 +42,21 @@ def main():
     if not np.array_equal(cal['class_map'], test['class_map']):
         raise SystemExit('V-cal and test predictions come from different class orders')
     tax = Taxonomy.from_csv(args.taxonomy, _Index(cal['class_map']))
-    cp = GenusFallbackCP(cal['counts'], tax.genus_of, score=args.score)
-    zc, zt = adjusted(cal), adjusted(test)
+    if 'pred' in cal:          # compact 'topk' files (H22): stored top-K adjusted logits (lt.conformal_topk)
+        cp = TopKGenusFallbackCP(cal['counts'], tax.genus_of, score=args.score)
+        zc = (cal['top_idx'].astype(np.int64), topk_probs(cal['top_val'], cal['logsumexp']))
+        zt = (test['top_idx'].astype(np.int64), topk_probs(test['top_val'], test['logsumexp']))
+        print('compact predictions: top-{} classes per image; the others get the worst score'.format(zc[0].shape[1]))
+    else:
+        cp = GenusFallbackCP(cal['counts'], tax.genus_of, score=args.score)
+        zc, zt = (adjusted(cal),), (adjusted(test),)
     rows = []
     for alpha in [float(a) for a in args.alphas.split(',')]:
-        cp.fit(zc, cal['y'], alpha)
+        cp.fit(*zc, cal['y'], alpha)
         for proc in ('CP-1', 'CP-2', 'CP-3', 'CP-4'):
             for K in ([int(k) for k in args.K.split(',')] if proc in ('CP-3', 'CP-4') else ['']):
                 for split, z, y in (('vcal', zc, cal['y']), ('test', zt, test['y'])):
-                    m = cp.metrics(cp.predict(z, proc, K or 5), y)
+                    m = cp.metrics(cp.predict(*z, proc, K or 5), y)
                     rows.append(dict(procedure=proc, alpha=alpha, K=K, split=split, score=args.score, **m))
                     if split == 'test':
                         print('{} alpha={:.2f} K={:>2}: coverage {:.3f} macro {:.3f} <50%: {:4d} size {:7.2f} fallback {:.2f}'.format(

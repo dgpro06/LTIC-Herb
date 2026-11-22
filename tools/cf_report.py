@@ -46,37 +46,50 @@ def report(pred_path, taxonomy_csv, out_dir, tau=None, tau_max=None, n_boot=2000
     counts = d['counts']                                   # real train counts (count curve)
     prior = d.get('prior_counts', counts)                  # the prior the model trained with (post-hoc tau)
     log_pi = np.log(np.maximum(prior, 1) / prior.sum())
-    logits, y, few_end = d['logits'].astype(np.float32), d['y'], int(d['few_end'])
-    tau = float(d['tau']) if tau is None else tau
-    pred = cf.predictions(logits, log_pi, tau)
+    y, few_end = d['y'], int(d['few_end'])
+    compact = 'pred' in d                                  # 'topk' format (H22): the exact prediction, no logits
+    if compact:
+        if tau is not None and tau != float(d['tau']):
+            raise SystemExit('{} stores only the prediction at its own tau ({}); --tau needs full logits'.format(
+                pred_path, float(d['tau'])))
+        tau, pred, logits = float(d['tau']), d['pred'].astype(np.int64), None
+    else:
+        logits = d['logits'].astype(np.float32)
+        tau = float(d['tau']) if tau is None else tau
+        pred = cf.predictions(logits, log_pi, tau)
     res = cf.shares_with_ci(y, pred, few_end, tax.genus_of, tax.family_of, n_boot=n_boot)
     res.update(source=pred_path, tau=tau, few_end=few_end, top1=float((pred == y).mean()),
                method=str(d['method']), encoder=str(d['encoder']), dataset=str(d['dataset']))
-    taus = np.linspace(0, tau_max if tau_max is not None else max(2.0, tau), 21)
-    tau_rows = cf.tau_curve(logits, y, log_pi, few_end, tax.genus_of, tax.family_of, taus)
+    tau_rows = []                                          # the tau sweep needs full logits
+    if not compact:
+        taus = np.linspace(0, tau_max if tau_max is not None else max(2.0, tau), 21)
+        tau_rows = cf.tau_curve(logits, y, log_pi, few_end, tax.genus_of, tax.family_of, taus)
     count_rows = cf.count_curve(y, pred, few_end, tax.genus_of, tax.family_of, counts)
 
     os.makedirs(out_dir, exist_ok=True)
     name = os.path.splitext(os.path.basename(pred_path))[0]
     with open(os.path.join(out_dir, name + '_cf.json'), 'w', encoding='utf-8') as f:
         json.dump(res, f, indent=1)
-    write_csv(tau_rows, os.path.join(out_dir, name + '_cf_tau.csv'))
+    if tau_rows:
+        write_csv(tau_rows, os.path.join(out_dir, name + '_cf_tau.csv'))
     write_csv(count_rows, os.path.join(out_dir, name + '_cf_count.csv'))
     try:
         import matplotlib
         matplotlib.use('Agg')
         import matplotlib.pyplot as plt
-        fig, ax = plt.subplots(1, 2, figsize=(10, 3.6))
-        t = [r['tau'] for r in tau_rows]
-        for k in ('same_genus', 'same_family', 'diff_family'):
-            ax[0].plot(t, [r[k] for r in tau_rows], label=k.replace('_', ' '))
-        ax[0].set_xlabel('tau'); ax[0].set_ylabel('share of tail false positives'); ax[0].legend()
-        ax2 = ax[0].twinx()
-        ax2.plot(t, [r['n_tail_fp'] for r in tau_rows], color='0.6', ls='--')
-        ax2.set_ylabel('tail false positives (dashed)')
+        fig, ax = plt.subplots(1, 2, figsize=(10, 3.6)) if tau_rows else plt.subplots(1, 1, figsize=(5, 3.6))
+        if tau_rows:
+            t = [r['tau'] for r in tau_rows]
+            for k in ('same_genus', 'same_family', 'diff_family'):
+                ax[0].plot(t, [r[k] for r in tau_rows], label=k.replace('_', ' '))
+            ax[0].set_xlabel('tau'); ax[0].set_ylabel('share of tail false positives'); ax[0].legend()
+            ax2 = ax[0].twinx()
+            ax2.plot(t, [r['n_tail_fp'] for r in tau_rows], color='0.6', ls='--')
+            ax2.set_ylabel('tail false positives (dashed)')
+        bar = ax[1] if tau_rows else ax
         labels = ['{}-{}'.format(r['count_lo'], r['count_hi'] - 1) for r in count_rows]
-        ax[1].bar(labels, [r['cross_genus'] for r in count_rows])
-        ax[1].set_xlabel('train images of the predicted tail class'); ax[1].set_ylabel('cross-genus share')
+        bar.bar(labels, [r['cross_genus'] for r in count_rows])
+        bar.set_xlabel('train images of the predicted tail class'); bar.set_ylabel('cross-genus share')
         fig.tight_layout()
         fig.savefig(os.path.join(out_dir, name + '_cf.png'), dpi=150)
     except ImportError:

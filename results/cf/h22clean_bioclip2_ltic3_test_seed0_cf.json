@@ -1,0 +1,40 @@
+{
+ "n_images": 84759,
+ "n_tail_fp": 3583,
+ "share": {
+  "same_genus": 0.5475858219369244,
+  "same_family": 0.16634105498185878,
+  "diff_family": 0.28607312308121685,
+  "unknown_family": 0.0,
+  "cross_genus": 0.4524141780630756
+ },
+ "ci95": {
+  "same_genus": [
+   0.5300477699396574,
+   0.5649672825899447
+  ],
+  "same_family": [
+   0.15415946183573212,
+   0.1787908721044826
+  ],
+  "diff_family": [
+   0.27108071814118545,
+   0.3011141284061217
+  ],
+  "unknown_family": [
+   0.0,
+   0.0
+  ],
+  "cross_genus": [
+   0.4350327174100554,
+   0.46995223006034265
+  ]
+ },
+ "source": "results/preds/h22clean_bioclip2_ltic3_test_seed0.npz",
+ "tau": 0.0,
+ "few_end": 2833,
+ "top1": 0.6998548826673273,
+ "method": "ltic3",
+ "encoder": "bioclip2",
+ "dataset": "h22clean"
+}

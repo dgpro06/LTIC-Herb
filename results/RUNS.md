@@ -157,3 +157,33 @@ Verdict (rules["verdict"]["no_primary_pass"]): Analysis paper (docs/PLAN_ANALYSI
 result on both datasets. Files: results/confirmatory_h22clean_{dinov2_b14,bioclip2,summary}.json.
 Not decisive, reported: the class-stratified bootstrap CI of the macro-F1 delta is [+0.0004, +0.0036] (DINOv2) and
 [-0.0000, +0.0024] (BioCLIP 2); C2's few-shot gain is large and taxonomy-specific (A9 passes on both encoders).
+
+## H22-clean analyses on CPU, and session 3 started (2026-11-22)
+Session 3 (h22-train Version 3, code 9886be9): clip_b32 alone, split over both GPUs (GPU 0: tau_norm, C2,
+IJCNN configuration, A9; GPU 1: la, crt, ce, ltic3, ltic2), DEADLINE_MIN 480 (9.3 GPU-h left this week).
+IJCNN configuration = LTIC-2 with the sh/R50.sh settings (lr 0.1, wd 1e-4, batch 256, 200 epochs, alpha 0.85,
+gamma 0.3, epoch chosen by V-tune top-1), untuned, training seed 0: the corrected H22-clean number (B4).
+
+Error taxonomy (tools/cf_report.py, test seed 0; compact files give the exact prediction, no tau sweep).
+Cross-genus share of tail false positives, H22-clean vs Pl@ntNet (LA):
+
+| encoder    | H22 la | H22 crt | H22 tau_norm | H22 tau_norm+c2f | H22 ltic3 | Pl@ntNet la |
+|------------|--------|---------|--------------|------------------|-----------|-------------|
+| dinov2_b14 | 58.2%  | 60.9%   | 57.6%        | 58.6%            | 63.3%     | 37.6%       |
+| bioclip2   | 36.8%  | 37.5%   | 31.7%        | 33.9%            | 45.2%     | 38.8%       |
+
+On herbarium sheets DINOv2's tail errors are mostly cross-genus (unlike on Pl@ntNet field photos); BioCLIP 2's
+stay mostly within the genus on both datasets. Files: results/cf/h22clean_*.
+
+Conformal sets (tools/conformal_eval.py with lt/conformal_topk.py: classes outside the stored top 20 get the
+worst score, so coverage stays exact and sets can only grow). Test, alpha 0.1, PAS score:
+
+| encoder / method      | CP-1 coverage, avg size | CP-2 (genus) coverage, size | true species in top 20 |
+|-----------------------|-------------------------|-----------------------------|------------------------|
+| bioclip2 la           | 0.900, 2.9 species      | 0.899, 31 leaves            | 96.8%                  |
+| bioclip2 tau_norm+c2f | 0.898, 2.6              | 0.899, 30                   | 96.9%                  |
+| dinov2_b14 la         | full set (truncated)    | 0.900, 65                   | 89.9%                  |
+| dinov2_b14 tau_norm+c2f | 0.898, 16.8           | 0.899, 65                   | 89.9%                  |
+
+DINOv2's true species is in the stored top 20 for only ~90% of images, so species-level sets at alpha <= 0.1 hit
+the truncation. To do: re-predict la / tau_norm+c2f seed 0 with pred_topk 200 for DINOv2 (short GPU job).
