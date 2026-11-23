@@ -266,3 +266,44 @@ Cross-genus share of tail false positives (number of tail FPs out of 84,759 test
 The order of encoders is the same for every method: CLIP B/32 has the most cross-genus tail errors, then DINOv2,
 then BioCLIP 2. C2 has the fewest tail false positives for CLIP, but its cross-genus share stays above 80%, so
 most of its remaining errors are not within the genus where the taxonomy could help.
+
+## H22-clean taxonomy geometry and per-class C2 analysis (2026-11-24, CPU only)
+dgpro06/h22-geometry Version 1 (code f5c4be3, Kaggle CPU, 4 cores, 72 min, no GPU quota):
+tools/feature_geometry.py on the H22-clean train features of each encoder (view 0), with the real taxonomy and the
+A9 shuffled taxonomy (seed 0) as control. Then tools/c2_class_analysis.py locally on the saved predictions
+(tail classes, test + vcal pooled, training seeds 0-2). Files: results/geometry/, logs results/h22_logs/geometry_*.log.
+
+Taxonomy geometry of the feature space (tail classes; "shuffled" = same measure with the shuffled taxonomy):
+
+| encoder    | genus margin > 0 | nearest centroid in genus | kNN genus purity (k=10) | genus-donor subspace (r=32) vs global pool vs shuffled donors |
+|------------|------------------|---------------------------|-------------------------|-----------------------------------------------------|
+| bioclip2   | 86.2% (0.3%)     | 80.8% (0.3%)              | 0.590 (0.003)           | 0.558 vs 0.412 vs 0.343                             |
+| dinov2_b14 | 66.1% (0.2%)     | 61.9% (0.2%)              | 0.264 (0.003)           | 0.581 vs 0.457 vs 0.387                             |
+| clip_b32   | 51.3% (0.4%)     | 48.1% (0.4%)              | 0.107 (0.003)           | 0.659 vs 0.634 vs 0.594                             |
+
+(subspace columns: median share of a class's own within-class variance inside the top-32 eigenvectors of its C2
+donors' pooled covariance, 2,000 sampled classes with >= 50 images; random subspace 0.042 for 768-d, 0.062 for
+512-d CLIP; the class's own top 32: 0.91.) The order BioCLIP 2 > DINOv2 > CLIP is the same on every measure and
+matches the error taxonomy (cross-genus share of tail FPs 36.8% / 58.2% / 94.2% for LA). Genus donors add 0.15
+(BioCLIP 2) and 0.12 (DINOv2) of variance over the global pool, but only 0.03 on CLIP.
+
+Per tail class (2,833 classes), Spearman rho with bootstrap 95% CI, train_n partialled out gives the same values:
+
+| encoder    | kNN purity -> base errors within genus | genus margin -> within genus | any geometry -> C2 gain (recall) | mean tail gain: total / taxonomic part |
+|------------|----------------------------------------|------------------------------|----------------------------------|----------------------------------------|
+| dinov2_b14 | 0.58 [0.55, 0.60]                      | 0.49 [0.46, 0.52]            | abs(rho) <= 0.04                  | +0.102 / +0.046                        |
+| bioclip2   | 0.55 [0.51, 0.59]                      | 0.45 [0.41, 0.48]            | abs(rho) <= 0.05                  | +0.029 / +0.026                        |
+| clip_b32   | 0.50 [0.47, 0.53]                      | 0.40 [0.37, 0.44]            | abs(rho) <= 0.03                  | +0.035 / -0.010                        |
+
+(taxonomic part = C2 minus the mean of its three shuffled-taxonomy runs, training seed 0.)
+
+Reading for the paper:
+- B2 is supported at two levels: across encoders (the geometry order matches the error order) and within an
+  encoder (classes whose neighbours are in their genus have their errors in the genus, rho 0.40-0.58 on all three).
+- B3, per class: the geometry does NOT predict which tail classes C2 helps (all abs(rho) <= 0.05, several CIs touch
+  0). Per encoder, the taxonomic part of C2's gain follows the donor-subspace advantage (largest where genus donors
+  transfer, negative on CLIP, where they barely beat the global pool), but that is 3 points. C2 is reported as an
+  encoder-dependent component, not as a per-class rule.
+- Mistake severity (results/geometry/*_severity.csv, test seed 0): C2 does not make errors less severe; the mean
+  taxonomic distance of errors is unchanged against tau_norm (DINOv2 0.901 vs 0.901, BioCLIP 2 0.474 vs 0.472,
+  CLIP 1.319 vs 1.323). The encoder sets it: genus-correct share of errors 69% BioCLIP 2, 47% DINOv2, 25% CLIP.

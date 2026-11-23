@@ -57,8 +57,8 @@ features.*
 | # | Claim | Evidence | Status |
 |---|---|---|---|
 | B1 | On frozen features, encoder choice dominates long-tail method choice; tuned simple probes match specialised heads on strong encoders | 11 methods × 4 encoders × 3 seeds on Pl@ntNet (done); H22-clean on 3 encoders (to run) | Pl@ntNet done |
-| B2 | The taxonomic structure of tail errors is a property of the encoder (cross-genus on CLIP, within-genus on DINOv2 / BioCLIP 2), and a genus classifier on the same features cannot recover them | C-F on 4 encoders, check (b), **plus the new taxonomy-geometry measures (§4.1)** | C-F done; geometry new |
-| B3 | Taxonomy-level fixes help in proportion to how the encoder's feature space follows the taxonomy: genus fallback (CP-3) and donor borrowing (C2) | CP-3 fallback rates; C2 per encoder and **per class** (§4.2), A9 | partly done |
+| B2 | The taxonomic structure of tail errors is a property of the encoder (cross-genus on CLIP, within-genus on DINOv2 / BioCLIP 2), and a genus classifier on the same features cannot recover them | C-F on 4 encoders, check (b), **plus the new taxonomy-geometry measures (§4.1)** | C-F done; geometry done (RUNS.md, 2026-11-24) |
+| B3 | Taxonomy-level fixes help in proportion to how the encoder's feature space follows the taxonomy: genus fallback (CP-3) and donor borrowing (C2) | CP-3 fallback rates; C2 per encoder and **per class** (§4.2), A9 | done: per class not predicted (RUNS.md, 2026-11-24) |
 | B4 | A leakage-free benchmark: H22-clean, corrected IJCNN numbers, species-or-genus prediction sets | H22-clean split + features (teammates), corrected-evaluation table, CP-1..CP-4 | split done; runs to do |
 
 Reframing of the old claims: C-F becomes B2 (refined: "3/4 cross-genus" holds for CLIP only). C-M (C2) becomes

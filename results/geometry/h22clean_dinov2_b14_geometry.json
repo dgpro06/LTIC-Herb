@@ -1,0 +1,436 @@
+{
+ "encoder": "dinov2_b14",
+ "dataset": "h22clean",
+ "images": 670254,
+ "dim": 768,
+ "classes": 15501,
+ "few_end": 2833,
+ "many_start": 7106,
+ "c2_nmin": 10,
+ "c2_rank": 32,
+ "k": 10,
+ "ranks": [
+  8,
+  32,
+  64
+ ],
+ "eval_min": 50,
+ "eval_classes": 2000,
+ "tail_classes_transfer": 2833,
+ "real": {
+  "all": {
+   "genus_margin": {
+    "median": 0.022600293159484863,
+    "mean": 0.017057781231921653,
+    "n": 14375
+   },
+   "family_margin": {
+    "median": -0.006439208984375,
+    "mean": -0.02330328720164962,
+    "n": 15034
+   },
+   "knn_genus_purity": {
+    "median": 0.19166666666666668,
+    "mean": 0.2638145955734248,
+    "n": 2833
+   },
+   "knn_family_purity": {
+    "median": 0.4454545454545454,
+    "mean": 0.445211705891468,
+    "n": 2833
+   },
+   "genus_margin_positive_share": 0.7137391304347827,
+   "nearest_in_genus_share": 0.6618927811108961
+  },
+  "few": {
+   "genus_margin": {
+    "median": 0.016422361135482788,
+    "mean": 0.009895599301320961,
+    "n": 2656
+   },
+   "family_margin": {
+    "median": -0.006600797176361084,
+    "mean": -0.01947692643014972,
+    "n": 2767
+   },
+   "knn_genus_purity": {
+    "median": 0.19166666666666668,
+    "mean": 0.2638145955734248,
+    "n": 2833
+   },
+   "knn_family_purity": {
+    "median": 0.4454545454545454,
+    "mean": 0.445211705891468,
+    "n": 2833
+   },
+   "genus_margin_positive_share": 0.6607680722891566,
+   "nearest_in_genus_share": 0.6194846452523827
+  },
+  "medium": {
+   "genus_margin": {
+    "median": 0.021610289812088013,
+    "mean": 0.016254486099448705,
+    "n": 3916
+   },
+   "family_margin": {
+    "median": -0.006728410720825195,
+    "mean": -0.02182349238314969,
+    "n": 4135
+   },
+   "knn_genus_purity": {
+    "median": null,
+    "mean": null,
+    "n": 0
+   },
+   "knn_family_purity": {
+    "median": null,
+    "mean": null,
+    "n": 0
+   },
+   "genus_margin_positive_share": 0.7050561797752809,
+   "nearest_in_genus_share": 0.646150245728996
+  },
+  "many": {
+   "genus_margin": {
+    "median": 0.025058448314666748,
+    "mean": 0.01989879865425146,
+    "n": 7803
+   },
+   "family_margin": {
+    "median": -0.006197154521942139,
+    "mean": -0.02535770085502363,
+    "n": 8132
+   },
+   "knn_genus_purity": {
+    "median": null,
+    "mean": null,
+    "n": 0
+   },
+   "knn_family_purity": {
+    "median": null,
+    "mean": null,
+    "n": 0
+   },
+   "genus_margin_positive_share": 0.7361271305907984,
+   "nearest_in_genus_share": 0.6842167957117332
+  },
+  "transfer": {
+   "eval": {
+    "n": 2000,
+    "all": {
+     "n": 2000,
+     "transfer_r8_median": 0.33242606636602934,
+     "own_r8_median": 0.5635224256142145,
+     "global_r8_median": 0.2032006050197508,
+     "transfer_r32_median": 0.5806947324776979,
+     "own_r32_median": 0.9064464741404723,
+     "global_r32_median": 0.4570436163772505,
+     "transfer_r64_median": 0.6930316577870936,
+     "own_r64_median": 0.9999999999999994,
+     "global_r64_median": 0.6019576334843828
+    },
+    "genus": {
+     "n": 1862,
+     "transfer_r8_median": 0.3384733189819973,
+     "own_r8_median": 0.5632006793149698,
+     "global_r8_median": 0.20376278445284268,
+     "transfer_r32_median": 0.5845173428070579,
+     "own_r32_median": 0.9062486999006025,
+     "global_r32_median": 0.45743398563569976,
+     "transfer_r64_median": 0.6969514789822185,
+     "own_r64_median": 0.9999999999999994,
+     "global_r64_median": 0.6027840683796211
+    },
+    "family": {
+     "n": 133,
+     "transfer_r8_median": 0.23763188757918075,
+     "own_r8_median": 0.5678977332663534,
+     "global_r8_median": 0.1955421422342739,
+     "transfer_r32_median": 0.49512442187931016,
+     "own_r32_median": 0.9087639754602626,
+     "global_r32_median": 0.4492412214598626,
+     "transfer_r64_median": 0.6285255193481936,
+     "own_r64_median": 0.9999999999999994,
+     "global_r64_median": 0.5951455348769202
+    },
+    "global": {
+     "n": 5,
+     "transfer_r8_median": 0.182043911940259,
+     "own_r8_median": 0.5293556709086257,
+     "global_r8_median": 0.18212394810564697,
+     "transfer_r32_median": 0.40454438556683076,
+     "own_r32_median": 0.8930811600519158,
+     "global_r32_median": 0.40471311606146065,
+     "transfer_r64_median": 0.5599627010858271,
+     "own_r64_median": 0.9999999999999993,
+     "global_r64_median": 0.5602043254558441
+    }
+   },
+   "tail": {
+    "n": 2833,
+    "all": {
+     "n": 2833,
+     "transfer_r8_median": 0.3078935759144352,
+     "own_r8_median": 0.9140729164128283,
+     "global_r8_median": 0.20023616569695243,
+     "transfer_r32_median": 0.5499578914760794,
+     "own_r32_median": 0.9999999999999994,
+     "global_r32_median": 0.44248370141446286,
+     "transfer_r64_median": 0.6660805018453441,
+     "own_r64_median": 0.9999999999999994,
+     "global_r64_median": 0.5879277067674497
+    },
+    "genus": {
+     "n": 2640,
+     "transfer_r8_median": 0.3111305469606151,
+     "own_r8_median": 0.9139620992201024,
+     "global_r8_median": 0.2010775059159468,
+     "transfer_r32_median": 0.5543244140549983,
+     "own_r32_median": 0.9999999999999994,
+     "global_r32_median": 0.4449424511675447,
+     "transfer_r64_median": 0.6691010172310217,
+     "own_r64_median": 0.9999999999999994,
+     "global_r64_median": 0.5892889660433116
+    },
+    "family": {
+     "n": 186,
+     "transfer_r8_median": 0.2449927484952607,
+     "own_r8_median": 0.9197831003700823,
+     "global_r8_median": 0.18003649498532276,
+     "transfer_r32_median": 0.49736128409493174,
+     "own_r32_median": 0.9999999999999994,
+     "global_r32_median": 0.41966389206455457,
+     "transfer_r64_median": 0.6260571783560681,
+     "own_r64_median": 0.9999999999999994,
+     "global_r64_median": 0.5635690821155985
+    },
+    "global": {
+     "n": 7,
+     "transfer_r8_median": 0.21117333685928286,
+     "own_r8_median": 0.8594311882341679,
+     "global_r8_median": 0.21117333685928286,
+     "transfer_r32_median": 0.46662906750900407,
+     "own_r32_median": 0.9999999999999993,
+     "global_r32_median": 0.4667690914260787,
+     "transfer_r64_median": 0.603023984229292,
+     "own_r64_median": 0.9999999999999993,
+     "global_r64_median": 0.6032347183598127
+    }
+   }
+  },
+  "donor_levels_tail": {
+   "genus": 2640,
+   "family": 186,
+   "global": 7,
+   "none": 0
+  }
+ },
+ "shuf0": {
+  "all": {
+   "genus_margin": {
+    "median": -0.18556064367294312,
+    "mean": -0.22079735869324726,
+    "n": 14375
+   },
+   "family_margin": {
+    "median": -0.08316349983215332,
+    "mean": -0.11260859865298277,
+    "n": 15034
+   },
+   "knn_genus_purity": {
+    "median": 0.0,
+    "mean": 0.0033558263892141268,
+    "n": 2833
+   },
+   "knn_family_purity": {
+    "median": 0.014285714285714287,
+    "mean": 0.03692205212846778,
+    "n": 2833
+   },
+   "genus_margin_positive_share": 0.0034782608695652175,
+   "nearest_in_genus_share": 0.0032255983484936455
+  },
+  "few": {
+   "genus_margin": {
+    "median": -0.17784762382507324,
+    "mean": -0.2102060386505556,
+    "n": 2623
+   },
+   "family_margin": {
+    "median": -0.07719814777374268,
+    "mean": -0.10415296294025987,
+    "n": 2743
+   },
+   "knn_genus_purity": {
+    "median": 0.0,
+    "mean": 0.0033558263892141268,
+    "n": 2833
+   },
+   "knn_family_purity": {
+    "median": 0.014285714285714287,
+    "mean": 0.03692205212846778,
+    "n": 2833
+   },
+   "genus_margin_positive_share": 0.002287457110179184,
+   "nearest_in_genus_share": 0.002117896223085069
+  },
+  "medium": {
+   "genus_margin": {
+    "median": -0.18893763422966003,
+    "mean": -0.22327562392832462,
+    "n": 3994
+   },
+   "family_margin": {
+    "median": -0.0824066698551178,
+    "mean": -0.1131738613965372,
+    "n": 4142
+   },
+   "knn_genus_purity": {
+    "median": null,
+    "mean": null,
+    "n": 0
+   },
+   "knn_family_purity": {
+    "median": null,
+    "mean": null,
+    "n": 0
+   },
+   "genus_margin_positive_share": 0.003755633450175263,
+   "nearest_in_genus_share": 0.0035104142288790077
+  },
+  "many": {
+   "genus_margin": {
+    "median": -0.18595868349075317,
+    "mean": -0.22310244262249207,
+    "n": 7758
+   },
+   "family_margin": {
+    "median": -0.08569532632827759,
+    "mean": -0.11516750041714971,
+    "n": 8149
+   },
+   "knn_genus_purity": {
+    "median": null,
+    "mean": null,
+    "n": 0
+   },
+   "knn_family_purity": {
+    "median": null,
+    "mean": null,
+    "n": 0
+   },
+   "genus_margin_positive_share": 0.0037380768239236918,
+   "nearest_in_genus_share": 0.0034544371649791543
+  },
+  "transfer": {
+   "eval": {
+    "n": 2000,
+    "all": {
+     "n": 2000,
+     "transfer_r8_median": 0.16626726750573334,
+     "own_r8_median": 0.5635224256142145,
+     "global_r8_median": 0.2032006050197508,
+     "transfer_r32_median": 0.38746519202088325,
+     "own_r32_median": 0.9064464741404723,
+     "global_r32_median": 0.4570436163772505,
+     "transfer_r64_median": 0.5213397725126072,
+     "own_r64_median": 0.9999999999999994,
+     "global_r64_median": 0.6019576334843828
+    },
+    "genus": {
+     "n": 1847,
+     "transfer_r8_median": 0.1645041807938668,
+     "own_r8_median": 0.5636125836382148,
+     "global_r8_median": 0.2031492486239703,
+     "transfer_r32_median": 0.38393728325714366,
+     "own_r32_median": 0.9064089345013854,
+     "global_r32_median": 0.4574369998571554,
+     "transfer_r64_median": 0.5163351382127654,
+     "own_r64_median": 0.9999999999999994,
+     "global_r64_median": 0.6027174353892913
+    },
+    "family": {
+     "n": 143,
+     "transfer_r8_median": 0.18830226385436719,
+     "own_r8_median": 0.5630449607364822,
+     "global_r8_median": 0.2038465844315952,
+     "transfer_r32_median": 0.42290550477271105,
+     "own_r32_median": 0.9062036668348876,
+     "global_r32_median": 0.44908665369979783,
+     "transfer_r64_median": 0.5659297866200195,
+     "own_r64_median": 0.9999999999999994,
+     "global_r64_median": 0.5964364327592644
+    },
+    "global": {
+     "n": 10,
+     "transfer_r8_median": 0.203214916642325,
+     "own_r8_median": 0.5695140788490425,
+     "global_r8_median": 0.20333428928407626,
+     "transfer_r32_median": 0.43380776478313743,
+     "own_r32_median": 0.9172592463497027,
+     "global_r32_median": 0.43399084928307397,
+     "transfer_r64_median": 0.5783679318936437,
+     "own_r64_median": 0.9999999999999994,
+     "global_r64_median": 0.5786279245660355
+    }
+   },
+   "tail": {
+    "n": 2833,
+    "all": {
+     "n": 2833,
+     "transfer_r8_median": 0.1584463694582819,
+     "own_r8_median": 0.9140729164128283,
+     "global_r8_median": 0.20023616569695243,
+     "transfer_r32_median": 0.3702982829649125,
+     "own_r32_median": 0.9999999999999994,
+     "global_r32_median": 0.44248370141446286,
+     "transfer_r64_median": 0.5032231006851592,
+     "own_r64_median": 0.9999999999999994,
+     "global_r64_median": 0.5879277067674497
+    },
+    "genus": {
+     "n": 2613,
+     "transfer_r8_median": 0.15645800472743027,
+     "own_r8_median": 0.9146002169114285,
+     "global_r8_median": 0.2003476189142812,
+     "transfer_r32_median": 0.3666493681079203,
+     "own_r32_median": 0.9999999999999994,
+     "global_r32_median": 0.44269678100966386,
+     "transfer_r64_median": 0.49791571558121384,
+     "own_r64_median": 0.9999999999999994,
+     "global_r64_median": 0.5879947092013965
+    },
+    "family": {
+     "n": 212,
+     "transfer_r8_median": 0.17816782554223248,
+     "own_r8_median": 0.9108854697429816,
+     "global_r8_median": 0.19208232364972574,
+     "transfer_r32_median": 0.42129711027119665,
+     "own_r32_median": 0.9999999999999994,
+     "global_r32_median": 0.4401651487450889,
+     "transfer_r64_median": 0.5611950855795436,
+     "own_r64_median": 0.9999999999999994,
+     "global_r64_median": 0.5856678585531478
+    },
+    "global": {
+     "n": 8,
+     "transfer_r8_median": 0.24321050018682952,
+     "own_r8_median": 0.9130187051286782,
+     "global_r8_median": 0.24324072293482568,
+     "transfer_r32_median": 0.48500234091170996,
+     "own_r32_median": 0.9999999999999993,
+     "global_r32_median": 0.48511154880092094,
+     "transfer_r64_median": 0.6172892972402722,
+     "own_r64_median": 0.9999999999999993,
+     "global_r64_median": 0.6173524761623378
+    }
+   }
+  },
+  "donor_levels_tail": {
+   "genus": 2613,
+   "family": 212,
+   "global": 8,
+   "none": 0
+  }
+ }
+}

@@ -1,0 +1,436 @@
+{
+ "encoder": "clip_b32",
+ "dataset": "h22clean",
+ "images": 670254,
+ "dim": 512,
+ "classes": 15501,
+ "few_end": 2833,
+ "many_start": 7106,
+ "c2_nmin": 40,
+ "c2_rank": 8,
+ "k": 10,
+ "ranks": [
+  8,
+  32,
+  64
+ ],
+ "eval_min": 50,
+ "eval_classes": 2000,
+ "tail_classes_transfer": 2833,
+ "real": {
+  "all": {
+   "genus_margin": {
+    "median": 0.002147495746612549,
+    "mean": 0.00042477210500965946,
+    "n": 14375
+   },
+   "family_margin": {
+    "median": -0.0022937655448913574,
+    "mean": -0.005587781325638794,
+    "n": 15034
+   },
+   "knn_genus_purity": {
+    "median": 0.05263157894736842,
+    "mean": 0.10678957010770179,
+    "n": 2833
+   },
+   "knn_family_purity": {
+    "median": 0.1875,
+    "mean": 0.24423971935717356,
+    "n": 2833
+   },
+   "genus_margin_positive_share": 0.6043130434782609,
+   "nearest_in_genus_share": 0.560415457067286
+  },
+  "few": {
+   "genus_margin": {
+    "median": 0.00034099817276000977,
+    "mean": -0.0021549385175647505,
+    "n": 2656
+   },
+   "family_margin": {
+    "median": -0.0035738348960876465,
+    "mean": -0.006578456054407636,
+    "n": 2767
+   },
+   "knn_genus_purity": {
+    "median": 0.05263157894736842,
+    "mean": 0.10678957010770179,
+    "n": 2833
+   },
+   "knn_family_purity": {
+    "median": 0.1875,
+    "mean": 0.24423971935717356,
+    "n": 2833
+   },
+   "genus_margin_positive_share": 0.5128012048192772,
+   "nearest_in_genus_share": 0.48076244264031065
+  },
+  "medium": {
+   "genus_margin": {
+    "median": 0.001929938793182373,
+    "mean": 0.00037725084100729113,
+    "n": 3916
+   },
+   "family_margin": {
+    "median": -0.002394437789916992,
+    "mean": -0.005653753173971119,
+    "n": 4135
+   },
+   "knn_genus_purity": {
+    "median": null,
+    "mean": null,
+    "n": 0
+   },
+   "knn_family_purity": {
+    "median": null,
+    "mean": null,
+    "n": 0
+   },
+   "genus_margin_positive_share": 0.5929519918283963,
+   "nearest_in_genus_share": 0.5434121226304703
+  },
+  "many": {
+   "genus_margin": {
+    "median": 0.0026308298110961914,
+    "mean": 0.0013267078583597694,
+    "n": 7803
+   },
+   "family_margin": {
+    "median": -0.0018835961818695068,
+    "mean": -0.005217147955329208,
+    "n": 8132
+   },
+   "knn_genus_purity": {
+    "median": null,
+    "mean": null,
+    "n": 0
+   },
+   "knn_family_purity": {
+    "median": null,
+    "mean": null,
+    "n": 0
+   },
+   "genus_margin_positive_share": 0.6411636550044855,
+   "nearest_in_genus_share": 0.5959499702203692
+  },
+  "transfer": {
+   "eval": {
+    "n": 2000,
+    "all": {
+     "n": 2000,
+     "transfer_r8_median": 0.3967357780538766,
+     "own_r8_median": 0.5754915043189671,
+     "global_r8_median": 0.3644516271277436,
+     "transfer_r32_median": 0.6587925509574959,
+     "own_r32_median": 0.9157228275965784,
+     "global_r32_median": 0.6336934687605591,
+     "transfer_r64_median": 0.7750028224959432,
+     "own_r64_median": 0.9999999999999997,
+     "global_r64_median": 0.7654784739545095
+    },
+    "genus": {
+     "n": 1815,
+     "transfer_r8_median": 0.3991606939050824,
+     "own_r8_median": 0.5758694605395557,
+     "global_r8_median": 0.366552162118244,
+     "transfer_r32_median": 0.6612070952168345,
+     "own_r32_median": 0.9155904739847149,
+     "global_r32_median": 0.6341549508308815,
+     "transfer_r64_median": 0.7761894954177344,
+     "own_r64_median": 0.9999999999999997,
+     "global_r64_median": 0.7658278716608564
+    },
+    "family": {
+     "n": 178,
+     "transfer_r8_median": 0.362918507258583,
+     "own_r8_median": 0.5705403763523405,
+     "global_r8_median": 0.351237835253493,
+     "transfer_r32_median": 0.6379267629973105,
+     "own_r32_median": 0.9173466525015035,
+     "global_r32_median": 0.6264611596476304,
+     "transfer_r64_median": 0.7670109530879137,
+     "own_r64_median": 0.9999999999999996,
+     "global_r64_median": 0.7600649151154879
+    },
+    "global": {
+     "n": 7,
+     "transfer_r8_median": 0.33656745823340556,
+     "own_r8_median": 0.5592618156465392,
+     "global_r8_median": 0.33660984932964094,
+     "transfer_r32_median": 0.6240337698543016,
+     "own_r32_median": 0.9069959651484552,
+     "global_r32_median": 0.6241521496426033,
+     "transfer_r64_median": 0.7549612816181296,
+     "own_r64_median": 0.9999999999999997,
+     "global_r64_median": 0.7551180286675772
+    }
+   },
+   "tail": {
+    "n": 2833,
+    "all": {
+     "n": 2833,
+     "transfer_r8_median": 0.3720718139738743,
+     "own_r8_median": 0.9197531605425934,
+     "global_r8_median": 0.3491779419630915,
+     "transfer_r32_median": 0.6332860146099216,
+     "own_r32_median": 0.9999999999999994,
+     "global_r32_median": 0.6170354636209991,
+     "transfer_r64_median": 0.7540422475006823,
+     "own_r64_median": 0.9999999999999994,
+     "global_r64_median": 0.7511987850930335
+    },
+    "genus": {
+     "n": 2486,
+     "transfer_r8_median": 0.37694467736401566,
+     "own_r8_median": 0.9196266791658612,
+     "global_r8_median": 0.3527621156394445,
+     "transfer_r32_median": 0.637271984920627,
+     "own_r32_median": 0.9999999999999994,
+     "global_r32_median": 0.6201795478935872,
+     "transfer_r64_median": 0.7564620201795065,
+     "own_r64_median": 0.9999999999999994,
+     "global_r64_median": 0.7537635251754882
+    },
+    "family": {
+     "n": 331,
+     "transfer_r8_median": 0.3477398541760314,
+     "own_r8_median": 0.9257231294108106,
+     "global_r8_median": 0.3241870406893836,
+     "transfer_r32_median": 0.6091943053661889,
+     "own_r32_median": 0.9999999999999994,
+     "global_r32_median": 0.5874485826153297,
+     "transfer_r64_median": 0.7439393933143454,
+     "own_r64_median": 0.9999999999999994,
+     "global_r64_median": 0.7281092125361578
+    },
+    "global": {
+     "n": 16,
+     "transfer_r8_median": 0.29469343881124793,
+     "own_r8_median": 0.8858911149353814,
+     "global_r8_median": 0.29469343881124793,
+     "transfer_r32_median": 0.5847055941401985,
+     "own_r32_median": 0.9999999999999994,
+     "global_r32_median": 0.5847055941401985,
+     "transfer_r64_median": 0.7289814799227348,
+     "own_r64_median": 0.9999999999999994,
+     "global_r64_median": 0.7289814799227348
+    }
+   }
+  },
+  "donor_levels_tail": {
+   "genus": 2486,
+   "family": 331,
+   "global": 16,
+   "none": 0
+  }
+ },
+ "shuf0": {
+  "all": {
+   "genus_margin": {
+    "median": -0.03392994403839111,
+    "mean": -0.04280973603621773,
+    "n": 14375
+   },
+   "family_margin": {
+    "median": -0.015510708093643188,
+    "mean": -0.02126252937462794,
+    "n": 15034
+   },
+   "knn_genus_purity": {
+    "median": 0.0,
+    "mean": 0.002953601969098511,
+    "n": 2833
+   },
+   "knn_family_purity": {
+    "median": 0.016666666666666666,
+    "mean": 0.03718961216312616,
+    "n": 2833
+   },
+   "genus_margin_positive_share": 0.0038260869565217392,
+   "nearest_in_genus_share": 0.00354815818334301
+  },
+  "few": {
+   "genus_margin": {
+    "median": -0.03548884391784668,
+    "mean": -0.04497921375932014,
+    "n": 2623
+   },
+   "family_margin": {
+    "median": -0.016582131385803223,
+    "mean": -0.022298767842213862,
+    "n": 2743
+   },
+   "knn_genus_purity": {
+    "median": 0.0,
+    "mean": 0.002953601969098511,
+    "n": 2833
+   },
+   "knn_family_purity": {
+    "median": 0.016666666666666666,
+    "mean": 0.03718961216312616,
+    "n": 2833
+   },
+   "genus_margin_positive_share": 0.003812428516965307,
+   "nearest_in_genus_share": 0.0035298270384751147
+  },
+  "medium": {
+   "genus_margin": {
+    "median": -0.03543725609779358,
+    "mean": -0.04459152885180565,
+    "n": 3994
+   },
+   "family_margin": {
+    "median": -0.016020089387893677,
+    "mean": -0.022018759421022084,
+    "n": 4142
+   },
+   "knn_genus_purity": {
+    "median": null,
+    "mean": null,
+    "n": 0
+   },
+   "knn_family_purity": {
+    "median": null,
+    "mean": null,
+    "n": 0
+   },
+   "genus_margin_positive_share": 0.004506760140210316,
+   "nearest_in_genus_share": 0.004212497074654809
+  },
+  "many": {
+   "genus_margin": {
+    "median": -0.03269711136817932,
+    "mean": -0.0411589213193892,
+    "n": 7758
+   },
+   "family_margin": {
+    "median": -0.015041530132293701,
+    "mean": -0.020529346533941627,
+    "n": 8149
+   },
+   "knn_genus_purity": {
+    "median": null,
+    "mean": null,
+    "n": 0
+   },
+   "knn_family_purity": {
+    "median": null,
+    "mean": null,
+    "n": 0
+   },
+   "genus_margin_positive_share": 0.0034802784222737818,
+   "nearest_in_genus_share": 0.003216200119118523
+  },
+  "transfer": {
+   "eval": {
+    "n": 2000,
+    "all": {
+     "n": 2000,
+     "transfer_r8_median": 0.3384842646086815,
+     "own_r8_median": 0.5754915043189671,
+     "global_r8_median": 0.3644516271277436,
+     "transfer_r32_median": 0.5939141170193918,
+     "own_r32_median": 0.9157228275965784,
+     "global_r32_median": 0.6336934687605591,
+     "transfer_r64_median": 0.7226092560769245,
+     "own_r64_median": 0.9999999999999997,
+     "global_r64_median": 0.7654784739545095
+    },
+    "genus": {
+     "n": 1797,
+     "transfer_r8_median": 0.3360540874212022,
+     "own_r8_median": 0.5752042397175793,
+     "global_r8_median": 0.36432268131109363,
+     "transfer_r32_median": 0.5891208137800354,
+     "own_r32_median": 0.9156562904288365,
+     "global_r32_median": 0.6338712709581085,
+     "transfer_r64_median": 0.7180622849522936,
+     "own_r64_median": 0.9999999999999997,
+     "global_r64_median": 0.7655506288017176
+    },
+    "family": {
+     "n": 191,
+     "transfer_r8_median": 0.3582465111671556,
+     "own_r8_median": 0.5764662032983789,
+     "global_r8_median": 0.3658728354269423,
+     "transfer_r32_median": 0.6184371974559031,
+     "own_r32_median": 0.9163147054995329,
+     "global_r32_median": 0.6311397806679835,
+     "transfer_r64_median": 0.752149122341363,
+     "own_r64_median": 0.9999999999999996,
+     "global_r64_median": 0.7634046110869187
+    },
+    "global": {
+     "n": 12,
+     "transfer_r8_median": 0.3671101629865458,
+     "own_r8_median": 0.588226112878317,
+     "global_r8_median": 0.3671748020055866,
+     "transfer_r32_median": 0.6252762767769434,
+     "own_r32_median": 0.919487061269169,
+     "global_r32_median": 0.625406496603784,
+     "transfer_r64_median": 0.7570187303702447,
+     "own_r64_median": 0.9999999999999996,
+     "global_r64_median": 0.7571884286687489
+    }
+   },
+   "tail": {
+    "n": 2833,
+    "all": {
+     "n": 2833,
+     "transfer_r8_median": 0.3221320471352719,
+     "own_r8_median": 0.9197531605425934,
+     "global_r8_median": 0.3491779419630915,
+     "transfer_r32_median": 0.5721278730757062,
+     "own_r32_median": 0.9999999999999994,
+     "global_r32_median": 0.6170354636209991,
+     "transfer_r64_median": 0.7033157498355451,
+     "own_r64_median": 0.9999999999999994,
+     "global_r64_median": 0.7511987850930335
+    },
+    "genus": {
+     "n": 2535,
+     "transfer_r8_median": 0.3189331534921628,
+     "own_r8_median": 0.9195533138388163,
+     "global_r8_median": 0.3489507006076852,
+     "transfer_r32_median": 0.5672423774464174,
+     "own_r32_median": 0.9999999999999994,
+     "global_r32_median": 0.6171913302350185,
+     "transfer_r64_median": 0.6989536891178554,
+     "own_r64_median": 0.9999999999999994,
+     "global_r64_median": 0.75153215896376
+    },
+    "family": {
+     "n": 288,
+     "transfer_r8_median": 0.34051188171482594,
+     "own_r8_median": 0.9272478294859989,
+     "global_r8_median": 0.3517224378223547,
+     "transfer_r32_median": 0.603523643926333,
+     "own_r32_median": 0.9999999999999994,
+     "global_r32_median": 0.6135351662238495,
+     "transfer_r64_median": 0.7391540034730516,
+     "own_r64_median": 0.9999999999999994,
+     "global_r64_median": 0.7503647328079001
+    },
+    "global": {
+     "n": 10,
+     "transfer_r8_median": 0.35935893077474473,
+     "own_r8_median": 0.896759495959132,
+     "global_r8_median": 0.35935893077474473,
+     "transfer_r32_median": 0.6165185983165531,
+     "own_r32_median": 0.9999999999999994,
+     "global_r32_median": 0.6165185983165531,
+     "transfer_r64_median": 0.7468239011890008,
+     "own_r64_median": 0.9999999999999994,
+     "global_r64_median": 0.7468239011890008
+    }
+   }
+  },
+  "donor_levels_tail": {
+   "genus": 2535,
+   "family": 288,
+   "global": 10,
+   "none": 0
+  }
+ }
+}
