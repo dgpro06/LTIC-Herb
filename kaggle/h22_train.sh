@@ -5,6 +5,9 @@
 #   MODE=timing  1 trial x 2 epochs of tau_norm, tau_norm+c2f and ltic3 per encoder, V-tune only, nothing kept:
 #                checks the pipeline end to end and measures speed. Touches no V-select or test image.
 #   MODE=full    the pre-registered runs. Refuses to start unless gates/h22_confirmatory.json is AGREED.
+#   MODE=repred  re-train the chosen configs (from the attached earlier output) of REPRED_METHODS, training seed 0
+#                only, and save predictions with the top REPRED_TOPK classes (default 200) instead of 20, for the
+#                conformal sets. Writes results/repred_top${REPRED_TOPK}_<enc>.csv and results/preds_top${REPRED_TOPK}/.
 #
 # One encoder per GPU (T4 x2 -> two encoders at once). With fewer encoders than GPUs (e.g. clip_b32 alone), the
 # methods of each encoder are split: GPU 0 runs tau_norm, C2 (and IJCNN=1) then A9, GPU 1 the other baselines.
@@ -24,6 +27,8 @@ DEADLINE_MIN=${DEADLINE_MIN:-600}           # Kaggle kills at 12 h and then keep
 BUDGET_MIN=${BUDGET_MIN:-150}               # time allowed for the first method of each call (later: 1.25 x longest)
 PREV=${PREV:-auto}
 IJCNN=${IJCNN:-0}
+REPRED_METHODS=${REPRED_METHODS:-la,crt,tau_norm+c2f}
+REPRED_TOPK=${REPRED_TOPK:-200}
 INPUT=${INPUT:-/kaggle/input}
 WORK=${WORK:-/kaggle/working}
 SCRATCH=${SCRATCH:-/kaggle/tmp}             # not saved as Output
@@ -48,12 +53,12 @@ NGPU=$(nvidia-smi -L | wc -l)
 git -C "$CODE" log --oneline -1 || true
 STATUS=$(python -c "import json;print(json.load(open('$CODE/gates/h22_confirmatory.json',encoding='utf-8'))['_status'])")
 echo "rules: $STATUS"
-if [ "$MODE" = full ] && [[ "$STATUS" != AGREED* ]]; then
+if [ "$MODE" != timing ] && [[ "$STATUS" != AGREED* ]]; then
   echo "MODE=full needs the AGREED rules file (gates/h22_confirmatory.json \"_status\": \"AGREED ...\")."
   echo "Pre-registration: no H22 model run before the rules are agreed and committed. Use MODE=timing meanwhile."
   exit 1
 fi
-if [ "$MODE" != full ] && [ "$MODE" != timing ]; then echo "MODE must be timing or full"; exit 1; fi
+if [ "$MODE" != full ] && [ "$MODE" != timing ] && [ "$MODE" != repred ]; then echo "MODE must be timing, full or repred"; exit 1; fi
 
 stamp "STEP 2  Features (attached Output or Dataset of h22_extract) and split check"
 FEAT=""
@@ -87,12 +92,16 @@ if bad:
     print('\n'.join(bad)); sys.exit(1)
 EOF
 
-if [ "$MODE" = full ]; then
+if [ "$MODE" = full ] || [ "$MODE" = repred ]; then
   RES="$WORK/results"
   if [ "$PREV" = auto ]; then
     for hit in $(find "$INPUT" -maxdepth 5 -type f -name "all_runs_h22clean_*.csv" -print 2>/dev/null | xargs -r -n1 dirname | sort -u); do
       stamp "Copying earlier results $hit"
-      mkdir -p "$RES"; cp -rn "$hit/." "$RES/"
+      if [ "$MODE" = repred ]; then   # only the chosen configs: the output stays small
+        mkdir -p "$RES/configs"; cp -n "$hit/configs/"*.json "$RES/configs/"
+      else
+        mkdir -p "$RES"; cp -rn "$hit/." "$RES/"
+      fi
     done
   fi
 else
@@ -101,10 +110,12 @@ fi
 mkdir -p "$RES" configs logs
 
 for enc in $(echo "$ENCODERS" | tr ',' ' '); do
-  python - "$CODE/configs/h22clean_${enc}.json" "configs/h22clean_${enc}.json" "$FEAT" "$WORK/taxonomy/h22.csv" <<'EOF'
+  python - "$CODE/configs/h22clean_${enc}.json" "configs/h22clean_${enc}.json" "$FEAT" "$WORK/taxonomy/h22.csv" "$MODE" "$REPRED_TOPK" <<'EOF'
 import json, sys
 c = json.load(open(sys.argv[1], encoding='utf-8'))
 c.update(feature_root=sys.argv[3], taxonomy=sys.argv[4])
+if sys.argv[5] == 'repred':
+    c['pred_topk'] = int(sys.argv[6])
 json.dump(c, open(sys.argv[2], 'w', encoding='utf-8'), indent=1)
 EOF
 done
@@ -124,6 +135,15 @@ worker() {   # worker <gpu> <part: all|c2|base> <encoders...>; keeps going after
     stamp "GPU $gpu: $enc ($MODE, $part)"
     if [ "$MODE" = timing ]; then
       run "$enc" "tau_norm,tau_norm+c2f,ltic3" 0 --trials 1 --epochs 2 --stages search || rc=1
+      continue
+    fi
+    if [ "$MODE" = repred ]; then   # the chosen config must exist (no search): fail loudly otherwise
+      for m in $(echo "$REPRED_METHODS" | tr ',' ' '); do
+        [ -f "$RES/configs/h22clean_${enc}_${m}.json" ] || { echo "missing $RES/configs/h22clean_${enc}_${m}.json"; rc=1; }
+      done
+      python "$CODE/tools/run_baselines.py" --config "configs/h22clean_${enc}.json" --methods "$REPRED_METHODS" \
+        --seeds 0 --stages final --results "$RES/repred_top${REPRED_TOPK}_${enc}.csv" \
+        --preds "$RES/preds_top${REPRED_TOPK}" || rc=1
       continue
     fi
     local tr=(); [ -n "$TRIALS" ] && tr=(--trials "$TRIALS")
@@ -221,6 +241,16 @@ for enc in encs:
         ok = os.path.isfile(os.path.join(res, 'preds', 'h22clean_clip_b32_{}_test_seed0.npz'.format(ij)))
         print('  {:11s} IJCNN configuration: {}'.format('', 'done' if ok else 'todo'))
 EOF
+elif [ "$MODE" = repred ]; then
+  stamp "Re-predictions (top ${REPRED_TOPK})"
+  python - "$RES" "$REPRED_TOPK" <<'EOF'
+import csv, glob, os, sys
+for p in sorted(glob.glob(os.path.join(sys.argv[1], 'repred_top{}_*.csv'.format(sys.argv[2])))):
+    for r in csv.DictReader(open(p, encoding='utf-8')):
+        print('  {:11s} {:14s} {:5s} macro-F1 {:.4f} top-1 {:.4f}'.format(
+            r['encoder'], r['method'], r['split'], float(r['macro_f1']), float(r['top1'])))
+EOF
+  ls -la "$RES/preds_top${REPRED_TOPK}" || true
 else
   stamp "Timing summary (2 epochs, 1 trial; a full run is 30 epochs)"
   grep -h -E "trial|took|load" logs/gpu*.log || true
