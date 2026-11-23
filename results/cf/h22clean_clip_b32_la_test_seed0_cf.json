@@ -1,0 +1,40 @@
+{
+ "n_images": 84759,
+ "n_tail_fp": 5723,
+ "share": {
+  "same_genus": 0.05801153241307007,
+  "same_family": 0.11182946007338808,
+  "diff_family": 0.8301590075135419,
+  "unknown_family": 0.0,
+  "cross_genus": 0.9419884675869299
+ },
+ "ci95": {
+  "same_genus": [
+   0.05211728362079176,
+   0.06438249677440516
+  ],
+  "same_family": [
+   0.10355567501366343,
+   0.1197552713822296
+  ],
+  "diff_family": [
+   0.8208976174421083,
+   0.8403248747145637
+  ],
+  "unknown_family": [
+   0.0,
+   0.0
+  ],
+  "cross_genus": [
+   0.9356175032255949,
+   0.9478827163792082
+  ]
+ },
+ "source": "C:/Users/user/AppData/Local/Temp/claude/d834a9daa0a3f990/7ffbd43f-cdec-4d38-ae1d-c71d87064acc/scratchpad/h22_out4/results/preds/h22clean_clip_b32_la_test_seed0.npz",
+ "tau": 1.7,
+ "few_end": 2833,
+ "top1": 0.23101971472056065,
+ "method": "la",
+ "encoder": "clip_b32",
+ "dataset": "h22clean"
+}

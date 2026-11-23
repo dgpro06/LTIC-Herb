@@ -254,3 +254,15 @@ alphas (the "full set" entry in the top-20 table above is resolved). The species
 the smallest for each encoder, but the margin is small (16.6 vs 16.8 for DINOv2 at a=0.10; 2.6 vs 2.9 for
 BioCLIP 2). Genus fallback (CP-2) always costs much larger sets for the same coverage. Coverage at a=0.05 for
 DINOv2 is 0.948-0.949, slightly under 0.95, because 3.1% of true species lie outside the stored top 200.
+
+Error taxonomy for clip_b32 on H22-clean (tools/cf_report.py, test seed 0, CPU; results/cf/h22clean_clip_b32_*).
+Cross-genus share of tail false positives (number of tail FPs out of 84,759 test images):
+
+| clip_b32 | la    | crt   | tau_norm | tau_norm+c2f | ltic3 | ltic2 | Pl@ntNet la |
+|----------|-------|-------|----------|--------------|-------|-------|-------------|
+| share    | 94.2% | 82.7% | 84.5%    | 81.3%        | 76.7% | 77.5% | 73.3%       |
+| tail FPs | 5,723 | 11,446| 5,119    | 4,539        | 6,718 | 12,291| -           |
+
+The order of encoders is the same for every method: CLIP B/32 has the most cross-genus tail errors, then DINOv2,
+then BioCLIP 2. C2 has the fewest tail false positives for CLIP, but its cross-genus share stays above 80%, so
+most of its remaining errors are not within the genus where the taxonomy could help.
