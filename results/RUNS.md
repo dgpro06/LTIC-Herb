@@ -226,3 +226,31 @@ Reported (not decisive) gate for clip_b32 (results/confirmatory_h22clean_clip_b3
 C2 is 0.046 macro-F1 and 0.111 pooled few-shot accuracy behind it (FAIL); A9: the three shuffled runs keep 101%
 of C2's gain over tau_norm and shuffle seed 2 beats real C2 (FAIL). On CLIP B/32 the C2 gain is not taxonomic.
 Logs: results/h22_logs/session4_gpu{0_clip_b32_c2,1_clip_b32_base}.log.
+
+## H22-clean session 5: top-200 re-prediction for conformal sets (2026-11-23, 16:12-16:39 UTC)
+prosenjitdasgupta/h22-repred Version 1 (code be1129e, `MODE=repred`), 27 min on 2 T4s. Re-trained the chosen
+configs of la, crt and tau_norm+c2f (seed 0, final stage) for dinov2_b14 and bioclip2 and saved the top 200
+adjusted logits per image (results/preds_top200/, ~690 MB, gitignored; kept locally). All 12 re-trained rows
+(3 methods x 2 encoders x vcal/test) reproduce the macro-F1 in all_runs_h22clean.csv exactly, so the earlier
+results are deterministic for a fixed seed. Rows: results/repred_top200_{dinov2_b14,bioclip2}.csv.
+Logs: results/h22_logs/session5_repred_gpu{0,1}.log.
+
+True species in the stored top K (test): dinov2_b14 89.9% (top 20) -> 96.9% (top 200); bioclip2 96.8% -> 99.0%.
+
+Conformal sets on test (PAS score, calibrated on V-cal; results/conformal/h22clean_*_test_seed0_top200_cp.csv).
+Coverage / average set size; CP-1 = species sets, CP-2 = genus fallback (size in species):
+
+| encoder / method        | CP-1 a=0.10     | CP-1 a=0.05     | CP-2 a=0.10    | CP-2 a=0.05    |
+|-------------------------|-----------------|-----------------|----------------|----------------|
+| dinov2_b14 la           | 0.899, 16.8     | 0.948, 54.6     | 0.899, 64.5    | 0.949, 114.0   |
+| dinov2_b14 crt          | 0.900, 17.0     | 0.948, 53.4     | 0.899, 69.5    | 0.949, 129.3   |
+| dinov2_b14 tau_norm+c2f | 0.899, 16.6     | 0.949, 52.3     | 0.899, 64.6    | 0.949, 115.3   |
+| bioclip2 la             | 0.900, 2.9      | 0.950, 7.7      | 0.899, 31.1    | 0.950, 48.5    |
+| bioclip2 crt            | 0.900, 2.8      | 0.950, 7.1      | 0.899, 31.6    | 0.950, 49.4    |
+| bioclip2 tau_norm+c2f   | 0.898, 2.6      | 0.950, 6.3      | 0.899, 30.4    | 0.950, 46.9    |
+
+With top 200 stored, DINOv2's species-level sets are no longer truncated: they reach the target coverage at both
+alphas (the "full set" entry in the top-20 table above is resolved). The species sets of C2 (tau_norm+c2f) are
+the smallest for each encoder, but the margin is small (16.6 vs 16.8 for DINOv2 at a=0.10; 2.6 vs 2.9 for
+BioCLIP 2). Genus fallback (CP-2) always costs much larger sets for the same coverage. Coverage at a=0.05 for
+DINOv2 is 0.948-0.949, slightly under 0.95, because 3.1% of true species lie outside the stored top 200.
