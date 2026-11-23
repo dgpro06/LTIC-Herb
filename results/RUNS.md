@@ -187,3 +187,28 @@ worst score, so coverage stays exact and sets can only grow). Test, alpha 0.1, P
 
 DINOv2's true species is in the stored top 20 for only ~90% of images, so species-level sets at alpha <= 0.1 hit
 the truncation. To do: re-predict la / tau_norm+c2f seed 0 with pred_topk 200 for DINOv2 (short GPU job).
+
+## H22-clean session 3: CLIP B/32 and the IJCNN configuration (2026-11-22, 15:16-22:41 UTC)
+h22-train Version 3 (code 9886be9), 445 min, stopped by DEADLINE_MIN 480. Done: 8/10 methods for clip_b32 plus
+the IJCNN configuration. Not done (next session, PREV=auto): tau_norm+c2fshuf@c2_shuffle_seed=2 (~82 min) and
+ltic2 (~158 min). GPU quota left this week: 0.42 h (resets 2026-11-28 00:00 UTC).
+Logs: results/h22_logs/session3_gpu{0_clip_b32_c2,1_clip_b32_base}.log.
+
+clip_b32, H22-clean (V-select macro-F1 picks; test is training seed 0):
+
+| method                | V-select F1 | test F1 | test top-1 | test few (pooled) |
+|-----------------------|-------------|---------|------------|-------------------|
+| ltic3                 | 0.3043      | 0.3275  | 0.3610     | 0.3055            |
+| tau_norm+c2f          | 0.2681      | 0.2815  | 0.3230     | 0.1944            |
+| tau_norm+c2fshuf (s0) | 0.2674      | 0.2803  | 0.3223     | 0.1899            |
+| tau_norm+c2fshuf (s1) | 0.2671      | 0.2808  | 0.3223     | 0.1910            |
+| tau_norm              | 0.2656      | 0.2770  | 0.3183     | 0.1651            |
+| ce                    | 0.2409      | 0.2400  | 0.3114     | 0.0343            |
+| crt                   | 0.2240      | 0.2461  | 0.2785     | 0.2616            |
+| la (tau 1.7)          | 0.1713      | 0.1739  | 0.2310     | 0.0541            |
+| IJCNN config (LTIC-2) | -           | 0.2713  | 0.3011     | 0.3082            |
+
+On CLIP B/32 the best method is LTIC-3 (+0.046 test macro-F1 over C2). Shuffled genera keep 73% / 84% of C2's
+gain over tau_norm, so on CLIP the C2 gain is not taxonomic (A9 would fail at 0.5). Not part of the confirmatory
+gate (DINOv2 and BioCLIP 2 only); reported as the third encoder. The IJCNN configuration gives the corrected
+H22-clean number for the conference method: test macro-F1 0.2713, top-1 0.3011 (CLIP B/32, untuned, seed 0).

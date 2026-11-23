@@ -1,0 +1,80 @@
+
+=== [15:16:22] GPU 0: clip_b32 (full, c2)
+=> h22clean / clip_b32: 15501 classes (0 without train images) | few [0, 2833) 2833 classes | medium [2833, 7106) 4273 | many [7106, 15501) 8395 | thresholds <20 / >50 | train 670254, vtune 33883, vselect 25514, vcal 25362, test 84759 (13s to load)
+=> search tau_norm (10 trials)
+  [tau_norm] trial  1/10: V-tune macro-F1 0.0732 (epoch 2, 234s)
+  [tau_norm] trial  2/10: V-tune macro-F1 0.0432 (epoch 28, 235s)
+  [tau_norm] trial  3/10: V-tune macro-F1 0.1570 (epoch 26, 266s)
+  [tau_norm] trial  4/10: V-tune macro-F1 0.2180 (epoch 28, 337s)
+  [tau_norm] trial  5/10: V-tune macro-F1 0.2692 (epoch 26, 336s)
+  [tau_norm] trial  6/10: V-tune macro-F1 0.0130 (epoch 30, 266s)
+  [tau_norm] trial  7/10: V-tune macro-F1 0.0046 (epoch 30, 265s)
+  [tau_norm] trial  8/10: V-tune macro-F1 0.0306 (epoch 30, 265s)
+  [tau_norm] trial  9/10: V-tune macro-F1 0.0089 (epoch 28, 234s)
+  [tau_norm] trial 10/10: V-tune macro-F1 0.0005 (epoch 26, 266s)
+   chosen: {"lr": 0.2689947337119268, "weight_decay": 2.987362740240307e-06, "momentum": 0.9, "epochs": 30, "batch_size": 256, "eval_every": 2, "tau": 0.0, "la_mode": "posthoc", "loss_tau": 1.0, "alpha": 0.85, "gamma": 0.0, "test_tau": 0.3, "ldam_max_m": 0.5, "ldam_s": 30.0, "drw_frac": 0.8, "genus_weight": 1.0, "genus_tau": 1.0, "width": 170, "select_metric": "macro_f1", "method": "tau_norm"}
+=> tau_norm V-select: macro-F1 0.2656 top-1 0.3195 few 0.1658 (pooled 0.1663) med 0.3097 many 0.3308
+=> tau_norm test macro-F1 over seeds [0, 1, 2]: 0.2770, 0.2771, 0.2777
+=> tau_norm took 68.4 min (4103 s)
+=> search tau_norm+c2f (10 trials)
+   frozen base: /kaggle/working/results/configs/h22clean_clip_b32_tau_norm.json
+  [tau_norm+c2f] trial  1/10: V-tune macro-F1 0.2718 (epoch 30, 399s)
+  [tau_norm+c2f] trial  2/10: V-tune macro-F1 0.2714 (epoch 26, 383s)
+  [tau_norm+c2f] trial  3/10: V-tune macro-F1 0.2678 (epoch 24, 400s)
+  [tau_norm+c2f] trial  4/10: V-tune macro-F1 0.2713 (epoch 28, 399s)
+  [tau_norm+c2f] trial  5/10: V-tune macro-F1 0.2708 (epoch 28, 400s)
+  [tau_norm+c2f] trial  6/10: V-tune macro-F1 0.2722 (epoch 30, 384s)
+  [tau_norm+c2f] trial  7/10: V-tune macro-F1 0.2709 (epoch 28, 372s)
+  [tau_norm+c2f] trial  8/10: V-tune macro-F1 0.2721 (epoch 28, 400s)
+  [tau_norm+c2f] trial  9/10: V-tune macro-F1 0.2697 (epoch 30, 381s)
+  [tau_norm+c2f] trial 10/10: V-tune macro-F1 0.2715 (epoch 26, 407s)
+   chosen: {"c2": true, "c2_tau_mu": 1.2381191297180238, "c2_k": 10, "c2_rank": 8, "c2_nmin": 40, "c2_shuffle": false, "c2_shuffle_seed": 0, "c2_prior": "augmented", "c2_frozen_base": true, "lr": 0.2689947337119268, "weight_decay": 2.987362740240307e-06, "momentum": 0.9, "epochs": 30, "batch_size": 256, "eval_every": 2, "tau": 0.0, "la_mode": "posthoc", "loss_tau": 1.0, "alpha": 0.85, "gamma": 0.0, "test_tau": 0.2, "ldam_max_m": 0.5, "ldam_s": 30.0, "drw_frac": 0.8, "genus_weight": 1.0, "genus_tau": 1.0, "width": 170, "select_metric": "macro_f1", "method": "tau_norm"}
+=> tau_norm+c2f donors (n_min 40): genus 87.8%, family 11.7%, global 0.6%, none 0
+=> tau_norm+c2f V-select: macro-F1 0.2681 top-1 0.3250 few 0.1958 (pooled 0.1962) med 0.2984 many 0.3389
+=> tau_norm+c2f test macro-F1 over seeds [0, 1, 2]: 0.2816, 0.2818, 0.2804
+=> tau_norm+c2f took 94.1 min (5646 s)
+=> done in 162.7 min; rows in /kaggle/working/results/all_runs_h22clean_clip_b32_c2.csv
+=> h22clean / clip_b32: 15501 classes (0 without train images) | few [0, 2833) 2833 classes | medium [2833, 7106) 4273 | many [7106, 15501) 8395 | thresholds <20 / >50 | train 670254, vtune 33883, vselect 25514, vcal 25362, test 84759 (2s to load)
+=> search ltic2@lr=0.1,weight_decay=0.0001,batch_size=256,epochs=200,alpha=0.85,gamma=0.3,select_metric=top1 (1 trials)
+  [ltic2@lr=0.1,weight_decay=0.0001,batch_size=256,epochs=200,alpha=0.85,gamma=0.3,select_metric=top1] trial  1/1: V-tune macro-F1 0.2990 (epoch 200, 3574s)
+   chosen: {"lr": 0.1, "weight_decay": 0.0001, "momentum": 0.9, "epochs": 200, "batch_size": 256, "eval_every": 2, "tau": 0.0, "la_mode": "posthoc", "loss_tau": 1.0, "alpha": 0.85, "gamma": 0.3, "test_tau": 0.0, "ldam_max_m": 0.5, "ldam_s": 30.0, "drw_frac": 0.8, "genus_weight": 1.0, "genus_tau": 1.0, "width": 170, "select_metric": "top1", "method": "ltic2"}
+=> ltic2@lr=0.1,weight_decay=0.0001,batch_size=256,epochs=200,alpha=0.85,gamma=0.3,select_metric=top1 test macro-F1 over seeds [0]: 0.2714
+=> ltic2@lr=0.1,weight_decay=0.0001,batch_size=256,epochs=200,alpha=0.85,gamma=0.3,select_metric=top1 took 119.3 min (7158 s)
+=> done in 119.3 min; rows in /kaggle/working/results/all_runs_h22clean_clip_b32_c2.csv
+=> h22clean / clip_b32: 15501 classes (0 without train images) | few [0, 2833) 2833 classes | medium [2833, 7106) 4273 | many [7106, 15501) 8395 | thresholds <20 / >50 | train 670254, vtune 33883, vselect 25514, vcal 25362, test 84759 (2s to load)
+=> search tau_norm+c2fshuf (10 trials)
+   frozen base: /kaggle/working/results/configs/h22clean_clip_b32_tau_norm.json
+  [tau_norm+c2fshuf] trial  1/10: V-tune macro-F1 0.2706 (epoch 30, 401s)
+  [tau_norm+c2fshuf] trial  2/10: V-tune macro-F1 0.2712 (epoch 30, 383s)
+  [tau_norm+c2fshuf] trial  3/10: V-tune macro-F1 0.2693 (epoch 28, 400s)
+  [tau_norm+c2fshuf] trial  4/10: V-tune macro-F1 0.2708 (epoch 26, 401s)
+  [tau_norm+c2fshuf] trial  5/10: V-tune macro-F1 0.2698 (epoch 28, 400s)
+  [tau_norm+c2fshuf] trial  6/10: V-tune macro-F1 0.2714 (epoch 30, 386s)
+  [tau_norm+c2fshuf] trial  7/10: V-tune macro-F1 0.2709 (epoch 28, 374s)
+  [tau_norm+c2fshuf] trial  8/10: V-tune macro-F1 0.2709 (epoch 28, 402s)
+  [tau_norm+c2fshuf] trial  9/10: V-tune macro-F1 0.2687 (epoch 30, 380s)
+  [tau_norm+c2fshuf] trial 10/10: V-tune macro-F1 0.2710 (epoch 30, 406s)
+   chosen: {"c2": true, "c2_tau_mu": 1.2381191297180238, "c2_k": 10, "c2_rank": 8, "c2_nmin": 40, "c2_shuffle": true, "c2_shuffle_seed": 0, "c2_prior": "augmented", "c2_frozen_base": true, "lr": 0.2689947337119268, "weight_decay": 2.987362740240307e-06, "momentum": 0.9, "epochs": 30, "batch_size": 256, "eval_every": 2, "tau": 0.0, "la_mode": "posthoc", "loss_tau": 1.0, "alpha": 0.85, "gamma": 0.0, "test_tau": 0.2, "ldam_max_m": 0.5, "ldam_s": 30.0, "drw_frac": 0.8, "genus_weight": 1.0, "genus_tau": 1.0, "width": 170, "select_metric": "macro_f1", "method": "tau_norm"}
+=> tau_norm+c2fshuf donors (n_min 40): genus 89.5%, family 10.2%, global 0.4%, none 0
+=> tau_norm+c2fshuf V-select: macro-F1 0.2674 top-1 0.3239 few 0.1881 (pooled 0.1885) med 0.2970 many 0.3381
+=> tau_norm+c2fshuf test macro-F1 over seeds [0]: 0.2803
+=> tau_norm+c2fshuf took 81.6 min (4893 s)
+=> search tau_norm+c2fshuf@c2_shuffle_seed=1 (10 trials)
+   frozen base: /kaggle/working/results/configs/h22clean_clip_b32_tau_norm.json
+  [tau_norm+c2fshuf@c2_shuffle_seed=1] trial  1/10: V-tune macro-F1 0.2708 (epoch 30, 399s)
+  [tau_norm+c2fshuf@c2_shuffle_seed=1] trial  2/10: V-tune macro-F1 0.2714 (epoch 30, 380s)
+  [tau_norm+c2fshuf@c2_shuffle_seed=1] trial  3/10: V-tune macro-F1 0.2444 (epoch 16, 398s)
+  [tau_norm+c2fshuf@c2_shuffle_seed=1] trial  4/10: V-tune macro-F1 0.2708 (epoch 30, 397s)
+  [tau_norm+c2fshuf@c2_shuffle_seed=1] trial  5/10: V-tune macro-F1 0.2699 (epoch 28, 399s)
+  [tau_norm+c2fshuf@c2_shuffle_seed=1] trial  6/10: V-tune macro-F1 0.2715 (epoch 28, 382s)
+  [tau_norm+c2fshuf@c2_shuffle_seed=1] trial  7/10: V-tune macro-F1 0.2707 (epoch 30, 371s)
+  [tau_norm+c2fshuf@c2_shuffle_seed=1] trial  8/10: V-tune macro-F1 0.2708 (epoch 30, 399s)
+  [tau_norm+c2fshuf@c2_shuffle_seed=1] trial  9/10: V-tune macro-F1 0.2691 (epoch 30, 379s)
+  [tau_norm+c2fshuf@c2_shuffle_seed=1] trial 10/10: V-tune macro-F1 0.2700 (epoch 26, 404s)
+   chosen: {"c2": true, "c2_tau_mu": 1.2381191297180238, "c2_k": 10, "c2_rank": 8, "c2_nmin": 40, "c2_shuffle": true, "c2_shuffle_seed": 1, "c2_prior": "augmented", "c2_frozen_base": true, "lr": 0.2689947337119268, "weight_decay": 2.987362740240307e-06, "momentum": 0.9, "epochs": 30, "batch_size": 256, "eval_every": 2, "tau": 0.0, "la_mode": "posthoc", "loss_tau": 1.0, "alpha": 0.85, "gamma": 0.0, "test_tau": 0.2, "ldam_max_m": 0.5, "ldam_s": 30.0, "drw_frac": 0.8, "genus_weight": 1.0, "genus_tau": 1.0, "width": 170, "select_metric": "macro_f1", "method": "tau_norm"}
+=> tau_norm+c2fshuf@c2_shuffle_seed=1 donors (n_min 40): genus 88.6%, family 10.5%, global 0.8%, none 0
+=> tau_norm+c2fshuf@c2_shuffle_seed=1 V-select: macro-F1 0.2671 top-1 0.3229 few 0.1881 (pooled 0.1885) med 0.2951 many 0.3374
+=> tau_norm+c2fshuf@c2_shuffle_seed=1 test macro-F1 over seeds [0]: 0.2808
+=> tau_norm+c2fshuf@c2_shuffle_seed=1 took 81.2 min (4869 s)
+=> DEADLINE: 445 min used, tau_norm+c2fshuf@c2_shuffle_seed=2 needs ~102 min, limit 480; stopping before it (the next session continues with PREV=auto)
+=> done in 162.7 min; rows in /kaggle/working/results/all_runs_h22clean_clip_b32_c2.csv
