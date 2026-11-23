@@ -212,3 +212,17 @@ On CLIP B/32 the best method is LTIC-3 (+0.046 test macro-F1 over C2). Shuffled 
 gain over tau_norm, so on CLIP the C2 gain is not taxonomic (A9 would fail at 0.5). Not part of the confirmatory
 gate (DINOv2 and BioCLIP 2 only); reported as the third encoder. The IJCNN configuration gives the corrected
 H22-clean number for the conference method: test macro-F1 0.2713, top-1 0.3011 (CLIP B/32, untuned, seed 0).
+
+## H22-clean session 4: the last two CLIP B/32 methods (2026-11-23, 07:42-09:32 UTC)
+Run on a groupmate's Kaggle account (prosenjitdasgupta/h22-train Version 1, code 383f5bc), 110 min; it attached
+the session 3 output and skipped the 8 finished methods. clip_b32 now has 10/10 methods.
+
+| method                | V-select F1 | test F1 (seed 0) | test top-1 | test few (pooled) |
+|-----------------------|-------------|------------------|------------|-------------------|
+| tau_norm+c2fshuf (s2) | 0.2639      | 0.2836           | 0.3178     | 0.2320            |
+| ltic2                 | 0.2479      | 0.2730 (seeds 1, 2: 0.2751, 0.2640) | 0.2957 | 0.3227 |
+
+Reported (not decisive) gate for clip_b32 (results/confirmatory_h22clean_clip_b32.json): best baseline ltic3;
+C2 is 0.046 macro-F1 and 0.111 pooled few-shot accuracy behind it (FAIL); A9: the three shuffled runs keep 101%
+of C2's gain over tau_norm and shuffle seed 2 beats real C2 (FAIL). On CLIP B/32 the C2 gain is not taxonomic.
+Logs: results/h22_logs/session4_gpu{0_clip_b32_c2,1_clip_b32_base}.log.
