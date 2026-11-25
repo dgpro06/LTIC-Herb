@@ -1,0 +1,45 @@
+[19:46:42] h22clean_dinov2_b14: loading train features from /kaggle/input/notebooks/dgpro06/h22-extract/feats/h22clean
+[19:47:08] 670254 images, 768 dims, 15501 classes, few_end 2833, c2_nmin 10, ranks [8, 32, 64]
+[19:47:09] [real] centroid margins
+[19:47:17] [real] kNN purity for 2833 tail classes (k=10)
+[19:47:42]   kNN 2048/34005 query images
+[19:49:44]   kNN 12288/34005 query images
+[19:51:46]   kNN 22528/34005 query images
+[19:53:48]   kNN 32768/34005 query images
+[19:54:03] [real] donor means
+[19:54:29] [real] donor-subspace transfer: 2000 eval + 2833 tail classes
+[19:55:04]   pooled family/global scatter in 35s
+[19:55:52]   transfer 500/4833 classes (82s)
+[19:56:40]   transfer 1000/4833 classes (131s)
+[19:57:30]   transfer 1500/4833 classes (180s)
+[19:58:21]   transfer 2000/4833 classes (232s)
+[19:59:11]   transfer 2500/4833 classes (282s)
+[20:00:03]   transfer 3000/4833 classes (334s)
+[20:00:59]   transfer 3500/4833 classes (390s)
+[20:01:51]   transfer 4000/4833 classes (442s)
+[20:02:43]   transfer 4500/4833 classes (493s)
+[20:03:18] [real] done in 969s -> results/geometry/h22clean_dinov2_b14_geometry_class.csv
+[20:03:18] [shuf0] centroid margins
+[20:03:24] [shuf0] kNN purity for 2833 tail classes (k=10)
+[20:03:43]   kNN 2048/34005 query images
+[20:05:20]   kNN 12288/34005 query images
+[20:06:57]   kNN 22528/34005 query images
+[20:08:35]   kNN 32768/34005 query images
+[20:08:45] [shuf0] donor means
+[20:08:49] [shuf0] donor-subspace transfer: 2000 eval + 2833 tail classes
+[20:09:24]   pooled family/global scatter in 36s
+[20:09:53]   transfer 500/4833 classes (64s)
+[20:10:23]   transfer 1000/4833 classes (94s)
+[20:10:51]   transfer 1500/4833 classes (122s)
+[20:11:21]   transfer 2000/4833 classes (153s)
+[20:11:51]   transfer 2500/4833 classes (183s)
+[20:12:23]   transfer 3000/4833 classes (214s)
+[20:12:55]   transfer 3500/4833 classes (246s)
+[20:13:26]   transfer 4000/4833 classes (278s)
+[20:13:57]   transfer 4500/4833 classes (309s)
+[20:14:18] [shuf0] done in 661s -> results/geometry/h22clean_dinov2_b14_geometry_shuf0_class.csv
+[20:14:18] => results/geometry/h22clean_dinov2_b14_geometry.json
+[20:14:18] real   few: genus margin median 0.016 (>0: 0.661), kNN genus purity 0.264, nearest in genus 0.619
+[20:14:18] real   eval transfer r32: donors 0.581 | global 0.457 | own 0.906 | random 0.042
+[20:14:18] shuf0  few: genus margin median -0.178 (>0: 0.002), kNN genus purity 0.003, nearest in genus 0.002
+[20:14:18] shuf0  eval transfer r32: donors 0.387 | global 0.457 | own 0.906 | random 0.042

@@ -1,0 +1,13 @@
+{
+ "dataset": "plantnet",
+ "encoder": "dinov2_b14",
+ "feature_root": "feats/plantnet",
+ "num_classes": 1081,
+ "few_thr": 20,
+ "many_thr": 100,
+ "taxonomy": "taxonomy/plantnet.csv",
+ "splits": {"train": "train", "vtune": "vtune", "vselect": "vselect", "vcal": "vcal", "test": "test"},
+ "epochs": 30,
+ "eval_every": 2,
+ "trials": 20
+}

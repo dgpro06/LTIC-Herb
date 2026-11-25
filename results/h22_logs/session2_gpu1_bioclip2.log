@@ -1,0 +1,88 @@
+
+=== [20:31:02] GPU 1: bioclip2 (full)
+=> h22clean / bioclip2: 15501 classes (0 without train images) | few [0, 2833) 2833 classes | medium [2833, 7106) 4273 | many [7106, 15501) 8395 | thresholds <20 / >50 | train 670254, vtune 33883, vselect 25514, vcal 25362, test 84759 (16s to load)
+=> tau_norm already done (config and test predictions for seeds [0, 1, 2]); skipped
+=> tau_norm+c2f already done (config and test predictions for seeds [0, 1, 2]); skipped
+=> done in 0.3 min; rows in /kaggle/working/results/all_runs_h22clean_bioclip2.csv
+=> h22clean / bioclip2: 15501 classes (0 without train images) | few [0, 2833) 2833 classes | medium [2833, 7106) 4273 | many [7106, 15501) 8395 | thresholds <20 / >50 | train 670254, vtune 33883, vselect 25514, vcal 25362, test 84759 (3s to load)
+=> tau_norm+c2fshuf already done (config and test predictions for seeds [0]); skipped
+=> tau_norm+c2fshuf@c2_shuffle_seed=1 already done (config and test predictions for seeds [0]); skipped
+=> tau_norm+c2fshuf@c2_shuffle_seed=2 already done (config and test predictions for seeds [0]); skipped
+=> done in 0.0 min; rows in /kaggle/working/results/all_runs_h22clean_bioclip2.csv
+=> h22clean / bioclip2: 15501 classes (0 without train images) | few [0, 2833) 2833 classes | medium [2833, 7106) 4273 | many [7106, 15501) 8395 | thresholds <20 / >50 | train 670254, vtune 33883, vselect 25514, vcal 25362, test 84759 (3s to load)
+=> search la (10 trials)
+  [la] trial  1/10: V-tune macro-F1 0.6909 (epoch 28, 366s)
+  [la] trial  2/10: V-tune macro-F1 0.3943 (epoch 30, 355s)
+  [la] trial  3/10: V-tune macro-F1 0.7035 (epoch 28, 358s)
+  [la] trial  4/10: V-tune macro-F1 0.6406 (epoch 26, 476s)
+  [la] trial  5/10: V-tune macro-F1 0.3322 (epoch 30, 367s)
+  [la] trial  6/10: V-tune macro-F1 0.6842 (epoch 30, 400s)
+  [la] trial  7/10: V-tune macro-F1 0.7046 (epoch 30, 478s)
+  [la] trial  8/10: V-tune macro-F1 0.6675 (epoch 30, 399s)
+  [la] trial  9/10: V-tune macro-F1 0.5780 (epoch 30, 488s)
+  [la] trial 10/10: V-tune macro-F1 0.6375 (epoch 30, 373s)
+   chosen: {"lr": 0.08604441132374885, "weight_decay": 4.0970356828640416e-05, "momentum": 0.9, "epochs": 30, "batch_size": 256, "eval_every": 2, "tau": 0.6, "la_mode": "posthoc", "loss_tau": 1.1176675324037537, "alpha": 0.85, "gamma": 0.0, "test_tau": 0.0, "ldam_max_m": 0.5, "ldam_s": 30.0, "drw_frac": 0.8, "genus_weight": 1.0, "genus_tau": 1.0, "width": 170, "select_metric": "macro_f1", "method": "la"}
+=> la V-select: macro-F1 0.6959 top-1 0.7477 few 0.6141 (pooled 0.6153) med 0.7312 many 0.7591
+=> la test macro-F1 over seeds [0, 1, 2]: 0.7120, 0.7122, 0.7127
+=> la took 100.4 min (6026 s)
+=> search crt (10 trials)
+  [crt] trial  1/10: V-tune macro-F1 0.7055 (epoch 30, 362s)
+  [crt] trial  2/10: V-tune macro-F1 0.6888 (epoch 26, 479s)
+  [crt] trial  3/10: V-tune macro-F1 0.4072 (epoch 30, 350s)
+  [crt] trial  4/10: V-tune macro-F1 0.6993 (epoch 30, 476s)
+  [crt] trial  5/10: V-tune macro-F1 0.6906 (epoch 30, 478s)
+  [crt] trial  6/10: V-tune macro-F1 0.6990 (epoch 26, 475s)
+  [crt] trial  7/10: V-tune macro-F1 0.6974 (epoch 26, 480s)
+  [crt] trial  8/10: V-tune macro-F1 0.6965 (epoch 28, 364s)
+  [crt] trial  9/10: V-tune macro-F1 0.6189 (epoch 26, 480s)
+  [crt] trial 10/10: V-tune macro-F1 0.7080 (epoch 28, 481s)
+   chosen: {"lr": 0.13111603718546092, "weight_decay": 7.052414036504308e-05, "momentum": 0.9, "epochs": 30, "batch_size": 256, "eval_every": 2, "tau": 0.0, "la_mode": "posthoc", "loss_tau": 1.0, "alpha": 0.85, "gamma": 0.0, "test_tau": 0.0, "ldam_max_m": 0.5, "ldam_s": 30.0, "drw_frac": 0.8, "genus_weight": 1.0, "genus_tau": 1.0, "width": 170, "select_metric": "macro_f1", "method": "crt"}
+=> crt V-select: macro-F1 0.6950 top-1 0.7472 few 0.6025 (pooled 0.6038) med 0.7337 many 0.7585
+=> crt test macro-F1 over seeds [0, 1, 2]: 0.7139, 0.7142, 0.7153
+=> crt took 106.2 min (6369 s)
+=> search ce (10 trials)
+  [ce] trial  1/10: V-tune macro-F1 0.6916 (epoch 30, 481s)
+  [ce] trial  2/10: V-tune macro-F1 0.6640 (epoch 30, 360s)
+  [ce] trial  3/10: V-tune macro-F1 0.2215 (epoch 30, 356s)
+  [ce] trial  4/10: V-tune macro-F1 0.5116 (epoch 30, 479s)
+  [ce] trial  5/10: V-tune macro-F1 0.6889 (epoch 26, 358s)
+  [ce] trial  6/10: V-tune macro-F1 0.6176 (epoch 28, 357s)
+  [ce] trial  7/10: V-tune macro-F1 0.6979 (epoch 30, 381s)
+  [ce] trial  8/10: V-tune macro-F1 0.6867 (epoch 28, 388s)
+  [ce] trial  9/10: V-tune macro-F1 0.6934 (epoch 30, 388s)
+  [ce] trial 10/10: V-tune macro-F1 0.6807 (epoch 30, 479s)
+   chosen: {"lr": 0.057295455033508545, "weight_decay": 2.9768240658168913e-06, "momentum": 0.9, "epochs": 30, "batch_size": 512, "eval_every": 2, "tau": 0.0, "la_mode": "posthoc", "loss_tau": 1.0, "alpha": 0.85, "gamma": 0.0, "test_tau": 0.0, "ldam_max_m": 0.5, "ldam_s": 30.0, "drw_frac": 0.8, "genus_weight": 1.0, "genus_tau": 1.0, "width": 170, "select_metric": "macro_f1", "method": "ce"}
+=> ce V-select: macro-F1 0.6885 top-1 0.7427 few 0.5008 (pooled 0.5019) med 0.7124 many 0.7649
+=> ce test macro-F1 over seeds [0, 1, 2]: 0.6973, 0.6959, 0.6976
+=> ce took 93.5 min (5609 s)
+=> search ltic3 (10 trials)
+  [ltic3] trial  1/10: V-tune macro-F1 0.1271 (epoch 30, 464s)
+  [ltic3] trial  2/10: V-tune macro-F1 0.6118 (epoch 12, 516s)
+  [ltic3] trial  3/10: V-tune macro-F1 0.6139 (epoch 24, 517s)
+  [ltic3] trial  4/10: V-tune macro-F1 0.6494 (epoch 30, 517s)
+  [ltic3] trial  5/10: V-tune macro-F1 0.5898 (epoch 12, 516s)
+  [ltic3] trial  6/10: V-tune macro-F1 0.6263 (epoch 26, 598s)
+  [ltic3] trial  7/10: V-tune macro-F1 0.6330 (epoch 28, 598s)
+  [ltic3] trial  8/10: V-tune macro-F1 0.1312 (epoch 30, 463s)
+  [ltic3] trial  9/10: V-tune macro-F1 0.5696 (epoch 16, 517s)
+  [ltic3] trial 10/10: V-tune macro-F1 0.1518 (epoch 30, 463s)
+   chosen: {"lr": 0.6070252123608464, "weight_decay": 0.00027831551959197124, "momentum": 0.9, "epochs": 30, "batch_size": 512, "eval_every": 2, "tau": 0.0, "la_mode": "posthoc", "loss_tau": 1.0, "alpha": 0.7747718122354265, "gamma": 0.04210758207231202, "test_tau": 0.0, "ldam_max_m": 0.5, "ldam_s": 30.0, "drw_frac": 0.8, "genus_weight": 1.0, "genus_tau": 1.0, "width": 170, "select_metric": "macro_f1", "method": "ltic3"}
+=> ltic3 V-select: macro-F1 0.6402 top-1 0.7014 few 0.6222 (pooled 0.6238) med 0.6767 many 0.7102
+=> ltic3 test macro-F1 over seeds [0, 1, 2]: 0.6644, 0.6663, 0.6653
+=> ltic3 took 120.8 min (7248 s)
+=> search ltic2 (10 trials)
+  [ltic2] trial  1/10: V-tune macro-F1 0.5740 (epoch 10, 479s)
+  [ltic2] trial  2/10: V-tune macro-F1 0.4398 (epoch 28, 478s)
+  [ltic2] trial  3/10: V-tune macro-F1 0.5740 (epoch 28, 440s)
+  [ltic2] trial  4/10: V-tune macro-F1 0.5528 (epoch 30, 542s)
+  [ltic2] trial  5/10: V-tune macro-F1 0.4854 (epoch 28, 443s)
+  [ltic2] trial  6/10: V-tune macro-F1 0.4921 (epoch 28, 542s)
+  [ltic2] trial  7/10: V-tune macro-F1 0.6201 (epoch 30, 543s)
+  [ltic2] trial  8/10: V-tune macro-F1 0.4082 (epoch 26, 542s)
+  [ltic2] trial  9/10: V-tune macro-F1 0.5812 (epoch 6, 444s)
+  [ltic2] trial 10/10: V-tune macro-F1 0.5898 (epoch 26, 485s)
+   chosen: {"lr": 0.3677535346590945, "weight_decay": 0.00016721897446735212, "momentum": 0.9, "epochs": 30, "batch_size": 256, "eval_every": 2, "tau": 0.0, "la_mode": "posthoc", "loss_tau": 1.0, "alpha": 0.5503915269614115, "gamma": 0.5460528604345175, "test_tau": 0.0, "ldam_max_m": 0.5, "ldam_s": 30.0, "drw_frac": 0.8, "genus_weight": 1.0, "genus_tau": 1.0, "width": 170, "select_metric": "macro_f1", "method": "ltic2"}
+=> ltic2 V-select: macro-F1 0.6054 top-1 0.6681 few 0.6230 (pooled 0.6245) med 0.7345 many 0.6484
+=> ltic2 test macro-F1 over seeds [0, 1, 2]: 0.6321, 0.6346, 0.6351
+=> ltic2 took 118.7 min (7125 s)
+=> done in 539.7 min; rows in /kaggle/working/results/all_runs_h22clean_bioclip2.csv

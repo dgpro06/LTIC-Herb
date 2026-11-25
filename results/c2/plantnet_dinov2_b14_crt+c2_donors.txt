@@ -1,0 +1,13 @@
+{
+ "tail_species": 523,
+ "n_min": 20,
+ "genus": 353,
+ "genus_share": 0.6749521988527725,
+ "family": 92,
+ "family_share": 0.17590822179732313,
+ "global": 78,
+ "global_share": 0.1491395793499044,
+ "none": 0,
+ "none_share": 0.0,
+ "donors_per_species_median": 8.0
+}

@@ -1,0 +1,22 @@
+{
+ "lr": 0.036046651894534605,
+ "weight_decay": 3.828867567736261e-06,
+ "momentum": 0.9,
+ "epochs": 30,
+ "batch_size": 512,
+ "eval_every": 2,
+ "tau": 0.0,
+ "la_mode": "posthoc",
+ "loss_tau": 1.0,
+ "alpha": 0.7199402112894491,
+ "gamma": 0.31412499088336554,
+ "test_tau": 0.0,
+ "ldam_max_m": 0.5,
+ "ldam_s": 30.0,
+ "drw_frac": 0.8,
+ "genus_weight": 1.0,
+ "genus_tau": 1.0,
+ "width": 170,
+ "select_metric": "macro_f1",
+ "method": "ltic2"
+}

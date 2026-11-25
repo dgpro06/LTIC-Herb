@@ -1,0 +1,1082 @@
+label,source_id,species,genus,family,family_source
+0,1355868,Lactuca virosa L.,Lactuca,Asteraceae,gbif
+1,1355920,Pelargonium capitatum (L.) L'Hér.,Pelargonium,Geraniaceae,gbif
+2,1355932,Pelargonium graveolens L'Hér.,Pelargonium,Geraniaceae,gbif
+3,1355936,Cirsium arvense (L.) Scop.,Cirsium,Asteraceae,gbif
+4,1355937,Cirsium vulgare (Savi) Ten.,Cirsium,Asteraceae,gbif
+5,1355955,Pelargonium odoratissimum (L.) L'Hér.,Pelargonium,Geraniaceae,gbif
+6,1355959,Pelargonium peltatum (L.) L'Hér.,Pelargonium,Geraniaceae,gbif
+7,1355961,Pelargonium quercifolium (L. f.) L'Hér.,Pelargonium,Geraniaceae,gbif
+8,1355978,Pelargonium zonale (L.) L'Hér.,Pelargonium,Geraniaceae,gbif
+9,1355990,Mercurialis annua L.,Mercurialis,Euphorbiaceae,gbif
+10,1356003,Phyllanthus tenellus Roxb.,Phyllanthus,Phyllanthaceae,gbif
+11,1356022,Hypericum perforatum L.,Hypericum,Hypericaceae,gbif
+12,1356037,Egeria densa Planch.,Egeria,Hydrocharitaceae,gbif
+13,1356055,Ibicella lutea (Lindl.) Van Eselt.,Ibicella,Martyniaceae,gbif
+14,1356075,Tradescantia fluminensis Vell.,Tradescantia,Commelinaceae,gbif
+15,1356076,Tradescantia zebrina Heynh. ex Bosse,Tradescantia,Commelinaceae,gbif
+16,1356111,Lamium amplexicaule L.,Lamium,Lamiaceae,gbif
+17,1356126,Lavandula dentata L.,Lavandula,Lamiaceae,gbif
+18,1356138,Striga asiatica (L.) Kuntze,Striga,Orobanchaceae,gbif
+19,1356257,Melilotus albus Medik.,Melilotus,Fabaceae,gbif
+20,1356278,Trifolium fragiferum L.,Trifolium,Fabaceae,gbif
+21,1356279,Asystasia gangetica (L.) T. Anderson,Asystasia,Acanthaceae,gbif
+22,1356309,Nymphaea nouchali Burm. f.,Nymphaea,Nymphaeaceae,gbif
+23,1356379,Dryopteris aemula (Aiton) Kuntze,Dryopteris,Dryopteridaceae,gbif
+24,1356380,Dryopteris affinis (Lowe) Fraser-Jenk.,Dryopteris,Dryopteridaceae,gbif
+25,1356382,Dryopteris filix-mas (L.) Schott,Dryopteris,Dryopteridaceae,gbif
+26,1356420,Nephrolepis cordifolia (L.) C. Presl,Nephrolepis,Nephrolepidaceae,gbif
+27,1356421,Nephrolepis exaltata (L.) Schott,Nephrolepis,Nephrolepidaceae,gbif
+28,1356428,Osmunda regalis L.,Osmunda,Osmundaceae,gbif
+29,1356469,Achyranthes aspera L.,Achyranthes,Amaranthaceae,gbif
+30,1356692,Lithodora fruticosa (L.) Griseb.,Lithodora,Boraginaceae,gbif
+31,1356781,Humulus lupulus L.,Humulus,Cannabaceae,gbif
+32,1356816,Vaccaria hispanica (Mill.) Rauschert,Vaccaria,Caryophyllaceae,gbif
+33,1356847,Spergularia rubra (L.) J. Presl & C. Presl,Spergularia,Caryophyllaceae,gbif
+34,1356901,Moehringia trinervia (L.) Clairv.,Moehringia,Caryophyllaceae,gbif
+35,1357330,Calendula officinalis L.,Calendula,Asteraceae,gbif
+36,1357331,Calendula stellata Cav.,Calendula,Asteraceae,gbif
+37,1357367,Carthamus caeruleus L.,Carthamus,Asteraceae,gbif
+38,1357379,Carthamus lanatus L.,Carthamus,Asteraceae,gbif
+39,1357506,Cirsium monspessulanum (L.) Hill,Cirsium,Asteraceae,gbif
+40,1357635,Helminthotheca echioides (L.) Holub,Helminthotheca,Asteraceae,gbif
+41,1357652,Hyoseris radiata L.,Hyoseris,Asteraceae,gbif
+42,1357677,Lactuca muralis (L.) Gaertn.,Lactuca,Asteraceae,gbif
+43,1357681,Lactuca saligna L.,Lactuca,Asteraceae,gbif
+44,1357682,Lactuca tenerrima Pourr.,Lactuca,Asteraceae,gbif
+45,1357705,Limbarda crithmoides (L.) Dumort.,Limbarda,Asteraceae,gbif
+46,1358094,Sedum acre L.,Sedum,Crassulaceae,gbif
+47,1358095,Sedum album L.,Sedum,Crassulaceae,gbif
+48,1358096,Sedum amplexicaule DC.,Sedum,Crassulaceae,gbif
+49,1358097,Sedum andegavense (DC.) Desv.,Sedum,Crassulaceae,gbif
+50,1358099,Sedum brevifolium DC.,Sedum,Crassulaceae,gbif
+51,1358101,Sedum caeruleum L.,Sedum,Crassulaceae,gbif
+52,1358102,Sedum caespitosum (Cav.) DC.,Sedum,Crassulaceae,gbif
+53,1358103,Sedum cepaea L.,Sedum,Crassulaceae,gbif
+54,1358105,Sedum dasyphyllum L.,Sedum,Crassulaceae,gbif
+55,1358108,Sedum forsterianum Sm.,Sedum,Crassulaceae,gbif
+56,1358112,Sedum hirsutum All.,Sedum,Crassulaceae,gbif
+57,1358119,Sedum litoreum Guss.,Sedum,Crassulaceae,gbif
+58,1358127,Sedum multiceps Coss. & Durieu,Sedum,Crassulaceae,gbif
+59,1358132,Sedum rubens L.,Sedum,Crassulaceae,gbif
+60,1358133,Sedum sediforme (Jacq.) Pau,Sedum,Crassulaceae,gbif
+61,1358150,Alliaria petiolata (M. Bieb.) Cavara & Grande,Alliaria,Brassicaceae,gbif
+62,1358193,Boscia angustifolia A. Rich.,Boscia,Capparaceae,gbif
+63,1358302,Fibigia clypeata (L.) Medik.,Fibigia,Brassicaceae,gbif
+64,1358365,Maerua angolensis DC.,Maerua,Capparaceae,gbif
+65,1358519,Acalypha virginica L.,Acalypha,Euphorbiaceae,gbif
+66,1358605,Mercurialis perennis L.,Mercurialis,Euphorbiaceae,gbif
+67,1358608,Phyllanthus reticulatus Poir.,Phyllanthus,Phyllanthaceae,gbif
+68,1358689,Hypericum androsaemum L.,Hypericum,Hypericaceae,gbif
+69,1358690,Hypericum australe Ten.,Hypericum,Hypericaceae,gbif
+70,1358691,Hypericum canariense L.,Hypericum,Hypericaceae,gbif
+71,1358695,Hypericum empetrifolium Willd.,Hypericum,Hypericaceae,gbif
+72,1358699,Hypericum hircinum L.,Hypericum,Hypericaceae,gbif
+73,1358700,Hypericum hirsutum L.,Hypericum,Hypericaceae,gbif
+74,1358701,Hypericum humifusum L.,Hypericum,Hypericaceae,gbif
+75,1358703,Hypericum linariifolium Vahl,Hypericum,Hypericaceae,gbif
+76,1358704,Hypericum montanum L.,Hypericum,Hypericaceae,gbif
+77,1358706,Hypericum perfoliatum L.,Hypericum,Hypericaceae,gbif
+78,1358710,Hypericum tetrapterum Fr.,Hypericum,Hypericaceae,gbif
+79,1358711,Hypericum tomentosum L.,Hypericum,Hypericaceae,gbif
+80,1358748,Lamium bifidum Cirillo,Lamium,Lamiaceae,gbif
+81,1358749,Lamium flexuosum Ten.,Lamium,Lamiaceae,gbif
+82,1358750,Lamium garganicum L.,Lamium,Lamiaceae,gbif
+83,1358751,Lamium hybridum Vill.,Lamium,Lamiaceae,gbif
+84,1358752,Lamium purpureum L.,Lamium,Lamiaceae,gbif
+85,1358755,Lavandula canariensis Mill.,Lavandula,Lamiaceae,gbif
+86,1358759,Lavandula minutolii Bolle,Lavandula,Lamiaceae,gbif
+87,1358760,Lavandula multifida L.,Lavandula,Lamiaceae,gbif
+88,1358766,Lavandula stoechas L.,Lavandula,Lamiaceae,gbif
+89,1359060,Acacia mellifera (Vahl) Benth.,Acacia,Fabaceae,gbif
+90,1359064,Acacia seyal Delile,Acacia,Fabaceae,gbif
+91,1359065,Acacia tortilis (Forssk.) Hayne,Acacia,Fabaceae,gbif
+92,1359197,Galega officinalis L.,Galega,Fabaceae,gbif
+93,1359331,Lupinus cosentinii Guss.,Lupinus,Fabaceae,gbif
+94,1359332,Lupinus micranthus Guss.,Lupinus,Fabaceae,gbif
+95,1359359,Melilotus italicus (L.) Lam.,Melilotus,Fabaceae,gbif
+96,1359364,Melilotus sulcatus Desf.,Melilotus,Fabaceae,gbif
+97,1359483,Trifolium angustifolium L.,Trifolium,Fabaceae,gbif
+98,1359485,Trifolium arvense L.,Trifolium,Fabaceae,gbif
+99,1359486,Trifolium aureum Pollich,Trifolium,Fabaceae,gbif
+100,1359488,Trifolium campestre Schreb.,Trifolium,Fabaceae,gbif
+101,1359489,Trifolium cherleri L.,Trifolium,Fabaceae,gbif
+102,1359495,Trifolium hirtum All.,Trifolium,Fabaceae,gbif
+103,1359497,Trifolium hybridum L.,Trifolium,Fabaceae,gbif
+104,1359498,Trifolium incarnatum L.,Trifolium,Fabaceae,gbif
+105,1359502,Trifolium lappaceum L.,Trifolium,Fabaceae,gbif
+106,1359505,Trifolium michelianum Savi,Trifolium,Fabaceae,gbif
+107,1359506,Trifolium micranthum Viv.,Trifolium,Fabaceae,gbif
+108,1359508,Trifolium montanum L.,Trifolium,Fabaceae,gbif
+109,1359510,Trifolium ochroleucon Huds.,Trifolium,Fabaceae,gbif
+110,1359513,Trifolium pannonicum Jacq.,Trifolium,Fabaceae,gbif
+111,1359514,Trifolium patens Schreb.,Trifolium,Fabaceae,gbif
+112,1359517,Trifolium pratense L.,Trifolium,Fabaceae,gbif
+113,1359518,Trifolium purpureum Loisel.,Trifolium,Fabaceae,gbif
+114,1359519,Trifolium resupinatum L.,Trifolium,Fabaceae,gbif
+115,1359521,Trifolium scabrum L.,Trifolium,Fabaceae,gbif
+116,1359523,Trifolium spumosum L.,Trifolium,Fabaceae,gbif
+117,1359524,Trifolium squamosum L.,Trifolium,Fabaceae,gbif
+118,1359525,Trifolium stellatum L.,Trifolium,Fabaceae,gbif
+119,1359526,Trifolium striatum L.,Trifolium,Fabaceae,gbif
+120,1359528,Trifolium subterraneum L.,Trifolium,Fabaceae,gbif
+121,1359530,Trifolium tomentosum L.,Trifolium,Fabaceae,gbif
+122,1359616,Punica granatum L.,Punica,Lythraceae,gbif
+123,1359620,Alcea rosea L.,Alcea,Malvaceae,gbif
+124,1359622,Althaea cannabina L.,Althaea,Malvaceae,gbif
+125,1359625,Althaea officinalis L.,Althaea,Malvaceae,gbif
+126,1359669,Nymphaea alba L.,Nymphaea,Nymphaeaceae,gbif
+127,1359806,Hunnemannia fumariifolia Sweet,Hunnemannia,Papaveraceae,gbif
+128,1359815,Papaver atlanticum (Ball) Coss.,Papaver,Papaveraceae,gbif
+129,1359821,Papaver rupifragum Boiss. & Reut.,Papaver,Papaveraceae,gbif
+130,1360004,Goniolimon tataricum (L.) Boiss.,Goniolimon,Plumbaginaceae,gbif
+131,1360147,Adonis aestivalis L.,Adonis,Ranunculaceae,gbif
+132,1360148,Adonis annua L.,Adonis,Ranunculaceae,gbif
+133,1360150,Adonis flammea Jacq.,Adonis,Ranunculaceae,gbif
+134,1360152,Adonis microcarpa DC.,Adonis,Ranunculaceae,gbif
+135,1360153,Anemone coronaria L.,Anemone,Ranunculaceae,gbif
+136,1360154,Anemone palmata L.,Anemone,Ranunculaceae,gbif
+137,1360427,Oldenlandia corymbosa L.,Oldenlandia,Rubiaceae,gbif
+138,1360550,Hyoscyamus albus L.,Hyoscyamus,Solanaceae,gbif
+139,1360555,Hyoscyamus niger L.,Hyoscyamus,Solanaceae,gbif
+140,1360588,Daphne gnidium L.,Daphne,Thymelaeaceae,gbif
+141,1360590,Daphne laureola L.,Daphne,Thymelaeaceae,gbif
+142,1360591,Daphne oleoides Schreb.,Daphne,Thymelaeaceae,gbif
+143,1360618,Berula erecta (Huds.) Coville,Berula,Apiaceae,gbif
+144,1360671,Chaerophyllum temulum L.,Chaerophyllum,Apiaceae,gbif
+145,1360687,Daucus muricatus (L.) L.,Daucus,Apiaceae,gbif
+146,1360759,Meum athamanticum Jacq.,Meum,Apiaceae,gbif
+147,1360808,Thapsia garganica L.,Thapsia,Apiaceae,gbif
+148,1360811,Thapsia villosa L.,Thapsia,Apiaceae,gbif
+149,1360835,Centranthus calcitrapae (L.) Dufr.,Centranthus,Caprifoliaceae,gbif
+150,1360838,Fedia cornucopiae (L.) Gaertn.,Fedia,Caprifoliaceae,gbif
+151,1360976,Pancratium canariense Ker Gawl.,Pancratium,Amaryllidaceae,gbif
+152,1360978,Pancratium maritimum L.,Pancratium,Amaryllidaceae,gbif
+153,1360998,Anthericum liliago L.,Anthericum,Asparagaceae,gbif
+154,1361024,Butomus umbellatus L.,Butomus,Butomaceae,gbif
+155,1361233,Danthonia decumbens (L.) DC.,Danthonia,Poaceae,gbif
+156,1361316,Leersia oryzoides (L.) Sw.,Leersia,Poaceae,manual
+157,1361357,Phalaris coerulescens Desf.,Phalaris,Poaceae,gbif
+158,1361507,Oncostema elongata (Parl.) Speta,Oncostema,Asparagaceae,gbif
+159,1361508,Oncostema peruviana (L.) Speta,Oncostema,Asparagaceae,gbif
+160,1361524,Elodea canadensis Michx.,Elodea,Hydrocharitaceae,manual
+161,1361655,Neotinea maculata (Desf.) Stearn,Neotinea,Orchidaceae,gbif
+162,1361656,Ophrys apifera Huds.,Ophrys,Orchidaceae,gbif
+163,1361658,Ophrys bombyliflora Link,Ophrys,Orchidaceae,gbif
+164,1361660,Ophrys fusca Link,Ophrys,Orchidaceae,gbif
+165,1361663,Ophrys lutea Cav.,Ophrys,Orchidaceae,gbif
+166,1361666,Ophrys scolopax Cav.,Ophrys,Orchidaceae,gbif
+167,1361668,Ophrys speculum Link,Ophrys,Orchidaceae,gbif
+168,1361672,Ophrys tenthredinifera Willd.,Ophrys,Orchidaceae,gbif
+169,1361704,Groenlandia densa (L.) Fourr.,Groenlandia,Potamogetonaceae,gbif
+170,1361745,Myosoton aquaticum (L.) Moench,Myosoton,Caryophyllaceae,gbif
+171,1361759,Cirsium palustre (L.) Scop.,Cirsium,Asteraceae,gbif
+172,1361823,Lamium galeobdolon (L.) L.,Lamium,Lamiaceae,gbif
+173,1361824,Lavandula angustifolia Mill.,Lavandula,Lamiaceae,gbif
+174,1361847,Casuarina cunninghamiana Miq.,Casuarina,Casuarinaceae,gbif
+175,1361850,Trifolium rubens L.,Trifolium,Fabaceae,gbif
+176,1361891,Falcaria vulgaris Bernh.,Falcaria,Apiaceae,gbif
+177,1362024,Hypericum triquetrifolium Turra,Hypericum,Hypericaceae,gbif
+178,1362064,Wigandia caracasana Kunth,Wigandia,Namaceae,gbif
+179,1362080,Nymphaea lotus L.,Nymphaea,Nymphaeaceae,gbif
+180,1362192,Sedum villosum L.,Sedum,Crassulaceae,gbif
+181,1362294,Epipactis helleborine (L.) Crantz,Epipactis,Orchidaceae,gbif
+182,1362385,Thesium humifusum DC.,Thesium,Thesiaceae,gbif
+183,1362398,Acacia etbaica Schweinf.,Acacia,Fabaceae,gbif
+184,1362434,Centranthus angustifolius (Mill.) DC.,Centranthus,Caprifoliaceae,gbif
+185,1362435,Centranthus lecoqii Jord.,Centranthus,Caprifoliaceae,gbif
+186,1362489,Sedum anglicum Huds.,Sedum,Crassulaceae,gbif
+187,1362490,Sedum rupestre L.,Sedum,Crassulaceae,gbif
+188,1362516,Ophrys insectifera L.,Ophrys,Orchidaceae,gbif
+189,1362582,Freesia refracta (Jacq.) Klatt,Freesia,Iridaceae,gbif
+190,1362834,Diatelia tuberaria (L.) Demoly,Diatelia,Cistaceae,gbif
+191,1362927,Tradescantia pallida (Rose) D.R. Hunt,Tradescantia,Commelinaceae,gbif
+192,1362928,Cenchrus longispinus (Hack.) Fernald,Cenchrus,Poaceae,gbif
+193,1362954,Schefflera actinophylla (Endl.) Harms,Schefflera,Araliaceae,gbif
+194,1363016,Cenchrus clandestinus (Hochst. ex Chiov.) Morrone,Cenchrus,Poaceae,gbif
+195,1363019,Cenchrus purpureus (Schumach.) Morrone,Cenchrus,Poaceae,gbif
+196,1363021,Cenchrus setaceus (Forssk.) Morrone,Cenchrus,Poaceae,gbif
+197,1363110,Anemone hortensis L.,Anemone,Ranunculaceae,gbif
+198,1363117,Tradescantia cerinthoides Kunth,Tradescantia,Commelinaceae,gbif
+199,1363126,Papaver argemone L.,Papaver,Papaveraceae,gbif
+200,1363127,Papaver hybridum L.,Papaver,Papaveraceae,gbif
+201,1363128,Papaver rhoeas L.,Papaver,Papaveraceae,gbif
+202,1363129,Papaver dubium L.,Papaver,Papaveraceae,gbif
+203,1363130,Papaver somniferum L.,Papaver,Papaveraceae,gbif
+204,1363227,Daucus carota L.,Daucus,Apiaceae,gbif
+205,1363336,Smilax aspera L.,Smilax,Smilacaceae,gbif
+206,1363343,Aizoon canariense L.,Aizoon,Aizoaceae,gbif
+207,1363359,Zannichellia palustris L.,Zannichellia,Potamogetonaceae,gbif
+208,1363451,Secale cereale L.,Secale,Poaceae,gbif
+209,1363463,Cenchrus ciliaris L.,Cenchrus,Poaceae,gbif
+210,1363464,Cenchrus echinatus L.,Cenchrus,Poaceae,gbif
+211,1363489,Phalaris aquatica L.,Phalaris,Poaceae,gbif
+212,1363490,Phalaris arundinacea L.,Phalaris,Poaceae,gbif
+213,1363491,Phalaris canariensis L.,Phalaris,Poaceae,gbif
+214,1363492,Phalaris minor Retz.,Phalaris,Poaceae,gbif
+215,1363493,Phalaris paradoxa L.,Phalaris,Poaceae,gbif
+216,1363613,Sedum hispanicum L.,Sedum,Crassulaceae,gbif
+217,1363688,Crotalaria juncea L.,Crotalaria,Fabaceae,gbif
+218,1363699,Lupinus angustifolius L.,Lupinus,Fabaceae,gbif
+219,1363700,Lupinus luteus L.,Lupinus,Fabaceae,gbif
+220,1363701,Lupinus pilosus L.,Lupinus,Fabaceae,gbif
+221,1363703,Lupinus albus L.,Lupinus,Fabaceae,gbif
+222,1363735,Trifolium alexandrinum L.,Trifolium,Fabaceae,gbif
+223,1363737,Trifolium dubium Sibth.,Trifolium,Fabaceae,gbif
+224,1363738,Trifolium glomeratum L.,Trifolium,Fabaceae,gbif
+225,1363739,Trifolium nigrescens Viv.,Trifolium,Fabaceae,gbif
+226,1363740,Trifolium repens L.,Trifolium,Fabaceae,gbif
+227,1363743,Dalbergia melanoxylon Guill. & Perr.,Dalbergia,Fabaceae,gbif
+228,1363749,Melilotus indicus (L.) All.,Melilotus,Fabaceae,gbif
+229,1363750,Melilotus officinalis (L.) Pall.,Melilotus,Fabaceae,gbif
+230,1363764,Acacia dealbata Link,Acacia,Fabaceae,gbif
+231,1363769,Acacia longifolia (Andrews) Willd.,Acacia,Fabaceae,gbif
+232,1363770,Acacia mearnsii De Wild.,Acacia,Fabaceae,gbif
+233,1363772,Acacia pycnantha Benth.,Acacia,Fabaceae,gbif
+234,1363778,Acacia retinodes Schltdl.,Acacia,Fabaceae,gbif
+235,1363871,Barbarea verna (Mill.) Asch.,Barbarea,Brassicaceae,gbif
+236,1363872,Barbarea intermedia Boreau,Barbarea,Brassicaceae,gbif
+237,1363970,Myosurus minimus L.,Myosurus,Ranunculaceae,gbif
+238,1363991,Fragaria vesca L.,Fragaria,Rosaceae,gbif
+239,1364000,Duchesnea indica (Jacks.) Focke,Duchesnea,Rosaceae,gbif
+240,1364099,Centranthus ruber (L.) DC.,Centranthus,Caprifoliaceae,gbif
+241,1364112,Guizotia abyssinica (L. f.) Cass.,Guizotia,Asteraceae,gbif
+242,1364158,Tagetes minuta L.,Tagetes,Asteraceae,gbif
+243,1364159,Tagetes patula L.,Tagetes,Asteraceae,gbif
+244,1364161,Calendula arvensis (Vaill.) L.,Calendula,Asteraceae,gbif
+245,1364164,Lapsana communis L.,Lapsana,Asteraceae,gbif
+246,1364165,Carthamus tinctorius L.,Carthamus,Asteraceae,gbif
+247,1364172,Lactuca sativa L.,Lactuca,Asteraceae,gbif
+248,1364173,Lactuca serriola L.,Lactuca,Asteraceae,gbif
+249,1364440,Arthraxon hispidus (Thunb.) Makino,Arthraxon,Poaceae,manual
+250,1364512,Microchloa kunthii Desv.,Microchloa,Poaceae,gbif
+251,1365712,Harpachne schimperi Hochst. ex A. Rich.,Harpachne,Poaceae,gbif
+252,1365961,Cedrela odorata L.,Cedrela,Meliaceae,gbif
+253,1366875,Aeschynomene americana L.,Aeschynomene,Fabaceae,gbif
+254,1366898,Prosopis alba Griseb.,Prosopis,Fabaceae,gbif
+255,1366899,Prosopis juliflora (Sw.) DC.,Prosopis,Fabaceae,gbif
+256,1366997,Crotalaria spectabilis Roth,Crotalaria,Fabaceae,gbif
+257,1367060,Crotalaria chrysochlora Baker f. ex Harms,Crotalaria,Fabaceae,gbif
+258,1367087,Crotalaria deflersii Schweinf.,Crotalaria,Fabaceae,gbif
+259,1367267,Crotalaria polysperma Kotschy,Crotalaria,Fabaceae,gbif
+260,1367343,Crotalaria uguenensis Taub.,Crotalaria,Fabaceae,gbif
+261,1367369,Crotalaria verrucosa L.,Crotalaria,Fabaceae,gbif
+262,1367431,Lupinus perennis L.,Lupinus,Fabaceae,gbif
+263,1367432,Lupinus polyphyllus Lindl.,Lupinus,Fabaceae,gbif
+264,1367781,Dalbergia latifolia Roxb.,Dalbergia,Fabaceae,gbif
+265,1367784,Cordyla africana Lour.,Cordyla,Fabaceae,manual
+266,1367921,Acacia xanthophloea Benth.,Acacia,Fabaceae,gbif
+267,1367938,Acacia drepanolobium Harms ex Y. Sjöstedt,Acacia,Fabaceae,gbif
+268,1367949,Acacia hockii De Wild.,Acacia,Fabaceae,gbif
+269,1367998,Acacia angustissima (Mill.) Kuntze,Acacia,Fabaceae,gbif
+270,1369472,Gomphocarpus integer (N.E. Br.) Bullock,Gomphocarpus,Apocynaceae,gbif
+271,1369887,Trachelospermum jasminoides (Lindl.) Lem.,Trachelospermum,Apocynaceae,gbif
+272,1369960,Tradescantia spathacea Sw.,Tradescantia,Commelinaceae,gbif
+273,1370279,Gymnosporia putterlickioides Loes.,Gymnosporia,Celastraceae,gbif
+274,1370991,Conostomium kenyense Bremek.,Conostomium,Rubiaceae,gbif
+275,1370993,Conostomium quadrangulare (Rendle) Cufod.,Conostomium,Rubiaceae,gbif
+276,1371680,Mussaenda frondosa L.,Mussaenda,Rubiaceae,gbif
+277,1371691,Mussaenda erythrophylla Schumach. & Thonn.,Mussaenda,Rubiaceae,gbif
+278,1372016,Morinda citrifolia L.,Morinda,Rubiaceae,gbif
+279,1372602,Pilocarpus racemosus Vahl,Pilocarpus,Rutaceae,gbif
+280,1373151,Pelargonium alchemilloides (L.) L'Hér.,Pelargonium,Geraniaceae,gbif
+281,1373231,Pelargonium quinquelobatum Hochst. ex A. Rich.,Pelargonium,Geraniaceae,gbif
+282,1373259,Pelargonium glechomoides A. Rich.,Pelargonium,Geraniaceae,gbif
+283,1373530,Gynura aurantiaca (Blume) DC.,Gynura,Asteraceae,gbif
+284,1373535,Gynura procumbens (Lour.) Merr.,Gynura,Asteraceae,gbif
+285,1374048,Tagetes erecta L.,Tagetes,Asteraceae,gbif
+286,1374448,Aspilia mossambicensis (Oliv.) Wild,Aspilia,Asteraceae,gbif
+287,1374450,Aspilia pluriseta Schweinf.,Aspilia,Asteraceae,gbif
+288,1374466,Schkuhria pinnata (Lam.) Thell.,Schkuhria,Asteraceae,gbif
+289,1374933,Montanoa hibiscifolia Benth.,Montanoa,Asteraceae,gbif
+290,1375776,Acalypha crenata Hochst. ex A. Rich.,Acalypha,Euphorbiaceae,gbif
+291,1375797,Acalypha hispida Burm. f.,Acalypha,Euphorbiaceae,gbif
+292,1375895,Phyllanthus fischeri Pax,Phyllanthus,Phyllanthaceae,gbif
+293,1375954,Phyllanthus suffrutescens Pax,Phyllanthus,Phyllanthaceae,gbif
+294,1375965,Phyllanthus acidus (L.) Skeels,Phyllanthus,Phyllanthaceae,gbif
+295,1375966,Phyllanthus amarus Schumach. & Thonn.,Phyllanthus,Phyllanthaceae,gbif
+296,1376366,Triadica sebifera (L.) Small,Triadica,Euphorbiaceae,gbif
+297,1376703,Petiveria alliacea L.,Petiveria,Phytolaccaceae,gbif
+298,1376726,Peperomia pellucida (L.) Kunth,Peperomia,Piperaceae,gbif
+299,1379303,Guaiacum officinale L.,Guaiacum,Zygophyllaceae,gbif
+300,1379513,Hypericum annulatum Moris,Hypericum,Hypericaceae,gbif
+301,1379556,Mussaenda philippica A. Rich.,Mussaenda,Rubiaceae,gbif
+302,1379585,Wigandia urens (Ruiz & Pav.) Kunth,Wigandia,Namaceae,gbif
+303,1380874,Boscia mossambicensis Klotzsch,Boscia,Capparaceae,gbif
+304,1380904,Boscia coriacea Pax,Boscia,Capparaceae,gbif
+305,1381173,Mecardonia procumbens (Mill.) Small,Mecardonia,Plantaginaceae,gbif
+306,1381468,Browallia americana L.,Browallia,Solanaceae,gbif
+307,1382099,Acacia mangium Willd.,Acacia,Fabaceae,gbif
+308,1383149,Casuarina equisetifolia L.,Casuarina,Casuarinaceae,gbif
+309,1383772,Aristea abyssinica Pax,Aristea,Iridaceae,gbif
+310,1383774,Aristea ecklonii Baker,Aristea,Iridaceae,gbif
+311,1384199,Erianthemum dregei (Eckl. & Zeyh.) Tiegh.,Erianthemum,Loranthaceae,gbif
+312,1384482,Cucurbita ficifolia Bouché,Cucurbita,Cucurbitaceae,gbif
+313,1384485,Cucurbita pepo L.,Cucurbita,Cucurbitaceae,gbif
+314,1384497,Luffa acutangula (L.) Roxb.,Luffa,Cucurbitaceae,gbif
+315,1384499,Lagenaria siceraria (Molina) Standl.,Lagenaria,Cucurbitaceae,gbif
+316,1384500,Lagenaria sphaerica (Sond.) Naudin,Lagenaria,Cucurbitaceae,gbif
+317,1384760,Asystasia riparia Lindau,Asystasia,Acanthaceae,gbif
+318,1385700,Barringtonia asiatica (L.) Kurz,Barringtonia,Lecythidaceae,gbif
+319,1385701,Couroupita guianensis Aubl.,Couroupita,Lecythidaceae,gbif
+320,1385749,Asystasia charmian S. Moore,Asystasia,Acanthaceae,gbif
+321,1385853,Raphia farinifera (Gaertn.) Hyl.,Raphia,Arecaceae,gbif
+322,1385937,Zamioculcas zamiifolia (Lodd.) Engl.,Zamioculcas,Araceae,gbif
+323,1387107,Kniphofia linearifolia Baker,Kniphofia,Asphodelaceae,manual
+324,1387284,Smilax anceps Willd.,Smilax,Smilacaceae,gbif
+325,1387687,Vanilla planifolia Andrews,Vanilla,Orchidaceae,gbif
+326,1387727,Ansellia africana Lindl.,Ansellia,Orchidaceae,gbif
+327,1388905,Hypericum balearicum L.,Hypericum,Hypericaceae,gbif
+328,1388911,Ophrys druentica P.Delforge & Viglione,Ophrys,Orchidaceae,gbif
+329,1389016,Macrosyringion longiflorum (Vohl) Rothm.,Macrosyringion,Orobanchaceae,gbif
+330,1389031,Pyracantha koidzumii (Hayata) Rehder,Pyracantha,Rosaceae,gbif
+331,1389044,Lactuca plumieri (L.) Gren. & Godr.,Lactuca,Asteraceae,gbif
+332,1389078,Aizoanthemum hispanicum (L.) H.E.K.Hartmann,Aizoanthemum,Aizoaceae,gbif
+333,1389230,Phedimus aizoon (L.) 't Hart,Phedimus,Crassulaceae,gbif
+334,1389231,Phedimus spurius (M.Bieb) 't Hart,Phedimus,Crassulaceae,gbif
+335,1389294,Nephrolepis cordifolia (L.) C.Presl,Nephrolepis,Nephrolepidaceae,gbif
+336,1389297,Cereus jamacaru DC.,Cereus,Cactaceae,gbif
+337,1389307,Sedum pachyphyllum Rose,Sedum,Crassulaceae,gbif
+338,1389308,Sedum dendroideum Moc. & Sessé ex DC.,Sedum,Crassulaceae,gbif
+339,1389426,Liriodendron chinensis (Hemsl.) Sarg.,Liriodendron,Magnoliaceae,gbif
+340,1389442,Atocion rupestre (L.) B.Oxelman,Atocion,Caryophyllaceae,gbif
+341,1389492,Tagetes tenuifolia Cav.,Tagetes,Asteraceae,gbif
+342,1389510,Aegopodium podagraria L.,Aegopodium,Apiaceae,gbif
+343,1389553,Acacia melanoxylon R.Br.,Acacia,Fabaceae,gbif
+344,1389567,Acacia saligna (Labill.) H.L.Wendl.,Acacia,Fabaceae,gbif
+345,1389628,Patzkea paniculata (L.) G.H.Loos,Patzkea,Poaceae,gbif
+346,1389630,Perovskia abrotanoides Kar.,Perovskia,Lamiaceae,gbif
+347,1389633,Ophrys occidentalis (Scappaticci) Scappaticci & M.Demange,Ophrys,Orchidaceae,gbif
+348,1389921,Erechtites hieraciifolius (L.) Raf. ex DC.,Erechtites,Asteraceae,gbif
+349,1389966,Cenchrus longisetus M.C.Johnst.,Cenchrus,Poaceae,gbif
+350,1390617,Nothofagus obliqua (Mirb.) Oerst.,Nothofagus,Nothofagaceae,gbif
+351,1390637,Calendula arvensis L.,Calendula,Asteraceae,gbif
+352,1390956,Carthamus carduncellus L.,Carthamus,Asteraceae,gbif
+353,1390957,Carthamus mitissimus L.,Carthamus,Asteraceae,gbif
+354,1391110,Chaerophyllum aureum L.,Chaerophyllum,Apiaceae,gbif
+355,1391112,Chaerophyllum hirsutum L.,Chaerophyllum,Apiaceae,gbif
+356,1391113,Chaerophyllum villarsii W.D.J.Koch,Chaerophyllum,Apiaceae,gbif
+357,1391167,Cirsium alsophilum (Pollini) Greuter,Cirsium,Asteraceae,gbif
+358,1391184,Cirsium canum (L.) All.,Cirsium,Asteraceae,gbif
+359,1391190,Cirsium dissectum (L.) Hill,Cirsium,Asteraceae,gbif
+360,1391192,Cirsium eriophorum (L.) Scop.,Cirsium,Asteraceae,gbif
+361,1391193,Cirsium erisithales (Jacq.) Scop.,Cirsium,Asteraceae,gbif
+362,1391197,Cirsium ferox (L.) DC.,Cirsium,Asteraceae,gbif
+363,1391198,Cirsium filipendulum Lange,Cirsium,Asteraceae,gbif
+364,1391206,Cirsium glabrum DC.,Cirsium,Asteraceae,gbif
+365,1391209,Cirsium heterophyllum (L.) Hill,Cirsium,Asteraceae,gbif
+366,1391221,Cirsium morisianum Rchb.f.,Cirsium,Asteraceae,gbif
+367,1391226,Cirsium oleraceum (L.) Scop.,Cirsium,Asteraceae,gbif
+368,1391235,Cirsium rivulare (Jacq.) All.,Cirsium,Asteraceae,gbif
+369,1391250,Cirsium tuberosum (L.) All.,Cirsium,Asteraceae,gbif
+370,1391326,Collomia grandiflora Douglas ex Lindl.,Collomia,Polemoniaceae,gbif
+371,1391483,Cucurbita maxima Duchesne,Cucurbita,Cucurbitaceae,gbif
+372,1391498,Cymbalaria aequitriloba (Viv.) A.Chev.,Cymbalaria,Plantaginaceae,gbif
+373,1391499,Cymbalaria hepaticifolia (Poir.) Wettst.,Cymbalaria,Plantaginaceae,gbif
+374,1391529,Cytinus hypocistis (L.) L.,Cytinus,Cytinaceae,gbif
+375,1391530,Cytinus ruber Fritsch,Cytinus,Cytinaceae,gbif
+376,1391648,Daphne alpina L.,Daphne,Thymelaeaceae,gbif
+377,1391649,Daphne cneorum L.,Daphne,Thymelaeaceae,gbif
+378,1391652,Daphne mezereum L.,Daphne,Thymelaeaceae,gbif
+379,1391654,Daphne striata Tratt.,Daphne,Thymelaeaceae,gbif
+380,1391762,Dorotheanthus bellidiformis (Burm.f.) N.E.Br.,Dorotheanthus,Aizoaceae,gbif
+381,1391797,Dryas octopetala L.,Dryas,Rosaceae,gbif
+382,1391805,Dryopteris carthusiana (Vill.) H.P.Fuchs,Dryopteris,Dryopteridaceae,gbif
+383,1391807,Dryopteris cristata (L.) A.Gray,Dryopteris,Dryopteridaceae,gbif
+384,1391809,Dryopteris dilatata (Hoffm.) A.Gray,Dryopteris,Dryopteridaceae,gbif
+385,1391810,Dryopteris expansa (C.Presl) Fraser-Jenk. & Jermy,Dryopteris,Dryopteridaceae,gbif
+386,1391821,Dryopteris villarii (Bellardi) Woyn. ex Schinz & Thell.,Dryopteris,Dryopteridaceae,gbif
+387,1391868,Empetrum nigrum L.,Empetrum,Ericaceae,gbif
+388,1391953,Epipactis atrorubens (Hoffm.) Besser,Epipactis,Orchidaceae,gbif
+389,1391960,Epipactis leptochila (Godfery) Godfery,Epipactis,Orchidaceae,gbif
+390,1391961,Epipactis microphylla (Ehrh.) Sw.,Epipactis,Orchidaceae,gbif
+391,1391962,Epipactis muelleri Godfery,Epipactis,Orchidaceae,gbif
+392,1391963,Epipactis palustris (L.) Crantz,Epipactis,Orchidaceae,gbif
+393,1391964,Epipactis phyllanthes G.E.Sm.,Epipactis,Orchidaceae,gbif
+394,1391967,Epipactis purpurata Sm.,Epipactis,Orchidaceae,gbif
+395,1392093,Erucastrum gallicum (Willd.) O.E.Schulz,Erucastrum,Brassicaceae,gbif
+396,1392094,Erucastrum incanum (L.) W.D.J.Koch,Erucastrum,Brassicaceae,gbif
+397,1392096,Erucastrum nasturtiifolium (Poir.) O.E.Schulz,Erucastrum,Brassicaceae,gbif
+398,1392254,Fedia graciliflora Fisch. & C.A.Mey.,Fedia,Caprifoliaceae,gbif
+399,1392361,Fragaria moschata Weston,Fragaria,Rosaceae,gbif
+400,1392365,Freesia x hybrida L.H.Bailey,Freesia,Iridaceae,gbif
+401,1392418,Galega orientalis Lam.,Galega,Fabaceae,gbif
+402,1392475,Alliaria petiolata (M.Bieb.) Cavara & Grande,Alliaria,Brassicaceae,gbif
+403,1392601,Geropogon hybridus (L.) Sch.Bip.,Geropogon,Asteraceae,gbif
+404,1392653,Gomphocarpus fruticosus (L.) R.Br.,Gomphocarpus,Apocynaceae,gbif
+405,1392654,Gomphocarpus physocarpus E.Mey.,Gomphocarpus,Apocynaceae,gbif
+406,1392658,Guizotia abyssinica (L.f.) Cass.,Guizotia,Asteraceae,gbif
+407,1392689,Hebe andersonii (Lindl. & Paxton) Cockayne,Hebe,Plantaginaceae,gbif
+408,1392690,Hebe brachysiphon Summerh.,Hebe,Plantaginaceae,gbif
+409,1392691,Hebe ochracea Ashwin,Hebe,Plantaginaceae,gbif
+410,1392695,Hebe salicifolia (G.Forst.) Pennell,Hebe,Plantaginaceae,gbif
+411,1392730,Helicodiceros muscivorus (L.f.) Engl.,Helicodiceros,Araceae,gbif
+412,1392777,Hippophae rhamnoides L.,Hippophae,Elaeagnaceae,gbif
+413,1393241,Hypericum calycinum L.,Hypericum,Hypericaceae,gbif
+414,1393242,Hypericum coris L.,Hypericum,Hypericaceae,gbif
+415,1393245,Hypericum elodes L.,Hypericum,Hypericaceae,gbif
+416,1393248,Hypericum x inodorum Mill.,Hypericum,Hypericaceae,gbif
+417,1393250,Hypericum maculatum Crantz,Hypericum,Hypericaceae,gbif
+418,1393253,Hypericum nummularium L.,Hypericum,Hypericaceae,gbif
+419,1393254,Hypericum pulchrum L.,Hypericum,Hypericaceae,gbif
+420,1393257,Hypericum richeri Vill.,Hypericum,Hypericaceae,gbif
+421,1393294,Dierama pulcherrimum (Hook.f.) Baker,Dierama,Iridaceae,gbif
+422,1393322,Iva xanthiifolia Nutt.,Iva,Asteraceae,gbif
+423,1393393,Kniphofia uvaria (L.) Hook.,Kniphofia,Asphodelaceae,manual
+424,1393414,Lactuca alpina (L.) Benth. & Hook.f.,Lactuca,Asteraceae,gbif
+425,1393416,Lactuca macrophylla (Willd.) A.Gray,Lactuca,Asteraceae,gbif
+426,1393418,Lactuca viminea (L.) J.Presl & C.Presl,Lactuca,Asteraceae,gbif
+427,1393423,Lamium album L.,Lamium,Lamiaceae,gbif
+428,1393425,Lamium maculatum (L.) L.,Lamium,Lamiaceae,gbif
+429,1393449,Lathraea clandestina L.,Lathraea,Orobanchaceae,gbif
+430,1393450,Lathraea squamaria L.,Lathraea,Orobanchaceae,gbif
+431,1393465,Lavandula x intermedia Emeric ex Loisel.,Lavandula,Lamiaceae,gbif
+432,1393466,Lavandula latifolia Medik.,Lavandula,Lamiaceae,gbif
+433,1393537,Limnanthes douglasii R.Br.,Limnanthes,Limnanthaceae,gbif
+434,1393614,Liriodendron tulipifera L.,Liriodendron,Magnoliaceae,gbif
+435,1393654,Lupinus arboreus Sims,Lupinus,Fabaceae,gbif
+436,1393656,Lupinus x regalis Bergmans,Lupinus,Fabaceae,gbif
+437,1393725,Maianthemum bifolium (L.) F.W.Schmidt,Maianthemum,Asparagaceae,gbif
+438,1393789,Melilotus altissimus Thuill.,Melilotus,Fabaceae,gbif
+439,1393792,Melilotus officinalis (L.) Lam.,Melilotus,Fabaceae,gbif
+440,1393796,Melilotus spicatus (Sm.) Breistr.,Melilotus,Fabaceae,gbif
+441,1393818,Mercurialis ambigua L.f.,Mercurialis,Euphorbiaceae,gbif
+442,1393823,Mercurialis tomentosa L.,Mercurialis,Euphorbiaceae,gbif
+443,1393846,Moehringia ciliata (Scop.) Dalla Torre,Moehringia,Caryophyllaceae,gbif
+444,1393850,Moehringia muscosa L.,Moehringia,Caryophyllaceae,gbif
+445,1393851,Moehringia pentandra J.Gay,Moehringia,Caryophyllaceae,gbif
+446,1393933,Narthecium ossifragum (L.) Huds.,Narthecium,Nartheciaceae,gbif
+447,1393945,"Neotinea lactea (Poir.) R.M.Bateman, Pridgeon & M.W.Chase",Neotinea,Orchidaceae,gbif
+448,1393946,"Neotinea ustulata (L.) R.M.Bateman, Pridgeon & M.W.Chase",Neotinea,Orchidaceae,gbif
+449,1393965,Noccaea caerulescens (J.Presl & C.Presl) F.K.Mey.,Noccaea,Brassicaceae,gbif
+450,1393967,Noccaea montana (L.) F.K.Mey.,Noccaea,Brassicaceae,gbif
+451,1393968,Noccaea rotundifolia (L.) Moench,Noccaea,Brassicaceae,gbif
+452,1393980,Nymphaea candida C.Presl,Nymphaea,Nymphaeaceae,gbif
+453,1393981,Nymphoides peltata (S.G.Gmel.) Kuntze,Nymphoides,Menyanthaceae,gbif
+454,1394072,Ophrys arachnitiformis Gren. & M.Philippe,Ophrys,Orchidaceae,gbif
+455,1394073,Ophrys aranifera Huds.,Ophrys,Orchidaceae,gbif
+456,1394077,Ophrys aveyronensis (J.J.Wood) P.Delforge,Ophrys,Orchidaceae,gbif
+457,1394078,Ophrys aymoninii (Breistr.) Buttler,Ophrys,Orchidaceae,gbif
+458,1394082,Ophrys bertolonii Moretti,Ophrys,Orchidaceae,gbif
+459,1394088,Ophrys catalaunica O.Danesch & E.Danesch,Ophrys,Orchidaceae,gbif
+460,1394114,Ophrys exaltata Ten.,Ophrys,Orchidaceae,gbif
+461,1394120,Ophrys fuciflora (F.W.Schmidt) Moench,Ophrys,Orchidaceae,gbif
+462,1394128,Ophrys incubacea Bianca,Ophrys,Orchidaceae,gbif
+463,1394143,Ophrys lupercalis Devillers & Devillers-Tersch.,Ophrys,Orchidaceae,gbif
+464,1394153,Ophrys morisii (Martelli) Soó,Ophrys,Orchidaceae,gbif
+465,1394164,Ophrys passionis Sennen,Ophrys,Orchidaceae,gbif
+466,1394169,Ophrys provincialis (Baumann & Künkele) Paulus,Ophrys,Orchidaceae,gbif
+467,1394183,Ophrys saratoi E.G.Camus,Ophrys,Orchidaceae,gbif
+468,1394189,Ophrys sulcata Devillers & Devillers-Tersch.,Ophrys,Orchidaceae,gbif
+469,1394313,Oreopteris limbosperma (Bellardi ex All.) Holub,Oreopteris,Thelypteridaceae,gbif
+470,1394378,Anemone x hybrida Paxton,Anemone,Ranunculaceae,gbif
+471,1394382,Anemone alpina L.,Anemone,Ranunculaceae,gbif
+472,1394383,Pancratium illyricum L.,Pancratium,Amaryllidaceae,gbif
+473,1394394,Anemone apennina L.,Anemone,Ranunculaceae,gbif
+474,1394396,Anemone baldensis L.,Anemone,Ranunculaceae,gbif
+475,1394399,Papaver alpinum L.,Papaver,Papaveraceae,gbif
+476,1394401,Papaver croceum Ledeb.,Papaver,Papaveraceae,gbif
+477,1394404,Papaver orientale L.,Papaver,Papaveraceae,gbif
+478,1394405,Papaver pseudoorientale (Fedde) Medw.,Papaver,Papaveraceae,gbif
+479,1394406,Papaver rhaeticum Leresche,Papaver,Papaveraceae,gbif
+480,1394418,Anemone halleri All.,Anemone,Ranunculaceae,gbif
+481,1394420,Anemone hepatica L.,Anemone,Ranunculaceae,gbif
+482,1394453,Pelargonium x hybridum (L.) Aiton,Pelargonium,Geraniaceae,gbif
+483,1394454,Pelargonium inquinans (L.) Aiton,Pelargonium,Geraniaceae,gbif
+484,1394455,Pelargonium peltatum (L.) Aiton,Pelargonium,Geraniaceae,gbif
+485,1394457,Anemone montana Hoppe,Anemone,Ranunculaceae,gbif
+486,1394460,Anemone nemorosa L.,Anemone,Ranunculaceae,gbif
+487,1394489,Anemone pulsatilla L.,Anemone,Ranunculaceae,gbif
+488,1394498,Anemone rubra Lam.,Anemone,Ranunculaceae,gbif
+489,1394502,Phedimus stellatus (L.) Raf.,Phedimus,Crassulaceae,gbif
+490,1394504,Anemone sylvestris L.,Anemone,Ranunculaceae,gbif
+491,1394508,Anemone trifolia L.,Anemone,Ranunculaceae,gbif
+492,1394513,Anemone vernalis L.,Anemone,Ranunculaceae,gbif
+493,1394549,Angelica heterocarpa J.Lloyd,Angelica,Apiaceae,gbif
+494,1394580,Angelica razulii Gouan,Angelica,Apiaceae,gbif
+495,1394591,Angelica sylvestris L.,Angelica,Apiaceae,gbif
+496,1394648,Pleurospermum austriacum (L.) Hoffm.,Pleurospermum,Apiaceae,gbif
+497,1394714,Sasa palmata (Burb.) Camus,Sasa,Poaceae,gbif
+498,1394759,Anthericum ramosum L.,Anthericum,Asparagaceae,gbif
+499,1394994,Pyracantha coccinea M.Roem.,Pyracantha,Rosaceae,gbif
+500,1394995,Pyracantha rogersiana (A.B.Jacks.) Coltm.-Rog.,Pyracantha,Rosaceae,gbif
+501,1395391,Holodiscus discolor (Pursh) Maxim.,Holodiscus,Rosaceae,gbif
+502,1395720,Sagittaria graminea Michx.,Sagittaria,Alismataceae,gbif
+503,1395721,Sagittaria latifolia Willd.,Sagittaria,Alismataceae,gbif
+504,1395722,Sagittaria sagittifolia L.,Sagittaria,Alismataceae,gbif
+505,1396133,Diascia rigescens E.Mey. ex Benth.,Diascia,Scrophulariaceae,gbif
+506,1396134,Diascia vigilis Hilliard & Burtt,Diascia,Scrophulariaceae,gbif
+507,1396143,Sedum sarmentosum Bunge,Sedum,Crassulaceae,gbif
+508,1396144,Sedum alpestre Vill.,Sedum,Crassulaceae,gbif
+509,1396145,Sedum annuum L.,Sedum,Crassulaceae,gbif
+510,1396156,Sedum kamtschaticum Fisch. & C.A.Mey.,Sedum,Crassulaceae,gbif
+511,1396159,Sedum mexicanum Britton,Sedum,Crassulaceae,gbif
+512,1396161,Sedum ochroleucum Chaix,Sedum,Crassulaceae,gbif
+513,1396165,Sedum sexangulare L.,Sedum,Crassulaceae,gbif
+514,1396708,Metasequoia glyptostroboides Hu & W.C.Cheng,Metasequoia,Cupressaceae,gbif
+515,1396713,Telekia speciosa (Schreb.) Baumg.,Telekia,Asteraceae,gbif
+516,1396754,Thesium alpinum L.,Thesium,Thesiaceae,gbif
+517,1396758,Thesium linophyllon L.,Thesium,Thesiaceae,gbif
+518,1396823,Tradescantia x andersoniana F.Ludw. & Rohweder,Tradescantia,Commelinaceae,gbif
+519,1396824,Tradescantia virginiana L.,Tradescantia,Commelinaceae,gbif
+520,1396842,Trifolium alpestre L.,Trifolium,Fabaceae,gbif
+521,1396843,Trifolium alpinum L.,Trifolium,Fabaceae,gbif
+522,1396858,Trifolium pallescens Schreb.,Trifolium,Fabaceae,gbif
+523,1396867,Trifolium spadiceum L.,Trifolium,Fabaceae,gbif
+524,1396869,Trifolium thalii Vill.,Trifolium,Fabaceae,gbif
+525,1397208,Viscaria alpina (L.) G.Don,Viscaria,Caryophyllaceae,gbif
+526,1397209,Viscaria vulgaris Bernh.,Viscaria,Caryophyllaceae,gbif
+527,1397268,Anemone hupehensis (Lemoine) Lemoine,Anemone,Ranunculaceae,gbif
+528,1397269,Anemone vitifolia Buch.-Ham. ex DC.,Anemone,Ranunculaceae,gbif
+529,1397303,Adenostyles alpina (L.) Bluff & Fingerh.,Adenostyles,Asteraceae,gbif
+530,1397305,Alcea biennis Winterl,Alcea,Malvaceae,gbif
+531,1397311,Anemone narcissiflora L.,Anemone,Ranunculaceae,gbif
+532,1397312,Anemone ranunculoides L.,Anemone,Ranunculaceae,gbif
+533,1397313,Angelica archangelica L.,Angelica,Apiaceae,gbif
+534,1397349,Chaerophyllum bulbosum L.,Chaerophyllum,Apiaceae,gbif
+535,1397351,Cirsium acaulon (L.) Scop.,Cirsium,Asteraceae,gbif
+536,1397352,Cirsium spinosissimum (L.) Scop.,Cirsium,Asteraceae,gbif
+537,1397364,"Cymbalaria muralis P.Gaertn., B.Mey. & Scherb.",Cymbalaria,Plantaginaceae,gbif
+538,1397379,Eritrichium nanum (L.) Schrad. ex Gaudin,Eritrichium,Boraginaceae,gbif
+539,1397387,Fragaria viridis Weston,Fragaria,Rosaceae,gbif
+540,1397403,Honckenya peploides (L.) Ehrh.,Honckenya,Caryophyllaceae,gbif
+541,1397407,Hypericum hyssopifolium Chaix,Hypericum,Hypericaceae,gbif
+542,1397408,Hypericum mutilum L.,Hypericum,Hypericaceae,gbif
+543,1397420,Lactuca perennis L.,Lactuca,Asteraceae,gbif
+544,1397491,Sedum atratum L.,Sedum,Crassulaceae,gbif
+545,1397510,Thesium pyrenaicum Pourr.,Thesium,Thesiaceae,gbif
+546,1397514,Trifolium medium L.,Trifolium,Fabaceae,gbif
+547,1397515,Trinia glauca (L.) Dumort.,Trinia,Apiaceae,gbif
+548,1397550,Sedum montanum Perrier & Songeon,Sedum,Crassulaceae,gbif
+549,1397551,Trifolium badium Schreb.,Trifolium,Fabaceae,gbif
+550,1397556,Freesia refracta (Jacq.) Eckl. ex Klatt,Freesia,Iridaceae,gbif
+551,1397585,Freesia alba (G.L.Mey.) Grumbleton,Freesia,Iridaceae,gbif
+552,1397598,Cobaea scandens Cav.,Cobaea,Polemoniaceae,gbif
+553,1397613,Fragaria virginiana Duchesne,Fragaria,Rosaceae,gbif
+554,1397841,Anemone pratensis L.,Anemone,Ranunculaceae,gbif
+555,1397959,Sagittaria lancifolia L.,Sagittaria,Alismataceae,gbif
+556,1398041,"Neotinea tridentata (Scop.) R.M.Bateman, Pridgeon & M.W.Chase",Neotinea,Orchidaceae,gbif
+557,1398111,Adenostyles alliariae (Gouan) A.Kern.,Adenostyles,Asteraceae,gbif
+558,1398125,Ophrys pseudoscolopax (Moggr.) Paulus & Gack,Ophrys,Orchidaceae,gbif
+559,1398128,Sedum palmeri S.Watson,Sedum,Crassulaceae,gbif
+560,1398130,Hypericum olympicum L.,Hypericum,Hypericaceae,gbif
+561,1398178,Tradescantia zebrina Bosse,Tradescantia,Commelinaceae,gbif
+562,1398196,Dryopteris erythrosora (Eaton) Kuntze,Dryopteris,Dryopteridaceae,gbif
+563,1398274,Adenostyles leucophylla (Willd.) Rchb.,Adenostyles,Asteraceae,gbif
+564,1398326,Calycanthus floridus L.,Calycanthus,Calycanthaceae,gbif
+565,1398333,Phyllanthus niruri L.,Phyllanthus,Phyllanthaceae,gbif
+566,1398355,Ophrys araneola sensu auct.plur.,Ophrys,Orchidaceae,gbif
+567,1398444,Anemone blanda Schott & Kotschy,Anemone,Ranunculaceae,gbif
+568,1398447,Aralia elata (Miq.) Seem.,Aralia,Araliaceae,gbif
+569,1398469,Ophrys virescens Philippe,Ophrys,Orchidaceae,gbif
+570,1398480,Clethra alnifolia L.,Clethra,Clethraceae,gbif
+571,1398494,Corispermum pallasii Steven,Corispermum,Amaranthaceae,gbif
+572,1398513,Hypericum patulum Thunb.,Hypericum,Hypericaceae,gbif
+573,1398515,Hypericum x hidcoteense Hilling ex Geerinck,Hypericum,Hypericaceae,gbif
+574,1398526,Lupinus nootkatensis Donn ex Sims,Lupinus,Fabaceae,gbif
+575,1398567,Smilax rotundifolia L.,Smilax,Smilacaceae,gbif
+576,1398592,Perovskia atriplicifolia Benth.,Perovskia,Lamiaceae,gbif
+577,1398608,Nothofagus antarctica (G.Forst.) Oerst.,Nothofagus,Nothofagaceae,gbif
+578,1398615,Iva annua L.,Iva,Asteraceae,gbif
+579,1398700,Dryopteris fragrans (L.) Schott,Dryopteris,Dryopteridaceae,gbif
+580,1398805,Neotinea conica (Willd.) R.M.Bateman,Neotinea,Orchidaceae,gbif
+581,1398830,Tetraclinis articulata (Vahl) Mast.,Tetraclinis,Cupressaceae,gbif
+582,1399063,Alcea setosa (Boiss.) Alef.,Alcea,Malvaceae,gbif
+583,1399141,Chaerophyllum aromaticum L.,Chaerophyllum,Apiaceae,gbif
+584,1399145,Cucurbita moschata Duchesne,Cucurbita,Cucurbitaceae,gbif
+585,1399157,Daphne sericea Vahl,Daphne,Thymelaeaceae,gbif
+586,1399231,Lamium orvala L.,Lamium,Lamiaceae,gbif
+587,1399338,Paederota bonarota (L.) L.,Paederota,Plantaginaceae,gbif
+588,1399384,Rhodothamnus chamaecistus (L.) Rchb.,Rhodothamnus,Ericaceae,gbif
+589,1399667,Ophrys lunulata Parl.,Ophrys,Orchidaceae,gbif
+590,1399783,Schefflera actinophylla Harms,Schefflera,Araliaceae,gbif
+591,1399803,Astydamia latifolia Baill.,Astydamia,Apiaceae,gbif
+592,1399804,Lavandula pinnata Moench,Lavandula,Lamiaceae,gbif
+593,1399920,Angelica atropurpurea L.,Angelica,Apiaceae,gbif
+594,1400060,Acacia pravissima F.Muell.,Acacia,Fabaceae,gbif
+595,1400080,Adonis pyrenaica DC.,Adonis,Ranunculaceae,gbif
+596,1400081,Adonis vernalis L.,Adonis,Ranunculaceae,gbif
+597,1400096,Barbarea rupicola Moris,Barbarea,Brassicaceae,gbif
+598,1400100,Barbarea vulgaris R.Br.,Barbarea,Brassicaceae,gbif
+599,1400104,Acacia baileyana F.Muell.,Acacia,Fabaceae,gbif
+600,1400110,Bellium bellidioides L.,Bellium,Asteraceae,gbif
+601,1400471,Bocoa prouacensis Aubl.,Bocoa,Fabaceae,gbif
+602,1400478,Nephrolepis biserrata (Sw.) Schott,Nephrolepis,Nephrolepidaceae,gbif
+603,1400798,Vanilla pompona Schiede,Vanilla,Orchidaceae,gbif
+604,1400844,Guatteria anteridifera Scharf & Maas,Guatteria,Annonaceae,gbif
+605,1401141,Caraipa densifolia Mart.,Caraipa,Calophyllaceae,gbif
+606,1401148,Caraipa punctulata Ducke,Caraipa,Calophyllaceae,gbif
+607,1401211,Vismia cayennensis (Jacq.) Pers.,Vismia,Hypericaceae,gbif
+608,1401216,Vismia macrophylla Kunth,Vismia,Hypericaceae,gbif
+609,1401222,Vismia sessilifolia (Aubl.) Choisy,Vismia,Hypericaceae,gbif
+610,1401242,Dryopteris wallichiana (Spreng.) Hyl.,Dryopteris,Dryopteridaceae,gbif
+611,1401701,Xylopia frutescens Aubl.,Xylopia,Annonaceae,gbif
+612,1401711,Xylopia nitida Dunal,Xylopia,Annonaceae,gbif
+613,1401718,Xylopia sericea A.St.-Hil.,Xylopia,Annonaceae,gbif
+614,1401735,Phyllanthus urinaria L.,Phyllanthus,Phyllanthaceae,gbif
+615,1401736,Pogonophora schomburgkiana Miers ex Benth.,Pogonophora,Peraceae,manual
+616,1401737,Sagotia racemosa Baill.,Sagotia,Euphorbiaceae,gbif
+617,1401883,Bonafousia undulata (Vahl) A.DC.,Bonafousia,Apocynaceae,gbif
+618,1402303,Guarea gomma Pulle,Guarea,Meliaceae,gbif
+619,1402356,Nymphoides indica (L.) Kuntze,Nymphoides,Menyanthaceae,gbif
+620,1402423,Anthurium hookeri Kunth,Anthurium,Araceae,gbif
+621,1402433,Anthurium jenmanii Engl.,Anthurium,Araceae,gbif
+622,1402464,Anthurium scandens (Aubl.) Engl.,Anthurium,Araceae,gbif
+623,1402576,Dracontium polyphyllum L.,Dracontium,Araceae,gbif
+624,1402811,Crotalaria retusa L.,Crotalaria,Fabaceae,gbif
+625,1402920,Peperomia magnoliifolia (Jacq.) A.Dietr.,Peperomia,Piperaceae,gbif
+626,1402921,Peperomia obtusifolia (L.) A.Dietr.,Peperomia,Piperaceae,gbif
+627,1402924,Peperomia quadrangularis (J.V.Thomps.) A.Dietr.,Peperomia,Piperaceae,gbif
+628,1402925,Peperomia rotundifolia (L.) Kunth,Peperomia,Piperaceae,gbif
+629,1402926,Peperomia serpens (Sw.) Loudon,Peperomia,Piperaceae,gbif
+630,1403272,Declieuxia fruticosa (Willd. ex Roem. & Schult.) Kuntze,Declieuxia,Rubiaceae,gbif
+631,1403479,Mauritia flexuosa L.f.,Mauritia,Arecaceae,gbif
+632,1403654,Urera baccifera (L.) Gaudich. ex Wedd.,Urera,Urticaceae,gbif
+633,1403826,Pereskia bleo (Kunth) DC.,Pereskia,Cactaceae,gbif
+634,1403967,Cereus hexagonus (L.) Mill.,Cereus,Cactaceae,gbif
+635,1404002,Xylopia crinita R.E.Fr.,Xylopia,Annonaceae,gbif
+636,1404481,Vanilla planifolia Jacks.,Vanilla,Orchidaceae,gbif
+637,1404745,Aciotis rubricaulis (Mart. ex DC.) Triana,Aciotis,Melastomataceae,gbif
+638,1404776,Guatteria amplifolia Triana & Planch.,Guatteria,Annonaceae,gbif
+639,1404804,Luffa cylindrica (L.) M.Roem.,Luffa,Cucurbitaceae,gbif
+640,1405061,Cryptostegia madagascariensis Bojer ex Decne.,Cryptostegia,Apocynaceae,gbif
+641,1405088,Schefflera decaphylla (Seem.) Harms,Schefflera,Araliaceae,gbif
+642,1405252,Aphelandra scabra (Vahl) Sm.,Aphelandra,Acanthaceae,gbif
+643,1405641,Asystasia gangetica (L.) T.Anderson,Asystasia,Acanthaceae,gbif
+644,1405653,Piriqueta cistoides (L.) Griseb.,Piriqueta,Turneraceae,gbif
+645,1405685,Acalypha wilkesiana Müll.Arg.,Acalypha,Euphorbiaceae,gbif
+646,1405686,Breynia disticha J.R.Forst. & G.Forst.,Breynia,Phyllanthaceae,gbif
+647,1405703,Crotalaria incana L.,Crotalaria,Fabaceae,gbif
+648,1406426,Crotalaria pallida Aiton,Crotalaria,Fabaceae,gbif
+649,1406486,Kigelia africana (Lam.) Benth.,Kigelia,Bignoniaceae,gbif
+650,1406756,Guatteria citriodora Ducke,Guatteria,Annonaceae,gbif
+651,1406863,Acalypha indica L.,Acalypha,Euphorbiaceae,gbif
+652,1407077,Guatteria punctata (Aubl.) R.A.Howard,Guatteria,Annonaceae,gbif
+653,1407379,Anthurium crystallinum Linden & André,Anthurium,Araceae,gbif
+654,1407873,Cryptopus elatus (Thouars) Lindl.,Cryptopus,Orchidaceae,gbif
+655,1407874,Cryptostegia grandiflora R.Br.,Cryptostegia,Apocynaceae,gbif
+656,1408034,Eranthemum pulchellum Andrews,Eranthemum,Acanthaceae,gbif
+657,1408037,Alocasia cucullata (Lour.) G.Don,Alocasia,Araceae,gbif
+658,1408041,Alocasia longiloba Miq.,Alocasia,Araceae,gbif
+659,1408045,Alocasia macrorrhizos (L.) G.Don,Alocasia,Araceae,gbif
+660,1408066,Faujasia salicifolia (Pers.) C.Jeffrey,Faujasia,Asteraceae,gbif
+661,1408071,Fernelia buxifolia Lam.,Fernelia,Rubiaceae,gbif
+662,1408092,Fragaria x ananassa Duchesne ex Rozier,Fragaria,Rosaceae,gbif
+663,1408107,Geniostoma borbonicum (Lam.) Spreng.,Geniostoma,Loganiaceae,gbif
+664,1408160,Hernandia mascarenensis (Meisn.) Kubitzki,Hernandia,Hernandiaceae,gbif
+665,1408214,Hypericum lanceolatum Lam.,Hypericum,Hypericaceae,gbif
+666,1408227,Acacia auriculiformis A.Cunn. ex Benth.,Acacia,Fabaceae,gbif
+667,1408284,Leonitis nepetifolia (L.) R.Br.,Leonitis,Lamiaceae,gbif
+668,1408386,Mussaenda arcuata Poir.,Mussaenda,Rubiaceae,gbif
+669,1408401,Nephrolepis abrupta (Bory) Mett.,Nephrolepis,Nephrolepidaceae,gbif
+670,1408421,Acacia heterophylla (Lam.) Willd.,Acacia,Fabaceae,gbif
+671,1408451,Paederia foetida L.,Paederia,Rubiaceae,gbif
+672,1408468,Pelargonium x asperum Ehrh. ex Willd.,Pelargonium,Geraniaceae,gbif
+673,1408490,Pereskia grandifolia Haw.,Pereskia,Cactaceae,gbif
+674,1408502,Antirhea borbonica J.F.Gmel.,Antirhea,Rubiaceae,gbif
+675,1408507,Phyllanthus emblica L.,Phyllanthus,Phyllanthaceae,gbif
+676,1408508,Phyllanthus niruroides Müll.Arg.,Phyllanthus,Phyllanthaceae,gbif
+677,1408509,Phyllanthus phillyreifolius Poir.,Phyllanthus,Phyllanthaceae,gbif
+678,1408557,Pongamia pinnata (L.) Pierre,Pongamia,Fabaceae,gbif
+679,1408594,Acacia podalyriifolia A.Cunn. ex G.Don,Acacia,Fabaceae,gbif
+680,1408657,Schefflera actinophylla (F.Muell.) Harms,Schefflera,Araliaceae,gbif
+681,1408688,Acalypha hispida Burm.f.,Acalypha,Euphorbiaceae,gbif
+682,1408718,Acalypha integrifolia Willd.,Acalypha,Euphorbiaceae,gbif
+683,1408727,Stemodia verticillata (Mill.) Hassl.,Stemodia,Plantaginaceae,gbif
+684,1408734,Stoebe passerinoides (Lam.) Willd.,Stoebe,Asteraceae,gbif
+685,1408738,Strongylodon macrobotrys A.Gray,Strongylodon,Fabaceae,gbif
+686,1408774,Tradescantia pallida (Rose) D.R.Hunt,Tradescantia,Commelinaceae,gbif
+687,1408788,Trimezia martinicensis (Jacq.) Herb.,Trimezia,Iridaceae,gbif
+688,1408810,Vangueria madagascariensis J.F.Gmel.,Vangueria,Rubiaceae,gbif
+689,1408812,Vepris lanceolata (Lam.) G.Don,Vepris,Rutaceae,gbif
+690,1408845,Zaleya pentandra (L.) C.Jeffrey,Zaleya,Aizoaceae,gbif
+691,1408869,Cereus repandus (L.) Mill.,Cereus,Cactaceae,gbif
+692,1408874,Bismarckia nobilis Hildebr. & H.Wendl.,Bismarckia,Arecaceae,gbif
+693,1408953,Acacia nilotica (L.) Delile,Acacia,Fabaceae,gbif
+694,1408961,Schefflera arboricola (Hayata) Merr.,Schefflera,Araliaceae,gbif
+695,1408979,Fragaria chiloensis (L.) Mill.,Fragaria,Rosaceae,gbif
+696,1409185,Aphelandra squarrosa Nees,Aphelandra,Acanthaceae,gbif
+697,1409191,Gynura aurantiaca (Blume) Sch.Bip. ex DC.,Gynura,Asteraceae,gbif
+698,1409195,Pereskia aculeata Mill.,Pereskia,Cactaceae,gbif
+699,1409214,Peperomia argyreia (Miq.) E.Morren,Peperomia,Piperaceae,gbif
+700,1409215,Peperomia caperata Yunck.,Peperomia,Piperaceae,gbif
+701,1409216,Peperomia obtusifolia (L.) A. Dietr.,Peperomia,Piperaceae,gbif
+702,1409238,Anthurium andraeanum Linden ex André,Anthurium,Araceae,gbif
+703,1409239,Anthurium scherzerianum Schott,Anthurium,Araceae,gbif
+704,1409283,Zamia furfuracea L.f.,Zamia,Zamiaceae,gbif
+705,1409292,Dendrobium nobile Lindl.,Dendrobium,Orchidaceae,gbif
+706,1409295,Nandina domestica Thunb.,Nandina,Berberidaceae,gbif
+707,1409296,Nymphaea nouchali Burm.f.,Nymphaea,Nymphaeaceae,gbif
+708,1409299,Falcataria moluccana (Miq.) Barneby & J.W.Grimes,Falcataria,Fabaceae,gbif
+709,1409328,Acacia tortuosa (L.) Willd.,Acacia,Fabaceae,gbif
+710,1409407,Bourreria succulenta Jacq.,Bourreria,Ehretiaceae,gbif
+711,1409521,Crotalaria brevidens Benth.,Crotalaria,Fabaceae,gbif
+712,1409525,Crotalaria pumila Ortega,Crotalaria,Fabaceae,gbif
+713,1409550,Dendrobium chrysotoxum Lindl.,Dendrobium,Orchidaceae,gbif
+714,1409551,Dendrobium crumenatum Sw.,Dendrobium,Orchidaceae,gbif
+715,1409552,Dendrobium moschatum (Buch.-Ham.) Sw.,Dendrobium,Orchidaceae,gbif
+716,1409586,Entada gigas (L.) Fawc. & Rendle,Entada,Fabaceae,gbif
+717,1409642,Fittonia albivenis (Lindl. ex Veitch) R.K. Brummitt,Fittonia,Acanthaceae,manual
+718,1409705,Illicium verum Hook.f.,Illicium,Schisandraceae,gbif
+719,1409746,Lactuca floridana (L.) Gaertn.,Lactuca,Asteraceae,gbif
+720,1409824,Mussaenda pubescens Dryand.,Mussaenda,Rubiaceae,gbif
+721,1409834,Neolamarckia cadamba (Roxb.) Bosser,Neolamarckia,Rubiaceae,gbif
+722,1409839,Nymphaea ampla (Salisb.) DC.,Nymphaea,Nymphaeaceae,gbif
+723,1409918,Phyllanthus epiphyllanthus L.,Phyllanthus,Phyllanthaceae,gbif
+724,1409919,Phyllanthus mimosoides Sw.,Phyllanthus,Phyllanthaceae,gbif
+725,1409932,Pilosocereus royeni (L.) Byles & G. Rowley,Pilosocereus,Cactaceae,gbif
+726,1410024,Selenicereus anthonyanus (Alexander) D.Hunt,Selenicereus,Cactaceae,gbif
+727,1410025,Selenicereus grandiflorus (L.) Britton & Rose,Selenicereus,Cactaceae,gbif
+728,1410147,Zamia pumila L.,Zamia,Zamiaceae,gbif
+729,1410168,Acalypha aristata Kunth,Acalypha,Euphorbiaceae,gbif
+730,1411423,Chamerion latifolium (L.) Holub,Chamerion,Onagraceae,gbif
+731,1411462,Cirsium discolor (Muhl. ex Willd.) Spreng.,Cirsium,Asteraceae,gbif
+732,1411466,Cirsium foliosum (Hook.) DC.,Cirsium,Asteraceae,gbif
+733,1411469,Cirsium muticum Michx.,Cirsium,Asteraceae,gbif
+734,1411472,Cirsium undulatum (Nutt.) Spreng.,Cirsium,Asteraceae,gbif
+735,1411520,Comptonia peregrina (L.) J.M. Coult.,Comptonia,Myricaceae,gbif
+736,1411524,Conoclinium coelestinum (L.) DC.,Conoclinium,Asteraceae,gbif
+737,1411687,Dalea purpurea Vent.,Dalea,Fabaceae,gbif
+738,1411700,Daucus pusillus Michx.,Daucus,Apiaceae,gbif
+739,1411760,Diervilla lonicera Mill.,Diervilla,Caprifoliaceae,gbif
+740,1411827,Dryopteris carthusiana (Vill.) H.P. Fuchs,Dryopteris,Dryopteridaceae,gbif
+741,1411829,Dryopteris cristata (L.) A. Gray,Dryopteris,Dryopteridaceae,gbif
+742,1411832,Dryopteris intermedia (Muhl. ex Willd.) A. Gray,Dryopteris,Dryopteridaceae,gbif
+743,1411833,Dryopteris marginalis (L.) A. Gray,Dryopteris,Dryopteridaceae,gbif
+744,1411834,Duchesnea indica (Andrews) Teschem.,Duchesnea,Rosaceae,gbif
+745,1411925,Epipactis gigantea Douglas ex Hook.,Epipactis,Orchidaceae,gbif
+746,1412311,Hypericum kalmianum L.,Hypericum,Hypericaceae,gbif
+747,1412313,Hypericum prolificum L.,Hypericum,Hypericaceae,gbif
+748,1412314,Hypericum punctatum Lam.,Hypericum,Hypericaceae,gbif
+749,1412337,Anemone canadensis L.,Anemone,Ranunculaceae,gbif
+750,1412344,Iva frutescens L.,Iva,Asteraceae,gbif
+751,1412368,Anemone multifida Poir.,Anemone,Ranunculaceae,gbif
+752,1412410,Anemone virginiana L.,Anemone,Ranunculaceae,gbif
+753,1412412,Lactuca biennis (Moench) Fernald,Lactuca,Asteraceae,gbif
+754,1412413,Lactuca canadensis L.,Lactuca,Asteraceae,gbif
+755,1412418,Lamium maculatum L.,Lamium,Lamiaceae,gbif
+756,1412444,Leersia virginica Willd.,Leersia,Poaceae,manual
+757,1412445,Angelica lucida L.,Angelica,Apiaceae,gbif
+758,1412595,Lupinus argenteus Pursh,Lupinus,Fabaceae,gbif
+759,1412596,Lupinus bicolor Lindl.,Lupinus,Fabaceae,gbif
+760,1412659,Maianthemum canadense Desf.,Maianthemum,Asparagaceae,gbif
+761,1412661,Maianthemum racemosum (L.) Link,Maianthemum,Asparagaceae,gbif
+762,1412662,Maianthemum stellatum (L.) Link,Maianthemum,Asparagaceae,gbif
+763,1412663,Maianthemum trifolium (L.) Sloboda,Maianthemum,Asparagaceae,gbif
+764,1412697,Mertensia maritima (L.) Gray,Mertensia,Boraginaceae,manual
+765,1412698,Mertensia paniculata (Aiton) G. Don,Mertensia,Boraginaceae,manual
+766,1412699,Mertensia virginica (L.) Pers. ex Link,Mertensia,Boraginaceae,manual
+767,1412740,Mitella diphylla L.,Mitella,Saxifragaceae,gbif
+768,1412745,Moehringia lateriflora (L.) Fenzl,Moehringia,Caryophyllaceae,gbif
+769,1412831,Nymphaea mexicana Zucc.,Nymphaea,Nymphaeaceae,gbif
+770,1412833,Nymphaea odorata Aiton,Nymphaea,Nymphaeaceae,gbif
+771,1412834,Nymphaea tetragona Georgi,Nymphaea,Nymphaeaceae,gbif
+772,1412888,Osmunda cinnamomea L.,Osmunda,Osmundaceae,gbif
+773,1412889,Osmunda claytoniana L.,Osmunda,Osmundaceae,gbif
+774,1412946,Papaver nudicaule L.,Papaver,Papaveraceae,gbif
+775,1412992,Aralia hispida Vent.,Aralia,Araliaceae,gbif
+776,1413002,Aralia nudicaulis L.,Aralia,Araliaceae,gbif
+777,1413013,Aralia racemosa L.,Aralia,Araliaceae,gbif
+778,1413391,Pyracantha coccinea M. Roem.,Pyracantha,Rosaceae,gbif
+779,1413751,Sedum divergens S. Watson,Sedum,Crassulaceae,gbif
+780,1413752,Sedum lanceolatum Torr.,Sedum,Crassulaceae,gbif
+781,1413753,Sedum oreganum Nutt.,Sedum,Crassulaceae,gbif
+782,1413755,Sedum spathulifolium Hook.,Sedum,Crassulaceae,gbif
+783,1413757,Sedum ternatum Michx.,Sedum,Crassulaceae,gbif
+784,1413832,Smilax herbacea L.,Smilax,Smilacaceae,gbif
+785,1413835,Smilax tamnoides L.,Smilax,Smilacaceae,gbif
+786,1414057,Tradescantia occidentalis (Britton) Smyth,Tradescantia,Commelinaceae,gbif
+787,1414058,Tradescantia ohiensis Raf.,Tradescantia,Commelinaceae,gbif
+788,1414272,Balsamorhiza sagittata (Pursh) Nutt.,Balsamorhiza,Asteraceae,gbif
+789,1414275,Barbarea orthoceras Ledeb.,Barbarea,Brassicaceae,gbif
+790,1414276,Barbarea vulgaris W.T. Aiton,Barbarea,Brassicaceae,gbif
+791,1414397,Calochortus macrocarpus Douglas,Calochortus,Liliaceae,gbif
+792,1414746,Entada phaseoloides (L.) Merr.,Entada,Fabaceae,gbif
+793,1414808,Cerbera manghas L.,Cerbera,Apocynaceae,gbif
+794,1414903,Hernandia cordigera Vieill.,Hernandia,Hernandiaceae,gbif
+795,1414924,Acacia simplex (Sparman) Pedley,Acacia,Fabaceae,gbif
+796,1415584,Dubouzetia confusa Guillaumin & Virot,Dubouzetia,Elaeocarpaceae,gbif
+797,1415593,Dubouzetia campanulata Pancher ex Brongn. & Gris,Dubouzetia,Elaeocarpaceae,gbif
+798,1415911,Acacia spirorbis Labill.,Acacia,Fabaceae,gbif
+799,1416420,Atractocarpus platyxylon (Vieill. ex Pancher & Sebert) Guillaumin,Atractocarpus,Rubiaceae,gbif
+800,1416509,Nepenthes vieillardii Hook. f.,Nepenthes,Nepenthaceae,gbif
+801,1417117,Dendrobium closterium Rchb.f.,Dendrobium,Orchidaceae,gbif
+802,1417506,Dracophyllum verticillatum Labill.,Dracophyllum,Ericaceae,gbif
+803,1417546,Schefflera spp.,Schefflera,Araliaceae,gbif
+804,1417900,Tagetes lucida Cav.,Tagetes,Asteraceae,gbif
+805,1417916,"Anisocampium niponicum (Mett.) Y.C.Liu, W.L. Chiou & M. Kato",Anisocampium,Athyriaceae,gbif
+806,1418033,Mertensia ciliata (James ex Torr.) G. Don,Mertensia,Boraginaceae,manual
+807,1418061,Lithops fulviceps N.E.Br.,Lithops,Aizoaceae,gbif
+808,1418084,Lithops karasmontana N.E.Br.,Lithops,Aizoaceae,gbif
+809,1418102,Lithops marmorata N.E.Br.,Lithops,Aizoaceae,gbif
+810,1418140,Lithops pseudotruncatella N.E.Br.,Lithops,Aizoaceae,gbif
+811,1418146,Fittonia albivenis (Lindl. ex Veitch) Brummitt,Fittonia,Acanthaceae,manual
+812,1418191,Lithops spp.,Lithops,Aizoaceae,gbif
+813,1418192,Cereus hildmannianus K.Schum.,Cereus,Cactaceae,gbif
+814,1418295,Neobuxbaumia polylopha (DC.) Backeb.,Neobuxbaumia,Cactaceae,gbif
+815,1418345,Calycanthus occidentalis Hook. & Arn.,Calycanthus,Calycanthaceae,gbif
+816,1418475,Tradescantia subaspera Ker Gawl.,Tradescantia,Commelinaceae,gbif
+817,1418545,Sedum kamtschaticum Fisch.,Sedum,Crassulaceae,gbif
+818,1418546,Sedum lineare Thunb.,Sedum,Crassulaceae,gbif
+819,1418547,Sedum morganianum E.Walther,Sedum,Crassulaceae,gbif
+820,1418563,Cucurbita foetidissima Kunth,Cucurbita,Cucurbitaceae,gbif
+821,1418576,Eucryphia cordifolia Cav.,Eucryphia,Cunoniaceae,gbif
+822,1418653,Dryopteris cycadina (Franch. & Sav.) C. Chr.,Dryopteris,Dryopteridaceae,gbif
+823,1418655,Dryopteris erythrosora (D.C. Eaton) Kuntze,Dryopteris,Dryopteridaceae,gbif
+824,1418659,Dryopteris sieboldii (T. Moore) Kuntze,Dryopteris,Dryopteridaceae,gbif
+825,1418665,Rumohra adiantiformis (G. Forst.) Ching,Rumohra,Dryopteridaceae,gbif
+826,1418732,Oxydendrum arboreum (L.) DC.,Oxydendrum,Ericaceae,gbif
+827,1418984,Lupinus albifrons Benth.,Lupinus,Fabaceae,gbif
+828,1419077,Lycoris radiata (L'Hér.) Herb.,Lycoris,Amaryllidaceae,gbif
+829,1419086,Garrya elliptica Douglas ex Lindl.,Garrya,Garryaceae,gbif
+830,1419091,Lycoris squamigera Maxim.,Lycoris,Amaryllidaceae,gbif
+831,1419112,Pelargonium crispum (P.J. Bergius) L'Hér.,Pelargonium,Geraniaceae,gbif
+832,1419115,Pelargonium x hortorum L.H. Bailey,Pelargonium,Geraniaceae,gbif
+833,1419173,Loropetalum chinense (R. Br.) Oliv.,Loropetalum,Hamamelidaceae,gbif
+834,1419197,Hypericum frondosum Michx.,Hypericum,Hypericaceae,gbif
+835,1419334,Liriope muscari (Decne.) L.H.Bailey,Liriope,Asparagaceae,gbif
+836,1419352,Limnanthes douglasii R. Br.,Limnanthes,Limnanthaceae,gbif
+837,1419595,Nothofagus alpina (Poepp. & Endl.) Oerst.,Nothofagus,Nothofagaceae,gbif
+838,1419598,Nothofagus pumilio (Poepp. & Endl.) Krasser,Nothofagus,Nothofagaceae,gbif
+839,1419612,Abeliophyllum distichum Nakai,Abeliophyllum,Oleaceae,gbif
+840,1419713,Dendrobium aphyllum (Roxb.) C.E.C.Fisch.,Dendrobium,Orchidaceae,gbif
+841,1419720,Dendrobium spp.,Dendrobium,Orchidaceae,gbif
+842,1419807,Vanilla planifolia Jacks. ex Andrews,Vanilla,Orchidaceae,gbif
+843,1419864,Heteromorpha arborescens (Spreng.) Cham. & Schltdl.,Heteromorpha,Apiaceae,gbif
+844,1419874,Lapageria rosea Ruiz & Pav.,Lapageria,Philesiaceae,gbif
+845,1419923,Peperomia argyreia (Hook.f.) E.Morren,Peperomia,Piperaceae,gbif
+846,1419924,Peperomia dolabriformis Kunth,Peperomia,Piperaceae,gbif
+847,1419942,Hebe franciscana (Eastw.) Souster,Hebe,Plantaginaceae,gbif
+848,1419949,Maurandya barclayana Lindl.,Maurandya,Plantaginaceae,gbif
+849,1420092,Sasa palmata (Burb.) E.G.Camus,Sasa,Poaceae,gbif
+850,1420288,Anemone patens L.,Anemone,Ranunculaceae,gbif
+851,1420364,Fragaria virginiana Mill.,Fragaria,Rosaceae,gbif
+852,1420365,Fragaria x ananassa (Duchesne ex Weston) Duchesne ex Rozier,Fragaria,Rosaceae,gbif
+853,1420496,Mussaenda philippica A.Rich.,Mussaenda,Rubiaceae,gbif
+854,1420544,Limonia acidissima Groff,Limonia,Rutaceae,gbif
+855,1420653,Illicium floridanum J. Ellis,Illicium,Schisandraceae,gbif
+856,1420700,Browallia speciosa Hook.,Browallia,Solanaceae,gbif
+857,1420767,Alocasia cuprea K.Koch,Alocasia,Araceae,gbif
+858,1420781,Alocasia micholitziana Sander,Alocasia,Araceae,gbif
+859,1420787,Alocasia odora (Lindl.) K.Koch,Alocasia,Araceae,gbif
+860,1420792,Daphne odora Thunb.,Daphne,Thymelaeaceae,gbif
+861,1420795,Alocasia sanderiana W.Bull,Alocasia,Araceae,gbif
+862,1420796,Daphne tangutica Maxim.,Daphne,Thymelaeaceae,gbif
+863,1420863,Kniphofia uvaria (L.) Oken,Kniphofia,Asphodelaceae,manual
+864,1420896,Zamia furfuracea L.f. ex Aiton,Zamia,Zamiaceae,gbif
+865,1420929,Guaiacum sanctum L.,Guaiacum,Zygophyllaceae,gbif
+866,1420931,Nepenthes spp.,Nepenthes,Nepenthaceae,gbif
+867,1421001,Pelargonium spp.,Pelargonium,Geraniaceae,gbif
+868,1421011,Pancratium maritimum L. L.,Pancratium,Amaryllidaceae,gbif
+869,1421021,Sedum palmeri S. Watson,Sedum,Crassulaceae,gbif
+870,1421026,Aphelandra sinclairiana Nees,Aphelandra,Acanthaceae,gbif
+871,1421107,Alocasia macrorrhizos (L.) G. Don,Alocasia,Araceae,gbif
+872,1421386,Acacia confusa Merr.,Acacia,Fabaceae,gbif
+873,1421523,Acacia koaia Hillebr.,Acacia,Fabaceae,gbif
+874,1421628,Nephrolepis falcata (Cav.) C. Chr.,Nephrolepis,Nephrolepidaceae,gbif
+875,1422105,Tradescantia zebrina hort. ex Bosse,Tradescantia,Commelinaceae,gbif
+876,1422636,Calodendrum capense (L.f.) Thunb.,Calodendrum,Rutaceae,gbif
+877,1422712,Pelargonium grandiflorum Willd.,Pelargonium,Geraniaceae,gbif
+878,1422721,Hypericum revolutum Vahl,Hypericum,Hypericaceae,gbif
+879,1423286,Schkuhria pinnata (Lam.) Kuntze ex Thell.,Schkuhria,Asteraceae,gbif
+880,1423469,Maytenus boaria Molina,Maytenus,Celastraceae,gbif
+881,1423633,Melampodium perfoliatum (Cav.) Kunth,Melampodium,Asteraceae,gbif
+882,1423932,Hernandia nymphaeifolia (J.Presl) Kubitzki,Hernandia,Hernandiaceae,gbif
+883,1424003,Mazus pumilus (Burm.f.) Steenis,Mazus,Mazaceae,gbif
+884,1424005,Melampodium divaricatum (Rich.) DC.,Melampodium,Asteraceae,gbif
+885,1424377,Breynia vitis-idaea (Burm.f.) C.E.C.Fisch.,Breynia,Phyllanthaceae,gbif
+886,1425433,Prosopis farcta (Banks & Sol.) J.F.Macbr.,Prosopis,Fabaceae,gbif
+887,1425899,Acacia farnesiana Willd.,Acacia,Fabaceae,gbif
+888,1427043,Freycinetia cumingiana Gaudich.,Freycinetia,Pandanaceae,gbif
+889,1427659,Crotalaria laburnifolia L.,Crotalaria,Fabaceae,gbif
+890,1427821,Dalbergia sissoo DC.,Dalbergia,Fabaceae,gbif
+891,1428059,Dischidia nummularia R.Br.,Dischidia,Apocynaceae,gbif
+892,1430280,Schefflera heptaphylla (L.) Frodin,Schefflera,Araliaceae,gbif
+893,1430287,Schinopsis balansae Engl.,Schinopsis,Anacardiaceae,gbif
+894,1430515,Smilax china L.,Smilax,Smilacaceae,gbif
+895,1431222,Barringtonia acutangula (L.) Gaertn.,Barringtonia,Lecythidaceae,gbif
+896,1431925,Maerua triphylla A. Rich.,Maerua,Capparaceae,gbif
+897,1432545,Asystasia mysorensis (Roth) T.Anderson,Asystasia,Acanthaceae,gbif
+898,1432783,Lactuca virosa Habl.,Lactuca,Asteraceae,gbif
+899,1432786,Calendula arvensis M.Bieb.,Calendula,Asteraceae,gbif
+900,1432824,Herbertia lahue (Molina) Goldblatt,Herbertia,Iridaceae,gbif
+901,1433158,Hypericum hypericoides (L.) Crantz,Hypericum,Hypericaceae,gbif
+902,1433176,Hypericum tetrapetalum Lam.,Hypericum,Hypericaceae,gbif
+903,1433496,Keckiella cordifolia (Benth.) Straw,Keckiella,Plantaginaceae,gbif
+904,1434011,Liriope muscari (Decne.) L.H. Bailey,Liriope,Asparagaceae,gbif
+905,1434232,Lupinus chamissonis Eschsch.,Lupinus,Fabaceae,gbif
+906,1434249,Lupinus diffusus Nutt.,Lupinus,Fabaceae,gbif
+907,1434258,Lupinus formosus Greene,Lupinus,Fabaceae,gbif
+908,1434267,Lupinus hirsutissimus Benth.,Lupinus,Fabaceae,gbif
+909,1434320,Lupinus subcarnosus Hook.,Lupinus,Fabaceae,gbif
+910,1434326,Lupinus texensis Hook.,Lupinus,Fabaceae,gbif
+911,1434383,Lyonothamnus floribundus A. Gray,Lyonothamnus,Rosaceae,gbif
+912,1434584,Mazus pumilus (Burm. f.) Steenis,Mazus,Mazaceae,gbif
+913,1434594,Melampodium leucanthum Torr. & A. Gray,Melampodium,Asteraceae,gbif
+914,1434712,Metasequoia glyptostroboides Hu & W.C. Cheng,Metasequoia,Cupressaceae,gbif
+915,1435225,Aralia californica S. Watson,Aralia,Araliaceae,gbif
+916,1435228,Nyctaginia capitata Choisy,Nyctaginia,Nyctaginaceae,gbif
+917,1435260,Aralia spinosa L.,Aralia,Araliaceae,gbif
+918,1435709,Pelargonium panduriforme Eckl. & Zeyh.,Pelargonium,Geraniaceae,gbif
+919,1435714,Pelargonium zonale (L.) L'Hér. ex Aiton,Pelargonium,Geraniaceae,gbif
+920,1436922,Prosopis glandulosa Torr.,Prosopis,Fabaceae,gbif
+921,1436923,Prosopis pubescens Benth.,Prosopis,Fabaceae,gbif
+922,1437724,Sagittaria montevidensis Cham. & Schltdl.,Sagittaria,Alismataceae,gbif
+923,1438033,Sedum albomarginatum R.T. Clausen,Sedum,Crassulaceae,gbif
+924,1438041,Sedum glaucophyllum R.T. Clausen,Sedum,Crassulaceae,gbif
+925,1438043,Sedum laxum (Britton) A. Berger,Sedum,Crassulaceae,gbif
+926,1438045,Sedum moranense Kunth,Sedum,Crassulaceae,gbif
+927,1438049,Sedum niveum Davidson,Sedum,Crassulaceae,gbif
+928,1438052,Sedum obtusatum A. Gray,Sedum,Crassulaceae,gbif
+929,1438056,Sedum pulchellum Michx.,Sedum,Crassulaceae,gbif
+930,1438352,Smilax bona-nox L.,Smilax,Smilacaceae,gbif
+931,1438354,Smilax glauca Walter,Smilax,Smilacaceae,gbif
+932,1438358,Smilax laurifolia L.,Smilax,Smilacaceae,gbif
+933,1438616,Stanleya pinnata (Pursh) Britton,Stanleya,Brassicaceae,gbif
+934,1438868,Tagetes lemmonii A. Gray,Tagetes,Asteraceae,gbif
+935,1439145,Tradescantia crassifolia Cav.,Tradescantia,Commelinaceae,gbif
+936,1439703,Xylococcus bicolor Nutt.,Xylococcus,Picrodendraceae,gbif
+937,1440273,Brodiaea elegans Hoover,Brodiaea,Asparagaceae,gbif
+938,1440412,Calochortus eurycarpus S. Watson,Calochortus,Liliaceae,gbif
+939,1440416,Calochortus gunnisonii S. Watson,Calochortus,Liliaceae,gbif
+940,1440423,Calochortus leichtlinii Hook. f.,Calochortus,Liliaceae,gbif
+941,1440425,Calochortus luteus Douglas ex Lindl.,Calochortus,Liliaceae,gbif
+942,1440440,Calochortus splendens Douglas ex Benth.,Calochortus,Liliaceae,gbif
+943,1440446,Calochortus tolmiei Hook. & Arn.,Calochortus,Liliaceae,gbif
+944,1440476,Calylophus hartwegii (Benth.) P.H. Raven,Calylophus,Onagraceae,gbif
+945,1441099,Chaerophyllum tainturieri Hook.,Chaerophyllum,Apiaceae,gbif
+946,1441349,Cirsium altissimum (L.) Hill,Cirsium,Asteraceae,gbif
+947,1441375,Cirsium horridulum Michx.,Cirsium,Asteraceae,gbif
+948,1441410,Cirsium texanum Buckley,Cirsium,Asteraceae,gbif
+949,1442541,Diervilla sessilifolia Buckley,Diervilla,Caprifoliaceae,gbif
+950,1442833,Acacia berlandieri Benth.,Acacia,Fabaceae,gbif
+951,1442865,Elephantopus elatus Bertol.,Elephantopus,Asteraceae,gbif
+952,1442930,Alocasia cucullata (Lour.) G. Don,Alocasia,Araceae,gbif
+953,1444049,Acacia redolens Maslin,Acacia,Fabaceae,gbif
+954,1444156,Acacia rigidula Benth.,Acacia,Fabaceae,gbif
+955,1444195,Hackelia velutina (Piper) I.M. Johnst.,Hackelia,Boraginaceae,manual
+956,1444216,Haplophyton crooksii (L.D. Benson) L.D. Benson,Haplophyton,Apocynaceae,gbif
+957,1447962,Aextoxicon punctatum Ruiz & Pav.,Aextoxicon,Aextoxicaceae,gbif
+958,1449139,Lithops aucampiae L. Bolus,Lithops,Aizoaceae,gbif
+959,1449149,Lithops olivacea L. Bolus,Lithops,Aizoaceae,gbif
+960,1453004,Cyrtanthus elatus (Jacq.) Traub,Cyrtanthus,Amaryllidaceae,manual
+961,1455408,Guatteria aeruginosa Standl.,Guatteria,Annonaceae,gbif
+962,1460343,Dischidia ovata Benth.,Dischidia,Apocynaceae,gbif
+963,1463177,Trachelospermum asiaticum (Siebold & Zucc.) Nakai,Trachelospermum,Apocynaceae,gbif
+964,1464023,Alocasia baginda Kurniawan & P.C.Boyce,Alocasia,Araceae,gbif
+965,1464054,Alocasia lauterbachiana (Engl.) A.Hay,Alocasia,Araceae,gbif
+966,1464075,Alocasia reginula A.Hay,Alocasia,Araceae,gbif
+967,1464086,Alocasia wentii Engl. & K.Krause,Alocasia,Araceae,gbif
+968,1464088,Alocasia zebrina Schott ex Van Houtte,Alocasia,Araceae,gbif
+969,1464459,Anthurium clarinervium Matuda,Anthurium,Araceae,gbif
+970,1464567,Anthurium faustomirandae Pérez-Farr. & Croat,Anthurium,Araceae,gbif
+971,1465016,Anthurium salvinii Hemsl.,Anthurium,Araceae,gbif
+972,1465026,Anthurium schlechtendalii Kunth,Anthurium,Araceae,gbif
+973,1465149,Anthurium veitchii Mast.,Anthurium,Araceae,gbif
+974,1465170,Anthurium warocqueanum T.Moore,Anthurium,Araceae,gbif
+975,1470435,Wodyetia bifurcata A.K.Irvine,Wodyetia,Arecaceae,gbif
+976,1486475,Cereus forbesii C.F.Först.,Cereus,Cactaceae,gbif
+977,1486501,Cereus uruguayanus R. Kiesling,Cereus,Cactaceae,gbif
+978,1486655,Coryphantha elephantidens (Lem.) Lem.,Coryphantha,Cactaceae,gbif
+979,1488001,Pilosocereus chrysostele (Vaupel) Byles & G.D.Rowley,Pilosocereus,Cactaceae,gbif
+980,1488026,Pilosocereus pachycladus F. Ritter,Pilosocereus,Cactaceae,gbif
+981,1488171,Selenicereus anthonyanus (Alexander) D.R. Hunt,Selenicereus,Cactaceae,gbif
+982,1488206,Stenocactus multicostatus (Hildm.) A. Berger ex A.W. Hill,Stenocactus,Cactaceae,gbif
+983,1488285,Tephrocactus geometricus (A. Cast.) Backeb.,Tephrocactus,Cactaceae,gbif
+984,1491513,Pterocephalus perennis Coult.,Pterocephalus,Caprifoliaceae,gbif
+985,1494482,Maytenus ilicifolia Mart. ex Reissek,Maytenus,Celastraceae,gbif
+986,1497434,Cyanotis somaliensis C.B.Clarke,Cyanotis,Commelinaceae,gbif
+987,1497630,Tradescantia × andersoniana W.Ludw. & Rohweder,Tradescantia,Commelinaceae,gbif
+988,1497667,Tradescantia sillamontana Matuda,Tradescantia,Commelinaceae,gbif
+989,1503981,Cirsium palustre (L.) Coss. ex Scop.,Cirsium,Asteraceae,gbif
+990,1506976,Erechtites minima (Poir.) DC.,Erechtites,Asteraceae,gbif
+991,1513142,Lactuca alpina (L.) A.Gray,Lactuca,Asteraceae,gbif
+992,1513780,Leptinella potentillina F.Muell.,Leptinella,Asteraceae,gbif
+993,1514035,Leucophyta brownii Cass.,Leucophyta,Asteraceae,gbif
+994,1514627,Melampodium divaricatum (Rich. ex Rich.) DC.,Melampodium,Asteraceae,gbif
+995,1516297,Othonna capensis L.H.Bailey,Othonna,Asteraceae,gbif
+996,1518683,Rhodanthe chlorocephala (Turcz.) Paul G.Wilson,Rhodanthe,Asteraceae,gbif
+997,1522375,Tagetes lemmonii A.Gray,Tagetes,Asteraceae,gbif
+998,1522377,Tagetes lunulata Ortega,Tagetes,Asteraceae,gbif
+999,1529081,Sedum adolphii Raym.-Hamet,Sedum,Crassulaceae,gbif
+1000,1529084,Sedum allantoides Rose,Sedum,Crassulaceae,gbif
+1001,1529107,Sedum burrito Moran,Sedum,Crassulaceae,gbif
+1002,1529124,Sedum clavatum R.T. Clausen,Sedum,Crassulaceae,gbif
+1003,1529128,Sedum compressum Rose,Sedum,Crassulaceae,gbif
+1004,1529144,Sedum cyaneum J. Rudolph,Sedum,Crassulaceae,gbif
+1005,1529148,Sedum decumbens R.T. Clausen,Sedum,Crassulaceae,gbif
+1006,1529179,Sedum furfuraceum Moran,Sedum,Crassulaceae,gbif
+1007,1529205,Sedum hernandezii J. Meyrán,Sedum,Crassulaceae,gbif
+1008,1529212,Sedum japonicum Siebold ex Miq.,Sedum,Crassulaceae,gbif
+1009,1529242,Sedum makinoi Maxim.,Sedum,Crassulaceae,gbif
+1010,1529265,Sedum nussbaumerianum Bitter,Sedum,Crassulaceae,gbif
+1011,1529305,Sedum praealtum A.DC.,Sedum,Crassulaceae,gbif
+1012,1529328,Sedum rubrotinctum R.T. Clausen,Sedum,Crassulaceae,gbif
+1013,1535203,Uncinia rubra Colenso ex Boott,Uncinia,Cyperaceae,gbif
+1014,1538569,Empetrum rubrum Vahl ex Willd.,Empetrum,Ericaceae,gbif
+1015,1542499,Acalypha macrostachya Jacq.,Acalypha,Euphorbiaceae,gbif
+1016,1550658,Pelargonium echinatum Curtis,Pelargonium,Geraniaceae,gbif
+1017,1550692,Pelargonium × hortorum L.H. Bailey,Pelargonium,Geraniaceae,gbif
+1018,1550785,Pelargonium sidoides DC.,Pelargonium,Geraniaceae,gbif
+1019,1550799,Pelargonium tomentosum Jacq.,Pelargonium,Geraniaceae,gbif
+1020,1560405,Lavandula canariensis (L.) Mill.,Lavandula,Lamiaceae,gbif
+1021,1567995,Acacia auriculiformis Benth.,Acacia,Fabaceae,gbif
+1022,1568056,Acacia brevispica Harms,Acacia,Fabaceae,gbif
+1023,1568102,Acacia caven (Molina) Molina,Acacia,Fabaceae,gbif
+1024,1568134,Acacia cognata Domin,Acacia,Fabaceae,gbif
+1025,1568144,Acacia confluens Maiden & Blakeley,Acacia,Fabaceae,gbif
+1026,1568799,Acacia podalyriifolia G.Don,Acacia,Fabaceae,gbif
+1027,1568914,Acacia saligna (Labill.) Wendl.,Acacia,Fabaceae,gbif
+1028,1576296,Dalbergia retusa Hemsl.,Dalbergia,Fabaceae,gbif
+1029,1580985,Lupinus nootkatensis Sims,Lupinus,Fabaceae,gbif
+1030,1584568,Prosopis pallida (Willd.) Kunth,Prosopis,Fabaceae,gbif
+1031,1600531,Cedrela fissilis Vell.,Cedrela,Meliaceae,gbif
+1032,1608001,Nepenthes mirabilis (Lour.) Druce,Nepenthes,Nepenthaceae,gbif
+1033,1608003,Nepenthes × neglecta Macfarl.,Nepenthes,Nepenthaceae,gbif
+1034,1608023,Nothofagus betuloides (Mirb.) Oerst.,Nothofagus,Nothofagaceae,gbif
+1035,1608027,Nothofagus dombeyi (Mirb.) Oerst.,Nothofagus,Nothofagaceae,gbif
+1036,1608034,Nothofagus nitida (Phil.) Krasser,Nothofagus,Nothofagaceae,gbif
+1037,1608440,Nymphaea rubra Roxb. ex Andrews,Nymphaea,Nymphaeaceae,gbif
+1038,1617292,Dendrobium anosmum Lindl.,Dendrobium,Orchidaceae,gbif
+1039,1617904,Dendrobium kingianum Bidwill ex Lindl.,Dendrobium,Orchidaceae,gbif
+1040,1618100,Dendrobium munificum (Finet) Schltr.,Dendrobium,Orchidaceae,gbif
+1041,1618570,Dendrobium thyrsiflorum B.S.Williams,Dendrobium,Orchidaceae,gbif
+1042,1618661,Dendrobium victoriae-reginae Loher,Dendrobium,Orchidaceae,gbif
+1043,1621823,Erycina pusilla (L.) N.H.Williams & M.W.Chase,Erycina,Orchidaceae,gbif
+1044,1638998,"Adlumia fungosa (Aiton) Britton, Sterns & Poggenb.",Adlumia,Papaveraceae,gbif
+1045,1643184,Peperomia albovittata C. DC.,Peperomia,Piperaceae,gbif
+1046,1643341,Peperomia clusiifolia (Jacq.) Hook.,Peperomia,Piperaceae,gbif
+1047,1643349,Peperomia columella Rauh & Hutchison,Peperomia,Piperaceae,gbif
+1048,1643491,Peperomia ferreyrae Yunck.,Peperomia,Piperaceae,gbif
+1049,1643553,Peperomia graveolens Rauh & Barthlott,Peperomia,Piperaceae,gbif
+1050,1643690,Peperomia maculosa (L.) Hook.,Peperomia,Piperaceae,gbif
+1051,1643819,Peperomia pecuniifolia Trel. & Standl.,Peperomia,Piperaceae,gbif
+1052,1643866,Peperomia polybotrya Kunth,Peperomia,Piperaceae,gbif
+1053,1643887,Peperomia prostrata B.S. Williams,Peperomia,Piperaceae,gbif
+1054,1644145,Peperomia tetragona Ruiz & Pav.,Peperomia,Piperaceae,gbif
+1055,1644223,Peperomia verticillata (L.) A.Dietr.,Peperomia,Piperaceae,gbif
+1056,1646149,Hebe andersonii (Lindl. & J. Paxton) Cockayne,Hebe,Plantaginaceae,gbif
+1057,1662426,Lomatia ferruginea R. Br.,Lomatia,Proteaceae,gbif
+1058,1663341,Anemone pavoniana Boiss.,Anemone,Ranunculaceae,gbif
+1059,1663381,Anemone tomentosa (Maxim.) C.Pei,Anemone,Ranunculaceae,gbif
+1060,1664348,Hepatica nobilis Mill.,Hepatica,Ranunculaceae,manual
+1061,1667445,Fragaria × ananassa (Duchesne ex Weston) Duchesne ex Rozier,Fragaria,Rosaceae,gbif
+1062,1675513,Margaritopsis haematocarpa (Standl.) C.M.Taylor,Margaritopsis,Rubiaceae,gbif
+1063,1682159,Angostura granulosa (Kallunki) Kallunki,Angostura,Rutaceae,gbif
+1064,1689963,Smilax excelsa L.,Smilax,Smilacaceae,gbif
+1065,1694631,Coussapoa villosa Poepp. & Endl.,Coussapoa,Urticaceae,gbif
+1066,1697960,Cyphostemma cyphopetalum (Fresen.) Desc. ex Wild & R.B.Drumm.,Cyphostemma,Vitaceae,gbif
+1067,1697991,Cyphostemma juttae (Dinter & Gilg) Desc.,Cyphostemma,Vitaceae,gbif
+1068,1698065,Cyphostemma serpens (Hochst. ex A.Rich.) Desc.,Cyphostemma,Vitaceae,gbif
+1069,1711751,Nepenthes alata Blanco,Nepenthes,Nepenthaceae,gbif
+1070,1711753,Nepenthes truncata Macfarl.,Nepenthes,Nepenthaceae,gbif
+1071,1711775,Lavandula spp.,Lavandula,Lamiaceae,gbif
+1072,1711787,Cymbalaria muralis P.Gaertn.,Cymbalaria,Plantaginaceae,gbif
+1073,1711873,Aphelandra aurantiaca Lindl.,Aphelandra,Acanthaceae,gbif
+1074,1712003,Guatteria dolichopoda Donn. Sm.,Guatteria,Annonaceae,gbif
+1075,1712019,Stenanona costaricensis R.E. Fr.,Stenanona,Annonaceae,gbif
+1076,1712365,Schefflera morototoni (Aubl.) Maguire,Schefflera,Araliaceae,gbif
+1077,1713198,Bourreria andrieuxii (DC.) Hemsl.,Bourreria,Ehretiaceae,gbif
+1078,1713199,Bourreria costaricensis (Standl.) A.H. Gentry,Bourreria,Ehretiaceae,gbif
+1079,1717570,Alibertia edulis (Rich.) A. Rich.,Alibertia,Rubiaceae,gbif
+1080,1718287,Acacia senegalensis (Houtt.) Roberty,Acacia,Fabaceae,gbif

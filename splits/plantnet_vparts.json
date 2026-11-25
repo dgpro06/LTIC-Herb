@@ -1,0 +1,33 @@
+{
+ "val_file": "/kaggle/working/splits/plantnet_val.txt",
+ "train_file": "/kaggle/working/splits/plantnet_train.txt",
+ "seed": 0,
+ "few_thr": 20,
+ "ratios": [
+  35.0,
+  40.0,
+  25.0
+ ],
+ "decision_8_0": "switched to 35/40/25, still < 500 few-shot images: the few-shot gate criterion uses POOLED image-level tail accuracy; macro-F1 stays strict",
+ "few_classes_in_train": 523,
+ "parts": {
+  "vtune": {
+   "images": 10907,
+   "classes": 827,
+   "few_images": 278,
+   "few_classes": 273
+  },
+  "vselect": {
+   "images": 12453,
+   "classes": 849,
+   "few_images": 305,
+   "few_classes": 291
+  },
+  "vcal": {
+   "images": 7758,
+   "classes": 716,
+   "few_images": 184,
+   "few_classes": 183
+  }
+ }
+}

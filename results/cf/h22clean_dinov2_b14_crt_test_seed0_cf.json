@@ -1,0 +1,40 @@
+{
+ "n_images": 84759,
+ "n_tail_fp": 2200,
+ "share": {
+  "same_genus": 0.39090909090909093,
+  "same_family": 0.16772727272727272,
+  "diff_family": 0.44136363636363635,
+  "unknown_family": 0.0,
+  "cross_genus": 0.6090909090909091
+ },
+ "ci95": {
+  "same_genus": [
+   0.371685393258427,
+   0.411068936107774
+  ],
+  "same_family": [
+   0.15265983203648495,
+   0.18406343772723083
+  ],
+  "diff_family": [
+   0.42109709104074516,
+   0.46169312531573653
+  ],
+  "unknown_family": [
+   0.0,
+   0.0
+  ],
+  "cross_genus": [
+   0.5889310638922259,
+   0.628314606741573
+  ]
+ },
+ "source": "results/preds/h22clean_dinov2_b14_crt_test_seed0.npz",
+ "tau": 0.0,
+ "few_end": 2833,
+ "top1": 0.5829823381587796,
+ "method": "crt",
+ "encoder": "dinov2_b14",
+ "dataset": "h22clean"
+}

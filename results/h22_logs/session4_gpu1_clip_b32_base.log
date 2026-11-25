@@ -1,0 +1,23 @@
+
+=== [07:42:40] GPU 1: clip_b32 (full, base)
+=> h22clean / clip_b32: 15501 classes (0 without train images) | few [0, 2833) 2833 classes | medium [2833, 7106) 4273 | many [7106, 15501) 8395 | thresholds <20 / >50 | train 670254, vtune 33883, vselect 25514, vcal 25362, test 84759 (22s to load)
+=> la already done (config and test predictions for seeds [0, 1, 2]); skipped
+=> crt already done (config and test predictions for seeds [0, 1, 2]); skipped
+=> ce already done (config and test predictions for seeds [0, 1, 2]); skipped
+=> ltic3 already done (config and test predictions for seeds [0, 1, 2]); skipped
+=> search ltic2 (10 trials)
+  [ltic2] trial  1/10: V-tune macro-F1 0.2502 (epoch 26, 468s)
+  [ltic2] trial  2/10: V-tune macro-F1 0.0630 (epoch 30, 471s)
+  [ltic2] trial  3/10: V-tune macro-F1 0.2357 (epoch 28, 427s)
+  [ltic2] trial  4/10: V-tune macro-F1 0.1503 (epoch 28, 536s)
+  [ltic2] trial  5/10: V-tune macro-F1 0.0927 (epoch 28, 427s)
+  [ltic2] trial  6/10: V-tune macro-F1 0.1130 (epoch 30, 535s)
+  [ltic2] trial  7/10: V-tune macro-F1 0.2545 (epoch 30, 535s)
+  [ltic2] trial  8/10: V-tune macro-F1 0.0374 (epoch 30, 535s)
+  [ltic2] trial  9/10: V-tune macro-F1 0.2548 (epoch 22, 427s)
+  [ltic2] trial 10/10: V-tune macro-F1 0.2407 (epoch 30, 470s)
+   chosen: {"lr": 0.6233007942006511, "weight_decay": 2.475925996575289e-06, "momentum": 0.9, "epochs": 30, "batch_size": 1024, "eval_every": 2, "tau": 0.0, "la_mode": "posthoc", "loss_tau": 1.0, "alpha": 0.6973990656028911, "gamma": 0.8755811873337774, "test_tau": 0.0, "ldam_max_m": 0.5, "ldam_s": 30.0, "drw_frac": 0.8, "genus_weight": 1.0, "genus_tau": 1.0, "width": 170, "select_metric": "macro_f1", "method": "ltic2"}
+=> ltic2 V-select: macro-F1 0.2479 top-1 0.2991 few 0.3072 (pooled 0.3073) med 0.4023 many 0.2641
+=> ltic2 test macro-F1 over seeds [0, 1, 2]: 0.2730, 0.2752, 0.2641
+=> ltic2 took 109.3 min (6556 s)
+=> done in 109.6 min; rows in /kaggle/working/results/all_runs_h22clean_clip_b32_base.csv

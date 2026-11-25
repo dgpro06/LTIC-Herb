@@ -1,0 +1,11 @@
+
+=== [16:12:24] GPU 0: dinov2_b14 (repred, all)
+=> h22clean / dinov2_b14: 15501 classes (0 without train images) | few [0, 2833) 2833 classes | medium [2833, 7106) 4273 | many [7106, 15501) 8395 | thresholds <20 / >50 | train 670254, vtune 33883, vselect 25514, vcal 25362, test 84759 (28s to load)
+=> la test macro-F1 over seeds [0]: 0.5357
+=> la took 7.0 min (418 s)
+=> crt test macro-F1 over seeds [0]: 0.5382
+=> crt took 8.8 min (528 s)
+=> tau_norm+c2f donors (n_min 10): genus 93.2%, family 6.6%, global 0.2%, none 0
+=> tau_norm+c2f test macro-F1 over seeds [0]: 0.5395
+=> tau_norm+c2f took 10.5 min (632 s)
+=> done in 26.8 min; rows in /kaggle/working/results/repred_top200_dinov2_b14.csv

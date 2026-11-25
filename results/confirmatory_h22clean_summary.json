@@ -1,0 +1,7 @@
+{
+ "per_encoder": {
+  "dinov2_b14": false,
+  "bioclip2": false
+ },
+ "verdict": "Analysis paper (docs/PLAN_ANALYSIS.md); C2 reported as a negative result on both datasets."
+}

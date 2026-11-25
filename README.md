@@ -43,6 +43,43 @@ Modern transformer-based image encoders have revolutionized computer vision, con
 
 To use this model, please adjust the model datapath accordingly in the code (e.g., update the `--data_path` argument in `R50.sh` or `CLIP_VIT_LONGTAIL.py`). Additionally, ensure that the dataset is presized using the `presizer.py` script before training or evaluation. The `presizer.py` script processes images to a target resolution (default 512x512) with central cropping (default 448x448), preparing the Herbarium dataset for optimal model input.
 
+Install the dependencies with `pip install -r requirements.txt`. Split files are read from `--data_path` (`train_hbm.txt` / `val_hbm.txt` for Herbarium); pass `--train_txt` / `--val_txt` to use other locations.
+
+### Feature extractors
+
+The image encoder is frozen and selected with `--backbone`:
+
+| `--backbone` | Encoder | Pretraining data | Feature dim |
+|---|---|---|---|
+| `bioclip2` (default) | [BioCLIP 2](https://huggingface.co/imageomics/bioclip-2) ViT-L/14 | TreeOfLife-200M (biology images) | 768 |
+| `dinov2_l14` | [DINOv2](https://github.com/facebookresearch/dinov2) ViT-L/14 | LVD-142M, self-supervised | 1024 |
+| `clip_b32` | open_clip ViT-B/32 (paper setup) | LAION-2B | 512 |
+
+`sh/R50.sh` keeps the paper setup (`--backbone clip_b32 --dataset_norm` and the Herbarium 2022 class cuts). Other runs normalize images with the encoder's own mean/std and derive the many/medium/few-shot cuts from the training counts (`--many_thr 100`, `--few_thr 20`).
+
+> **Note on BioCLIP 2:** TreeOfLife-200M is built from GBIF, which also hosts Pl@ntNet observations and herbarium specimens, and its de-duplication was reported against iNat21 and Rare Species only. Some test images of Pl@ntNet-300K or Herbarium may have been seen during pretraining, so report `dinov2_l14` alongside it.
+
+Because the encoder is frozen, `--cache_features` extracts its features once (`--cache_views` augmented views per training image, stored in `--cache_dir`) and trains the head on them, which turns a 200-epoch run into minutes after the one-time extraction.
+
+### Pl@ntNet-300K
+
+[Pl@ntNet-300K](https://github.com/plantnet/PlantNet-300K) is a long-tailed plant dataset: 306,146 images of 1,081 species, where 80% of the species account for only 11% of the images.
+
+```bash
+# 1. Download plantnet_300K.zip (31.7 GB) from https://zenodo.org/records/5645731 and unzip it
+# 2. Write the split files (plantnet_{train,val,test}.txt) into the dataset folder
+python tools/make_plantnet_splits.py --root /path/to/plantnet_300K
+# 3. Train (select the model on val), then evaluate on the official test split
+DATA=/path/to/plantnet_300K bash sh/plantnet.sh
+DATA=/path/to/plantnet_300K bash sh/plantnet_eval.sh
+# Same run with another encoder
+DATA=/path/to/plantnet_300K BACKBONE=dinov2_l14 bash sh/plantnet.sh
+```
+
+To run on a free Kaggle GPU instead, follow [KAGGLE.md](KAGGLE.md) (notebook: `kaggle/LTIC_PlantNet_Kaggle.ipynb`).
+
+Pl@ntNet images are field photos, so `presizer.py` (which trims herbarium sheet borders) is not needed. Besides top-1/top-5, the log reports `MacroAcc`, the mean per-class accuracy used by the Pl@ntNet-300K benchmark.
+
 ## Citation
 
 If you find this work useful, please cite our paper:
@@ -69,3 +106,5 @@ We thank the providers of the Herbarium 2021 and Herbarium 2022 datasets for the
 If you have any questions, feel free to contact us through email (raiyan2025@gmail.com) or GitHub issues. Enjoy!
 
 ⭐ If you find this repository helpful, please consider starring it!
+thank you
+
